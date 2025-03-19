@@ -1,0 +1,96 @@
+.header {
+    background: #fff;
+    height: 80px;
+    width: 100%;
+
+    padding: 10px 20px;
+
+    /* display: flex; */
+    align-items: center;
+    position: fixed;
+    top: 0;
+    border-bottom: 1px solid #ccc;
+    z-index: 999;
+}
+
+.header-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+}
+
+.header-image {
+    border-radius: 12px;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+}
+
+.header-search {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    position: relative;
+}
+
+.header-icon {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 10px;
+    top: 20px;
+}
+
+
+
+.header-input {
+    border: 1px solid #000;
+    width: 100%;
+    padding: 10px 10px 10px 40px;
+    border-radius: 999px;
+    color: #000;
+    font-size: 20px;
+    outline: none;
+    transition: 0.25s;
+}
+
+.header-input:focus {
+    outline: 1px solid #000;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+}
+
+
+.header-button {
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.header-notify {
+    width: 24px;
+    height: 24px;
+    margin-left: 20px;
+}
+
+.header-avtar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 20px;
+}

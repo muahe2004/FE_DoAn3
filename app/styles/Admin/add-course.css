@@ -1,0 +1,192 @@
+.add-course__wrapper, .update-course__wrapper {
+    width: 100%;
+    height: calc(100vh - 80px);
+    /* background: yellowgreen; */
+}
+
+.add-course__inner, .update-course__inner {
+    margin: 80px 0 0 100px;
+    width: calc(100% - 100px);
+    height: 100%;
+    /* background: palegreen; */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.course__form {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    padding: 10px 20px 10px 10px;
+    border-radius: 4px;
+    position: relative;
+}
+
+.form-inner {
+    display: flex;
+    justify-content: space-between;
+    /* background: #ccc; */
+    /* border-bottom: 1px solid #ccc; */
+    margin-bottom: 10px;
+}
+
+.form-info {
+    /* background: #21a2ff; */
+    width: 70%;
+}
+
+.form-group {
+    display: block;
+    width: 100%;
+    /* background: #ccc; */
+    height: 40px;
+    margin-bottom: 40px;
+}
+
+.group-area {
+    height: 135px;
+    /* margin-bottom: 40px; */
+    /* background: palegoldenrod; */
+    
+}
+
+.form-label {
+    display: inline-block;
+    width: calc(20% - 5px);
+    /* background: pink; */
+    font-weight: 700;
+    margin-right: 5px;
+}
+
+.form-input {
+    /* border-bottom: 1px solid #ccc; */
+    /* background: paleturquoise; */
+    height: 40px;
+    width: 80%;
+    border-bottom: 1px solid #ccc;
+    /* border-radius: 8px; */
+    padding-left: 10px;
+    outline: none;
+    transition: .5s;
+    border-radius: 4px 4px 0 0;
+    /* background: #ccc; */
+}
+
+.input-readOnly {
+    background: #e6edf7;
+    color: #8e8e8e;
+}
+
+.form-input:focus {
+    background: #e6edf7;
+}
+
+.form-area {
+    height: 135px;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    /* background: red; */
+    /* display: flex; */
+}
+
+.form-text {
+    font-size: 14px;
+    /* background: #ccc; */
+    width: 80%;
+    float: right;
+    color: red;
+    /* display: none; */
+}
+
+.form-block {
+    display: flex;
+}
+
+.form-select {
+    border: 1px solid #ccc;
+}
+
+.form-select:focus {
+    background: #fff;
+}
+
+
+
+/* Phần thêm ảnh */
+.group-image {
+    width: calc(30% - 20px);
+    /* background: #21a2ff; */
+}
+
+
+
+.course_thumb {
+    width: 100%;
+    /* height: calc(100vh - 100px); */
+    background: #fff;
+    border-radius: 4px;
+    /* margin-right: 10px; */
+    padding: 10px;
+}
+
+
+.label-image {
+    /* padding-left: 10px; */
+    width: 100%;
+}
+
+
+.thumb-box {
+    border: 2px dotted #7fb2fa;
+    height: 200px;
+    border-radius: 4px;
+    /* opacity: 0; */
+    display: block;
+}
+
+.thumb-preview {
+    /* opacity: 0; */
+    /* background: #7fb2fa; */
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    /* border: 2px solid #7fb2fa; */
+    object-fit: cover;
+}
+
+.thumb-input {
+    display: none;
+}
+
+.custom-thumb-btn {
+    background: linear-gradient(45deg, #21a2ff, #8951ff);
+    padding: 5px;
+    width: 100px;
+    border-radius: 4px;
+    float: right;
+    margin-top: 20px;
+    color: #fff;
+    text-align: center;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+
+/* Button  thêm khóa học */
+.form-action {
+    border-top: 1px solid #ccc;
+    height: 80px;
+    width: 100%;
+    /* background: #ccc; */
+    padding: 20px 20px 10px 10px;
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+}
+
+.btn-add {
+    height: 45px;
+}

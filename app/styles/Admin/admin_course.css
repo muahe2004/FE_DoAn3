@@ -1,0 +1,97 @@
+.course {
+    display: flex;
+    align-items: center;
+    height: 90px;
+    background: #fff;
+    padding: 10px 5px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    justify-content: space-between;
+    transition: .5s;
+}
+
+.course:hover {
+    background: #e6edf7;
+}
+
+.course-check {
+    width: 20px;
+    /* background: red; */
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+}
+
+.course-check > input {
+    width: 15px;
+    height: 15px;
+}
+
+.course-id {
+    width: 10%;
+    /* background: palegreen; */
+    font-size: 18px;
+    font-weight: 700;
+    padding-left: 5px;
+}
+
+.course-name {
+    width: 30%;
+    /* height: 100%; */
+    /* background: paleturquoise; */
+    padding: 0 5px;
+    font-size: 18px;
+    overflow: hidden;
+}
+
+.course-image {
+    width: 10%;
+    height: 80px;
+    /* margin: 0 5px; */
+}
+
+.course-image > img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.course-level {
+    width: 10%;
+    /* background: palegreen; */
+    text-align: center;
+    
+}
+
+.course-price {
+    width: 15%;
+    /* background: palegoldenrod; */
+    font-size: 18px;
+    color: orange;
+    text-align: center;
+    font-weight: 600;
+}
+
+.course-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.course-update, .course-delete {
+    width: 5%;
+    /* background: paleturquoise; */
+    display: flex;
+    /* margin-right: 5px; */
+}
+
+.update-link {
+    padding: 10px;
+    /* background: yellow; */
+}
+
+.btn-save {
+    width: 150px;
+    height: 45px;
+}

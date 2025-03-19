@@ -1,0 +1,13 @@
+.admin-navbar {
+    width: 100px;
+    height: calc(100vh - 80px);
+    background: #fff;
+    position: fixed;
+    top: 80px;
+    padding: 10px;
+}
+
+
+/* .navbar-icon {
+
+} */
