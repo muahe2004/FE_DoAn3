@@ -114,8 +114,28 @@ export default function AdminCourseDetails() {
     }
   };
 
+  const handleDeleteCourse = async () => {
+    try {
+      const response = await fetch(`http://localhost:1000/${maKhoaHoc}/delete-khoahoc`, {
+        method: "DELETE",
+      });
+  
+      if (!response.ok) {
+        alert("Lỗi khi xóa khóa học!");
+        return;
+      }
+  
+      alert("Xóa thành công!");
+      navigate("/admin"); // Chuyển hướng về trang admin sau khi xóa
+    } catch (error) {
+      console.log("Lỗi khi xóa khóa học: ", error);
+    }
+  };
+  
+
   // Ẩn hiện model
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModelDeleteOpen, setIsModelDeleteOpen] = useState(false);
 
 
   const handleOpen = () => {
@@ -127,7 +147,13 @@ export default function AdminCourseDetails() {
     setIsModalOpen(false);
   };
 
-  
+  const handleOpenDeleteModel = () => {
+    setIsModelDeleteOpen(true);
+  }
+
+  const handleCloseDeleteModel = () => {
+    setIsModelDeleteOpen(false);
+  }
 
   return (
     <div className="update-course__wrapper">
@@ -175,29 +201,38 @@ export default function AdminCourseDetails() {
             </div>
           </div>
           <div className="form-action">
-            <Button className="btn-save" onClick={handleOpen}>Lưu lại</Button>
+            <Button type="button" className="btn-save" onClick={handleOpen}>Lưu lại</Button>
             <Button className="btn-new button-secondary button">Làm mới</Button>
-            <Button className="btn-cancel button-third button">Xóa khóa học</Button>
+            <Button className="btn-cancel button-third button" onClick={handleOpenDeleteModel}>Xóa khóa học</Button>
           </div>
 
           {isModalOpen && (
-        <ModelOverlay
-            className="model-image_second"
-            icon="Question.svg"
-            secondOption="Hủy bỏ"
-            title="Sửa khóa học"
-            desc="Bạn có chắc chắn muốn sửa khóa học không?"
-            onClose={handleClose} // Truyền onClose vào đây
-        >
-            <Button type="submit">Lưu lại</Button>
-        </ModelOverlay>
-    )}
+            <ModelOverlay
+                className="model-image_second"
+                icon="Question.svg"
+                secondOption="Hủy bỏ" // Button
+                title="Sửa khóa học"
+                desc="Bạn có chắc chắn muốn sửa khóa học không?"
+                onClose={handleClose}>
+                <Button type="submit">Lưu lại</Button>
+            </ModelOverlay>
+          )}
+
+          
         </form>
       </div>
 
-      
-
-
+      {isModelDeleteOpen && (
+            <ModelOverlay
+                className="model-image"
+                icon="Exclamation.svg"
+                secondOption="Hủy bỏ" // Button
+                title="Xóa khóa học"
+                desc="Bạn có chắc chắn muốn xóa khóa học không?"
+                onClose={handleCloseDeleteModel}>
+                <Button type="submit" className="button-delete" onClick={handleDeleteCourse}>Xóa khóa học</Button>
+            </ModelOverlay>
+          )}
     </div>
   );
 }

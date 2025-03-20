@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import { lazy, Suspense, useEffect, useState } from "react";
 import "../../styles/Admin/admin_course.css";
-// const AdminCourse = lazy(() => import("~/components/Admin/Course"));
-{/* <link rel="stylesheet" href="../../styles/Admin/admin_course.css" /> */}
 
 
 interface CourseProps {

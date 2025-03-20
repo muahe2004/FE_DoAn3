@@ -45,7 +45,7 @@ const ModelOverlay: React.FC<ModelOverlayProps> = ({ children, secondOption, tit
                 </div>
 
                 <div className="model-action">
-                    <button className="model-button" onClick={handleClose}>{secondOption}</button>
+                    <button type="button" className="model-button" onClick={handleClose}>{secondOption}</button>
                     {children}
                 </div>
             </div>
