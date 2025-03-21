@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { lazy, Suspense, useEffect, useState } from "react";
 import "../../styles/Admin/admin_course.css";
 
-
 interface CourseProps {
   maKhoaHoc: string;
   tenKhoaHoc: string;

@@ -92,12 +92,22 @@
 }
 
 .form-text {
+    margin-top: 5px;
     font-size: 14px;
     /* background: #ccc; */
     width: 80%;
     float: right;
     color: red;
-    /* display: none; */
+    display: none;
+}
+
+.form-text_image {
+    padding-left: 10px;
+    width: 100%;
+}
+
+.form-text_desc {
+    margin-top: 0;
 }
 
 .form-block {

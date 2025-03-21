@@ -26,6 +26,27 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  // useEffect(() => {
+  //   const courses = document.querySelectorAll(".course");
+
+  //   const observer = new IntersectionObserver(
+  //     (entries) => {
+  //       entries.forEach((entry) => {
+  //         if (entry.isIntersecting) {
+  //           entry.target.classList.add("show");
+  //         }
+  //       });
+  //     },
+  //     { threshold: 0.3 } // Kích hoạt khi 20% phần tử xuất hiện
+  //   );
+
+  //   courses.forEach((course) => observer.observe(course));
+
+  //   return () => {
+  //     courses.forEach((course) => observer.unobserve(course));
+  //   };
+  // }, []);
+
   return (
     <div className="home-Wrapper">
       <Header title="Học lập trình" />

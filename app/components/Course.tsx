@@ -22,8 +22,6 @@ const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, children,
         <h3 className="course-comp_name">
           <Link to={`/course/${maKhoaHoc}`}>{tenKhoaHoc}</Link>
           {/* <Link href={`/etails`}>{tenKhoaHoc}</Link> */}
-
-
         </h3>
 
         <div className="price-container">

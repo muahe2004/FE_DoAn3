@@ -36,11 +36,12 @@
 }
 
 .old-price {
+    color: #ccc;
     text-decoration: line-through;
 }
 
 .main-price {
-    color: #000080;
+    color: orange;
     font-size: 22px;
     font-weight: 600;
     margin-left: 5px;

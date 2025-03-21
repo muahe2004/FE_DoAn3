@@ -4,11 +4,14 @@ import AdminNav from "~/components/Admin/AdminNav";
 
 
 import AdminCourse from "~/components/Admin/Course";
+
 // const AdminCourse = lazy(() => import("~/components/Admin/Course"));
 // import "../styles/Admin/admin_course.css";
 
 
 import "../styles/Admin/admin.css";
+// import "../styles/Admin/admin_course.css";
+
 import { Link } from "react-router-dom";
 
 interface CourseProps {
@@ -78,7 +81,6 @@ export default function Admin() {
 
         {/* Phần hiển thị các khóa học */}
         <div className="list-course__inner">
-
           {courses.map((course) => (
               <AdminCourse 
                 key={course.maKhoaHoc}

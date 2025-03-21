@@ -28,68 +28,129 @@ export default function AddCourse() {
     }
   };
 
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const input = event.target;
+    const formText = input.parentElement?.querySelector(".form-text") as HTMLElement | null;
+  
+    if (formText) {
+      formText.style.display = input.value.trim() ? "none" : "block";
+    }
+  };
+  
+  
+
   // Add khóa học
   const handleAddCourse = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
-    if (!event.currentTarget) return;
-  
     const form = event.currentTarget;
-  
+    
+    // Lấy input
+    const nameInput = form.querySelector<HTMLInputElement>('input[name="name"]');
+    const descriptionInput = form.querySelector<HTMLTextAreaElement>('textarea[name="description"]');
+    const levelInput = form.querySelector<HTMLSelectElement>('select[name="level"]');
+    const priceInput = form.querySelector<HTMLInputElement>('input[name="price"]');
     const fileInput = form.querySelector<HTMLInputElement>('input[name="file"]');
-    if (!fileInput || !fileInput.files?.length) {
-      console.log("Vui lòng chọn ảnh minh họa cho khóa học!");
+  
+    // Hàm hiển thị lỗi
+    const showError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null, message: string) => {
+      if (input) {
+        const formText = input.parentElement?.querySelector<HTMLElement>(".form-text");
+        if (formText) {
+          formText.innerText = message;
+          formText.style.display = "block";
+        }
+        input.focus();
+      }
+    };
+  
+    // Kiểm tra validation
+    if (!nameInput?.value.trim()) {
+      showError(nameInput, "Vui lòng nhập tên khóa học!");
+      return;
+    }
+    if (!descriptionInput?.value.trim()) {
+      showError(descriptionInput, "Vui lòng nhập mô tả khóa học!");
+      return;
+    }
+    if (!priceInput?.value.trim()) {
+      showError(priceInput, "Vui lòng nhập giá bán!");
       return;
     }
   
-    const file = fileInput.files[0];
+    // Xử lý ảnh
+    let imageUrl = "http://localhost:1000/uploads/COURSE.png"; // Ảnh mặc định
+    if (fileInput?.files?.length) {
+      const formData = new FormData();
+      formData.append("file", fileInput.files[0]);
   
-    const formData = new FormData();
-    formData.append("file", file);
+      try {
+        const uploadResponse = await fetch("http://localhost:1000/upload", {
+          method: "POST",
+          body: formData,
+        });
+  
+        if (!uploadResponse.ok) throw new Error("Lỗi upload ảnh");
+        const uploadData = await uploadResponse.json();
+        imageUrl = uploadData.imageUrl;
+      } catch (error) {
+        console.error("Lỗi upload ảnh:", error);
+        return; // Dừng lại nếu upload ảnh lỗi
+      }
+    }
+  
+    // Chuẩn bị body gửi API
+    const body = {
+      tenKhoaHoc: nameInput.value,
+      moTaKhoaHoc: descriptionInput.value,
+      hinhAnh: imageUrl,
+      doKho: levelInput?.value,
+      giaBan: parseFloat(priceInput.value) || 0,
+    };
   
     try {
-      const uploadResponse = await fetch("http://localhost:1000/upload", {
-        method: "POST",
-        body: formData,
-      });
-  
-      if (!uploadResponse.ok) throw new Error("Lỗi upload ảnh");
-  
-      const uploadData = await uploadResponse.json();
-      const imageUrl = uploadData.imageUrl;
-  
-      const nameInput = form.querySelector<HTMLInputElement>('input[name="name"]');
-      const descriptionInput = form.querySelector<HTMLTextAreaElement>('textarea[name="description"]');
-      const levelInput = form.querySelector<HTMLSelectElement>('select[name="level"]');
-      const priceInput = form.querySelector<HTMLInputElement>('input[name="price"]');
-  
-      if (!nameInput || !descriptionInput || !levelInput || !priceInput) {
-        alert("Vui lòng nhập đầy đủ thông tin khóa học!");
-        return;
-      }
-  
-      const body = {
-        tenKhoaHoc: nameInput.value,
-        moTaKhoaHoc: descriptionInput.value,
-        hinhAnh: imageUrl,
-        doKho: levelInput.value,
-        giaBan: parseFloat(priceInput.value || "0"),
-      };
-    
       const courseResponse = await fetch("http://localhost:1000/create-khoahoc", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
   
-      if (!courseResponse.ok) throw new Error("Lỗi khi thêm khóa học");
-  
-      navigate("/admin");
+      if (courseResponse.ok) {
+        handleOpenModel();
+        setTimeout(() => navigate("/admin"), 2500);
+      } else {
+        console.error("Lỗi tạo khóa học:", await courseResponse.text());
+      }
     } catch (error) {
       console.error("Lỗi:", error);
     }
   };
   
+  
+  
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const handleOpenModel = () => {
+    setIsModelOpen(true);
+  }
+
+  const handleCloseDelSuccessModel = () => {
+    setIsModelOpen(false);
+  }
+
+  const handleResetForm = () => {
+    const form = document.querySelector<HTMLFormElement>(".course__form");
+    if (form) {
+      form.reset(); // Reset tất cả input, textarea, select về mặc định
+      
+      // Xóa ảnh xem trước
+      setImagePreview(null);
+  
+      // Ẩn tất cả thông báo lỗi
+      const errorMessages = form.querySelectorAll<HTMLElement>(".form-text");
+      errorMessages.forEach((msg) => {
+        msg.style.display = "none";
+      });
+    }
+  };
   
 
   return (
@@ -105,18 +166,19 @@ export default function AddCourse() {
             <div className="form-info">
               <div className="form-group">
                 <label htmlFor="name" className="form-label">Tên khóa học</label>
-                <input name="name" type="text" className="form-input" required />
+                <input name="name" type="text" className="form-input" onBlur={handleBlur}/>
+                <span className="form-text">Vui lòng nhập tên khóa học</span>
               </div>
 
               <div className="form-group group-area">
                 <label htmlFor="description" className="form-label label-area">Mô tả</label>
-                <textarea name="description" className="form-input form-area" required></textarea>
+                <textarea name="description" className="form-input form-area" onBlur={handleBlur}></textarea>
+                <span className="form-text form-text_desc">Vui lòng nhập mô tả cho khóa học</span>
               </div>
 
               <div className="form-group">
                 <label htmlFor="level" className="form-label">Độ khó</label>
-                <select name="level" className="form-input form-select" required>
-                  <option value="">-- Chọn độ khó --</option>
+                <select name="level" className="form-input form-select">
                   <option value="Dễ">Dễ</option>
                   <option value="Trung bình">Trung bình</option>
                   <option value="Khó">Khó</option>
@@ -125,13 +187,15 @@ export default function AddCourse() {
 
               <div className="form-group">
                 <label htmlFor="price" className="form-label">Giá bán</label>
-                <input name="price" type="number" className="form-input" required />
+                <input name="price" type="number" className="form-input" onBlur={handleBlur}/>
+                <span className="form-text">Vui lòng nhập giá bán</span>
               </div>
             </div>
 
             {/* Phần thêm ảnh */}
             <div className="form-group group-image">
-              <label className="form-label label-image">Ảnh khóa học</label>
+              {/* <label className="form-label label-image">Ảnh khóa học</label>
+              <span className="form-text form-text_image">Vui lòng chọn ảnh</span> */}
               <div className="add-course_thumb">
                 <label htmlFor="upload-thumb" className="thumb-box">
                   {imagePreview && <img src={imagePreview} alt="Ảnh xem trước" className="thumb-preview" />}
@@ -152,15 +216,24 @@ export default function AddCourse() {
 
           <div className="form-action"> 
             <Button type="submit" className="btn-add">Thêm khóa học</Button>
-            <Button className="btn-new button-secondary button">Làm mới</Button>
-            <Button type="submit" className="btn-cancle button-third button">Hủy bỏ</Button>
+            <Button className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button>
+            <Button className="btn-cancle button-third button">Hủy bỏ</Button>
           </div>
 
         </form>
       </div>
 
-
-        {/* <ModelOverlay></ModelOverlay> */}
+        {isModelOpen && (
+          <ModelOverlay
+            className="model-image_third"
+            icon="Successful.svg"
+            secondOption=""
+            title="Thêm khóa học"
+            desc="Thêm khóa học thành công!"
+            onClose={handleCloseDelSuccessModel}
+            children="">
+          </ModelOverlay>
+        )}
     </div>
   );
 }

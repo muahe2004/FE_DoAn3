@@ -44,6 +44,10 @@
     background: linear-gradient(45deg, #21a2ff, #8951ff);
 }
 
+.model-image_third {
+    background: #2ecc71  ;
+}
+
 .model-icon {
     width: 20px;
     height: 20px;
@@ -79,6 +83,11 @@
 .model-button:hover {
     opacity: 0.9;
 }
+
+.model-button:empty {
+    display: none;
+}
+
 
 .button-delete {
     background: red;

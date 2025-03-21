@@ -9,8 +9,10 @@ import "../styles/Admin/add-course.css";
 
 export default function AdminCourseDetails() {
   const navigate = useNavigate();
-  const { maKhoaHoc } = useParams();
 
+
+  // Load thông tin của khóa học
+  const { maKhoaHoc } = useParams();
   const [tenKhoaHoc, setTenKhoaHoc] = useState("");
   const [moTaKhoaHoc, setMoTaKhoaHoc] = useState("");
   const [doKho, setDoKho] = useState("");
@@ -32,6 +34,7 @@ export default function AdminCourseDetails() {
       .catch((err) => console.error(err));
   }, [maKhoaHoc]);
 
+  // Xử lý phần ảnh
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -45,6 +48,7 @@ export default function AdminCourseDetails() {
     }
   };
 
+  // Handle thực hiện sửa thông tin khóa học
   const handleUpdateCourse = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   
@@ -103,17 +107,18 @@ export default function AdminCourseDetails() {
       }
   
       if (updateRes.ok) {
-        navigate("/admin"); 
-        alert("Cập nhật thành công!");
+        handleClose();
+        handleOpenSuccessModel(); 
+        setTimeout(() => navigate("/admin"), 2500);
       } else {
         alert("Lỗi khi cập nhật khóa học!");
       }
-
     } catch (error) {
       console.log("Lỗi khi cập nhật khóa học: ", error);
     }
   };
 
+  // Handle thực hiện xóa khóa học
   const handleDeleteCourse = async () => {
     try {
       const response = await fetch(`http://localhost:1000/${maKhoaHoc}/delete-khoahoc`, {
@@ -124,9 +129,9 @@ export default function AdminCourseDetails() {
         alert("Lỗi khi xóa khóa học!");
         return;
       }
-  
-      alert("Xóa thành công!");
-      navigate("/admin"); // Chuyển hướng về trang admin sau khi xóa
+      handleCloseDeleteModel();
+      handleOpenDelSuccessModel();
+      setTimeout(() => navigate("/admin"), 2200);
     } catch (error) {
       console.log("Lỗi khi xóa khóa học: ", error);
     }
@@ -135,9 +140,6 @@ export default function AdminCourseDetails() {
 
   // Ẩn hiện model
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModelDeleteOpen, setIsModelDeleteOpen] = useState(false);
-
-
   const handleOpen = () => {
     console.log("Mở");
     setIsModalOpen(true);
@@ -147,6 +149,7 @@ export default function AdminCourseDetails() {
     setIsModalOpen(false);
   };
 
+  const [isModelDeleteOpen, setIsModelDeleteOpen] = useState(false);
   const handleOpenDeleteModel = () => {
     setIsModelDeleteOpen(true);
   }
@@ -155,6 +158,24 @@ export default function AdminCourseDetails() {
     setIsModelDeleteOpen(false);
   }
 
+  const [isModelSuccessfulModelOpen, setIsModelSuccessfulModelOpen] = useState(false);
+  const handleOpenSuccessModel = () => {
+    setIsModelSuccessfulModelOpen(true);
+  }
+
+  const handleCloseSuccessModel = () => {
+    setIsModelSuccessfulModelOpen(false);
+  }
+
+  const [isModelDelSuccessfullOpen, setIsModelDelSuccessfullOpen] = useState(false);
+  const handleOpenDelSuccessModel = () => {
+    setIsModelDelSuccessfullOpen(true);
+  }
+
+  const handleCloseDelSuccessModel = () => {
+    setIsModelDelSuccessfullOpen(false);
+  }
+  
   return (
     <div className="update-course__wrapper">
       <Header title="Thông tin khóa học" />
@@ -190,7 +211,7 @@ export default function AdminCourseDetails() {
               </div>
             </div>
             <div className="form-group group-image">
-              <label className="form-label label-image">Ảnh khóa học</label>
+              {/* <label className="form-label label-image">Ảnh khóa học</label> */}
               <div className="course_thumb">
                 <label htmlFor="upload-thumb" className="thumb-box">
                   {imagePreview && <img src={imagePreview} alt="Ảnh xem trước" className="thumb-preview" />}
@@ -210,7 +231,7 @@ export default function AdminCourseDetails() {
             <ModelOverlay
                 className="model-image_second"
                 icon="Question.svg"
-                secondOption="Hủy bỏ" // Button
+                secondOption="Hủy bỏ" 
                 title="Sửa khóa học"
                 desc="Bạn có chắc chắn muốn sửa khóa học không?"
                 onClose={handleClose}>
@@ -223,16 +244,40 @@ export default function AdminCourseDetails() {
       </div>
 
       {isModelDeleteOpen && (
-            <ModelOverlay
-                className="model-image"
-                icon="Exclamation.svg"
-                secondOption="Hủy bỏ" // Button
-                title="Xóa khóa học"
-                desc="Bạn có chắc chắn muốn xóa khóa học không?"
-                onClose={handleCloseDeleteModel}>
-                <Button type="submit" className="button-delete" onClick={handleDeleteCourse}>Xóa khóa học</Button>
-            </ModelOverlay>
-          )}
+        <ModelOverlay
+            className="model-image"
+            icon="Exclamation.svg"
+            secondOption="Hủy bỏ" 
+            title="Xóa khóa học"
+            desc="Bạn có chắc chắn muốn xóa khóa học không?"
+            onClose={handleCloseDeleteModel}>
+            <Button type="submit" className="button-delete" onClick={handleDeleteCourse}>Xóa khóa học</Button>
+        </ModelOverlay>
+      )}
+
+      {isModelSuccessfulModelOpen && (
+        <ModelOverlay
+          className="model-image_third"
+          icon="Successful.svg"
+          secondOption=""
+          title="Sửa khóa học"
+          desc="Cập nhật thông tin khóa học thành công!"
+          onClose={handleCloseSuccessModel}
+          children="">
+        </ModelOverlay>
+      )}
+
+      {isModelDelSuccessfullOpen && (
+        <ModelOverlay
+        className="model-image_third"
+        icon="Successful.svg"
+        secondOption=""
+        title="Xóa khóa học"
+        desc="Xóa thông tin khóa học thành công!"
+        onClose={handleCloseDelSuccessModel}
+        children="">
+      </ModelOverlay>
+      )}
     </div>
   );
 }
