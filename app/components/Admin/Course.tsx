@@ -13,45 +13,45 @@ interface CourseProps {
 
 const Course: React.FC<CourseProps> = ({ maKhoaHoc, tenKhoaHoc, doKho, hinhAnh, giaBan }) => {
   return (
-    <Link to={`/admin-course-details/${maKhoaHoc}`} className="course">
+    <Link to={`/admin-course-details/${maKhoaHoc}`} className="admin-course">
       {/* Check box */}
-      <div className="course-check">
+      <div className="admin-course_check">
         <input type="checkbox" />
       </div>
 
       {/* Mã khóa học */}
-      <div className="course-id">
+      <div className="admin-course_id">
         <span>{maKhoaHoc}</span>
       </div>
 
       {/* Tên khóa học */}
-      <div className="course-name">
+      <div className="admin-course_name">
         <span>{tenKhoaHoc}</span>
       </div>
 
       {/* Hình ảnh */}
-      <div className="course-image">
+      <div className="admin-course_image">
         <img src={hinhAnh} alt={tenKhoaHoc} />
       </div>
 
       {/* Độ khó */}
-      <div className="course-level">
+      <div className="admin-course_level">
         <span>{doKho}</span>
       </div>
 
       {/* Giá */}
-      <div className="course-price">
+      <div className="admin-course_price">
         <span>{giaBan}</span>
       </div>
 
       {/* Sửa - Chỉ phần này có Link */}
-      <div className="course-update">
+      <div className="admin-course_update">
         <Link className="update-link" to={`/admin-course-details/${maKhoaHoc}`}>
           {/* <img className="course-icon" src="../../public/icons/Update.svg" alt="Chỉnh sửa" /> */}
         </Link>
       </div>
 
-      <div className="course-delete">
+      <div className="admin-course_delete">
         {/* <img className="course-icon" src="../../public/icons/Delete.svg" alt="Xóa" /> */}
       </div>
     </Link>

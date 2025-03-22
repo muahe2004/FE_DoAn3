@@ -52,6 +52,7 @@
 }
 
 .form-label {
+    font-size: 18px;
     display: inline-block;
     width: calc(20% - 5px);
     /* background: pink; */

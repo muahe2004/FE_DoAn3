@@ -19,14 +19,7 @@ export default function AddLecture() {
         <Header title="Thêm bài học"></Header>
         <AdminNav></AdminNav>
       
-        <ModelOverlay 
-          icon="Exclamation.svg"
-          secondOption="Giữ lại."
-          title="Xóa khóa học"
-          desc="Bạn có chắc chắn muốn xóa khóa học không ?"
-        >
-            <Button className="button-delete" children="Xóa khóa học"></Button>
-        </ModelOverlay>
+        
 
     </div>
     

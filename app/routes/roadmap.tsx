@@ -1,12 +1,3 @@
-// import type { Route } from "./+types/home";
-// import { Welcome } from "../welcome/welcome";
-
-// export function meta({}: Route.MetaArgs) {
-//   return [
-//     { title: "New React Router App" },
-//     { name: "description", content: "Welcome to React Router!" },
-//   ];
-// }
 
 import { Link } from "react-router-dom";
 import Navbar from "~/components/Navbar";
@@ -55,7 +46,24 @@ export default function RoadMap() {
                     </div>
 
                     <div className="content-item">
-                        
+                        <div className="item-head">
+                            <div className="item-info">
+                                <h2 className="item-title">
+                                    <Link to="/">Lộ trình học Back-end</Link>
+                                </h2>
+                                <p className="item-desc">
+                                Trái với Front-end thì lập trình viên Back-end là người làm việc với dữ liệu, công việc thường nặng tính logic hơn. 
+                                Chúng ta sẽ cùng tìm hiểu thêm về lộ trình học Back-end nhé.
+                                </p>
+                            </div>
+
+                            <div className="item-thumb">
+                                <Link to="/" className="thumb-link">
+                                    <img src="./public/images/FE.png" alt="" className="item-img" />
+                                </Link>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>

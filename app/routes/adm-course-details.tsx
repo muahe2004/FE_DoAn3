@@ -211,7 +211,6 @@ export default function AdminCourseDetails() {
               </div>
             </div>
             <div className="form-group group-image">
-              {/* <label className="form-label label-image">Ảnh khóa học</label> */}
               <div className="course_thumb">
                 <label htmlFor="upload-thumb" className="thumb-box">
                   {imagePreview && <img src={imagePreview} alt="Ảnh xem trước" className="thumb-preview" />}

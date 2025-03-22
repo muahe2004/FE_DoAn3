@@ -1,18 +1,12 @@
-import { lazy, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
-
-
 import AdminCourse from "~/components/Admin/Course";
 
-// const AdminCourse = lazy(() => import("~/components/Admin/Course"));
-// import "../styles/Admin/admin_course.css";
-
-
 import "../styles/Admin/admin.css";
-// import "../styles/Admin/admin_course.css";
+import "../styles/Admin/admin_course.css";
 
-import { Link } from "react-router-dom";
 
 interface CourseProps {
   maKhoaHoc: string;
@@ -28,7 +22,7 @@ export default function Admin() {
 
 
   useEffect(() => {
-    fetch("http://localhost:1000") // Thay URL bằng API của bạn
+    fetch("http://localhost:1000") 
       .then((res) => res.json())
       .then((data) => setCourses(data))
       .catch((error) => console.error("Lỗi khi lấy khóa học:", error));

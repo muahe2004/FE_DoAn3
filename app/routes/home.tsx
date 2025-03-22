@@ -1,51 +1,27 @@
 import { useEffect, useRef, useState } from "react";
-import "../styles/home.css";
-
 import { Link } from "react-router-dom"
+
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
-{/* <link rel="stylesheet" href="/src/styles/home.css" /> */}
-
-import Button from "~/components/Button";
 import Navbar from "~/components/Navbar";
-
 import Course from "~/components/Course";
-// import "../styles/course.css";
+
+import "../styles/home.css";
+
 
 export default function Home() {
 
   const slideRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const totalSlides = 3; // Số lượng slide
+  const totalSlides = 3; 
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
-    }, 3000); // Chuyển slide mỗi 3.5 giây
+    }, 3000); 
 
     return () => clearInterval(interval);
   }, []);
-
-  // useEffect(() => {
-  //   const courses = document.querySelectorAll(".course");
-
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       entries.forEach((entry) => {
-  //         if (entry.isIntersecting) {
-  //           entry.target.classList.add("show");
-  //         }
-  //       });
-  //     },
-  //     { threshold: 0.3 } // Kích hoạt khi 20% phần tử xuất hiện
-  //   );
-
-  //   courses.forEach((course) => observer.observe(course));
-
-  //   return () => {
-  //     courses.forEach((course) => observer.unobserve(course));
-  //   };
-  // }, []);
 
   return (
     <div className="home-Wrapper">

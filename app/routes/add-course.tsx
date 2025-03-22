@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 import Button from "~/components/Button";
+import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/Admin/add-course.css";
-import ModelOverlay from "~/components/OverlayModel";
+
 
 
 export default function AddCourse() {
@@ -44,7 +46,6 @@ export default function AddCourse() {
     event.preventDefault();
     const form = event.currentTarget;
     
-    // Lấy input
     const nameInput = form.querySelector<HTMLInputElement>('input[name="name"]');
     const descriptionInput = form.querySelector<HTMLTextAreaElement>('textarea[name="description"]');
     const levelInput = form.querySelector<HTMLSelectElement>('select[name="level"]');
@@ -63,7 +64,6 @@ export default function AddCourse() {
       }
     };
   
-    // Kiểm tra validation
     if (!nameInput?.value.trim()) {
       showError(nameInput, "Vui lòng nhập tên khóa học!");
       return;
@@ -77,7 +77,6 @@ export default function AddCourse() {
       return;
     }
   
-    // Xử lý ảnh
     let imageUrl = "http://localhost:1000/uploads/COURSE.png"; // Ảnh mặc định
     if (fileInput?.files?.length) {
       const formData = new FormData();
@@ -94,11 +93,10 @@ export default function AddCourse() {
         imageUrl = uploadData.imageUrl;
       } catch (error) {
         console.error("Lỗi upload ảnh:", error);
-        return; // Dừng lại nếu upload ảnh lỗi
+        return; 
       }
     }
   
-    // Chuẩn bị body gửi API
     const body = {
       tenKhoaHoc: nameInput.value,
       moTaKhoaHoc: descriptionInput.value,
@@ -139,12 +137,10 @@ export default function AddCourse() {
   const handleResetForm = () => {
     const form = document.querySelector<HTMLFormElement>(".course__form");
     if (form) {
-      form.reset(); // Reset tất cả input, textarea, select về mặc định
+      form.reset(); 
       
-      // Xóa ảnh xem trước
       setImagePreview(null);
   
-      // Ẩn tất cả thông báo lỗi
       const errorMessages = form.querySelectorAll<HTMLElement>(".form-text");
       errorMessages.forEach((msg) => {
         msg.style.display = "none";
@@ -157,7 +153,7 @@ export default function AddCourse() {
     <div className="add-course__wrapper">
       <Header title="Thêm khóa học" />
       <AdminNav />
-
+      
       <div className="add-course__inner">
         {/* Form thêm khóa học */}
         <form onSubmit={handleAddCourse} className="course__form">
@@ -194,8 +190,6 @@ export default function AddCourse() {
 
             {/* Phần thêm ảnh */}
             <div className="form-group group-image">
-              {/* <label className="form-label label-image">Ảnh khóa học</label>
-              <span className="form-text form-text_image">Vui lòng chọn ảnh</span> */}
               <div className="add-course_thumb">
                 <label htmlFor="upload-thumb" className="thumb-box">
                   {imagePreview && <img src={imagePreview} alt="Ảnh xem trước" className="thumb-preview" />}
