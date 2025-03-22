@@ -14,10 +14,6 @@ interface CourseProps {
 const Course: React.FC<CourseProps> = ({ maKhoaHoc, tenKhoaHoc, doKho, hinhAnh, giaBan }) => {
   return (
     <Link to={`/admin-course-details/${maKhoaHoc}`} className="admin-course">
-      {/* Check box */}
-      <div className="admin-course_check">
-        <input type="checkbox" />
-      </div>
 
       {/* Mã khóa học */}
       <div className="admin-course_id">
@@ -44,16 +40,15 @@ const Course: React.FC<CourseProps> = ({ maKhoaHoc, tenKhoaHoc, doKho, hinhAnh, 
         <span>{giaBan}</span>
       </div>
 
-      {/* Sửa - Chỉ phần này có Link */}
-      <div className="admin-course_update">
+      {/* <div className="admin-course_update">
         <Link className="update-link" to={`/admin-course-details/${maKhoaHoc}`}>
-          {/* <img className="course-icon" src="../../public/icons/Update.svg" alt="Chỉnh sửa" /> */}
+          <img className="course-icon" src="../../public/icons/Update.svg" alt="Chỉnh sửa" />
         </Link>
       </div>
 
       <div className="admin-course_delete">
-        {/* <img className="course-icon" src="../../public/icons/Delete.svg" alt="Xóa" /> */}
-      </div>
+        <img className="course-icon" src="../../public/icons/Delete.svg" alt="Xóa" />
+      </div> */}
     </Link>
   );
 };

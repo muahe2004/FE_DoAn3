@@ -22,7 +22,7 @@ export default function Admin() {
 
 
   useEffect(() => {
-    fetch("http://localhost:1000") 
+    fetch("http://localhost:1000/get-all-khoahoc") 
       .then((res) => res.json())
       .then((data) => setCourses(data))
       .catch((error) => console.error("Lỗi khi lấy khóa học:", error));
@@ -36,10 +36,7 @@ export default function Admin() {
       <div className="list-course">
         {/* Phần head */}
         <div className="list-course__head">
-          {/* Check box */}
-          <div className="course-check">
-              
-          </div>
+          
 
           {/* Mã khóa học */}
           <div className="course-id course-id_head">
@@ -57,7 +54,7 @@ export default function Admin() {
           </div>
 
           {/* Độ khó */}
-          <div className="course-level">
+          <div className="course-level_head">
               <span>ĐỘ KHÓ</span>
           </div>
 
@@ -67,10 +64,10 @@ export default function Admin() {
           </div>
 
           {/* Sửa */}
-          <div className="course-update"></div>
+          {/* <div className="course-update"></div> */}
 
           {/* Xóa */}
-          <div className="course-delete"></div>
+          {/* <div className="course-delete"></div> */}
         </div>
 
         {/* Phần hiển thị các khóa học */}

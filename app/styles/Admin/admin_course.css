@@ -33,6 +33,7 @@
     font-size: 18px;
     font-weight: 700;
     padding-left: 5px;
+    text-align: center;
 }
 
 .admin-course_name {
@@ -70,7 +71,7 @@
     /* background: palegoldenrod; */
     font-size: 18px;
     color: orange;
-    text-align: center;
+    /* text-align: center; */
     font-weight: 600;
 }
 

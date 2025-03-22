@@ -8,7 +8,7 @@ interface ModelOverlayProps {
     title: string;
     desc: string;
     className?: string;
-    onClose: () => void; // Thêm prop này để xử lý đóng modal
+    onClose: () => void; 
 }
 
 const ModelOverlay: React.FC<ModelOverlayProps> = ({ children, secondOption, title, desc, icon, className, onClose }) => {
@@ -21,9 +21,9 @@ const ModelOverlay: React.FC<ModelOverlayProps> = ({ children, secondOption, tit
     useEffect(() => {
         if (isClosing) {
             const timer = setTimeout(() => {
-                onClose(); // Gọi hàm onClose() từ component cha để đóng modal
+                onClose(); 
                 setIsClosing(false); // Reset trạng thái đóng
-            }, 300); // 300ms khớp với animation CSS
+            }, 300); 
 
             return () => clearTimeout(timer);
         }

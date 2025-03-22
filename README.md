@@ -1,3 +1,16 @@
+<!-- Hướng dẫn sử dụng -->
+Bước 1: Tạo database (file tên base)
+
+Bước 2: Chạy api node.js với lệnh: npm start (dùng git bash)
+
+Bước 3: Chạy FE với lệnh: npm run dev (dùng git bash)
+
+Dự án sử dụng react-router-v7
+
+
+
+
+
 # Welcome to React Router!
 
 A modern, production-ready template for building full-stack React applications using React Router.
