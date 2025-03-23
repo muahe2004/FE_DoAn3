@@ -232,3 +232,26 @@
     display: block;
     font-size: 20px;
 }
+
+/* Phần click me */
+.click-me {
+    position: absolute;
+    background: #000080;
+    top: 80px;
+    right: 25px;
+    padding: 10px;
+    font-weight: 700;
+    color: #fff;
+    z-index: 999;
+}
+
+.click-me::before {
+    position: absolute;
+    content: "";
+    width: 20px;
+    height: 20px;
+    background: #000080;
+    rotate: 45deg;
+    top: -5px;
+    right: 10px;
+}

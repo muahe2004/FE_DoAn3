@@ -15,7 +15,7 @@ export default function AddLesson() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:1000/selection-khoahoc"); // Thay bằng API thực tế
+        const response = await fetch("http://localhost:1000/selection-khoahoc"); 
         if (response.ok) {
           const data = await response.json();
           setCourses(data); 
@@ -116,7 +116,7 @@ export default function AddLesson() {
   const handleCloseDelSuccessModel = () => {
     setIsModelOpen(false);
   }
-
+  
   return (
     <div className="add-lesson__wrapper">
         <Header title="Thêm chương học"></Header>
