@@ -1,0 +1,43 @@
+.update-course__wrapper {
+    height: auto;
+    position: relative;
+    padding-bottom: 80px;
+}
+
+.accordion {
+    width: 100%;
+}
+
+.accordion-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.accordion-item {
+    margin-bottom: 10px;
+}
+
+.accordion-header {
+    background: #f5f5f5;
+    width: 70%;
+    padding: 15px 10px;
+    text-align: left;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.accordion-list_item {
+    width: 70%;
+    padding: 10px;
+    border-bottom: 1px solid #fafafa;
+    cursor: pointer;
+}
+
+
+.update-form__action {
+    background: #fff;
+    position: fixed;
+    width: calc(100% - 100px);
+    bottom: 0;
+}

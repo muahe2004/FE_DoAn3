@@ -47,10 +47,6 @@ export default function Home() {
         </div>
       </div>
 
-      <Link to="/admin" className="click-me">
-        <span>Click me (Admin)</span>
-      </Link>
-
       {/* Khóa học Pro  */}
       <section className="courses-container">
         <h2 className="container-title">Khóa học Pro</h2>

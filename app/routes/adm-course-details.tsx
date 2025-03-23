@@ -6,10 +6,10 @@ import Button from "~/components/Button";
 import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/Admin/add-course.css";
+import "../styles/Admin/adm-course-details.css";
 
 export default function AdminCourseDetails() {
   const navigate = useNavigate();
-
 
   // Load thông tin của khóa học
   const { maKhoaHoc } = useParams();
@@ -137,7 +137,6 @@ export default function AdminCourseDetails() {
     }
   };
   
-
   // Ẩn hiện model
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpen = () => {
@@ -175,11 +174,66 @@ export default function AdminCourseDetails() {
   const handleCloseDelSuccessModel = () => {
     setIsModelDelSuccessfullOpen(false);
   }
-  
+
+  // Thử nghiệm load chương, bài học
+  const [loading, setLoading] = useState(true);
+
+  const [chuongHocList, setChuongHocList] = useState<
+    { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
+  >([]);
+
+  // API load chương, bài học
+  useEffect(() => {
+      const fetchLessons = async () => {
+        try {
+          const res = await fetch(`http://localhost:1000/selection-chuong-hoc/${maKhoaHoc}`);
+          if (!res.ok) throw new Error("Lỗi khi lấy chương học!");
+
+          const lessons: { maChuongHoc: string; tenChuongHoc: string }[] = await res.json();
+          
+          const lessonInfo = await Promise.all(
+            lessons.map(async (lesson) => {
+              const resLecture = await fetch(`http://localhost:1000/listBaiHoc/${lesson.maChuongHoc}`);
+              let danhSachBaiHoc = [];
+
+              if (resLecture.ok) {
+                danhSachBaiHoc = await resLecture.json();
+              }
+
+              return { 
+                maChuongHoc: lesson.maChuongHoc, 
+                tenChuongHoc: lesson.tenChuongHoc,
+                danhSachBaiHoc 
+              };
+            })
+          );
+
+          setChuongHocList(lessonInfo); 
+        } catch (error) {
+          console.error("Lỗi:", error);
+        }
+      };
+
+      fetchLessons();
+  }, [maKhoaHoc]); 
+
+  // Accordion
+  const [openIndexes, setOpenIndexes] = useState<number[]>([]);
+
+  const toggleAccordion = (index: number) => {
+    setOpenIndexes((prevIndexes) =>
+      prevIndexes.includes(index)
+        ? prevIndexes.filter((i) => i !== index) // Nếu đã mở thì đóng lại
+        : [...prevIndexes, index] // Nếu chưa mở thì thêm vào
+    );
+  };
+
+
   return (
     <div className="update-course__wrapper">
       <Header title="Thông tin khóa học" />
       <AdminNav />
+      {/* Inner */}
       <div className="update-course__inner">
         <form onSubmit={handleUpdateCourse} className="course__form">
           <div className="form-inner">
@@ -220,11 +274,7 @@ export default function AdminCourseDetails() {
               </div>
             </div>
           </div>
-          <div className="form-action">
-            <Button type="button" className="btn-save" onClick={handleOpen}>Lưu lại</Button>
-            <Button className="btn-new button-secondary button">Làm mới</Button>
-            <Button className="btn-cancel button-third button" onClick={handleOpenDeleteModel}>Xóa khóa học</Button>
-          </div>
+          
 
           {isModalOpen && (
             <ModelOverlay
@@ -238,9 +288,60 @@ export default function AdminCourseDetails() {
             </ModelOverlay>
           )}
 
-          
+          <div className="accordion">
+            <h2 className="accordion-title">Nội dung khóa học</h2>
+            <div className="accordion-inner">
+              {["1. Giới thiệu về JavaScript", "2. Cú pháp cơ bản"].map((title, index) => (
+                <div className="accordion-item" key={index}>
+                  <button
+                    type="button"
+                    className="accordion-header"
+                    onClick={() => toggleAccordion(index)}
+                  >
+                    {title}
+                  </button>
+                  <div
+                    className={`accordion-content ${openIndexes.includes(index) ? "open" : ""}`}
+                  >
+                    <ul className="accordion-list">
+                      {index === 0 ? (
+                        <>
+                          <li className="accordion-list_item">Lời khuyên trước khi học JavaScript</li>
+                          <li className="accordion-list_item">Cài đặt môi trường học JavaScript</li>
+                        </>
+                      ) : (
+                        <>
+                          <li className="accordion-list_item">Biến và kiểu dữ liệu</li>
+                          <li className="accordion-list_item">Cấu trúc điều kiện và vòng lặp</li>
+                        </>
+                      )}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <style>
+              {`
+                .accordion-content {
+                  display: none;
+                }
+                .accordion-content.open {
+                  display: block;
+                }
+              `}
+            </style>
+          </div>
+
         </form>
       </div>
+
+      <div className="form-action update-form__action">
+        <Button type="button" className="btn-save" onClick={handleOpen}>Lưu lại</Button>
+        <Button className="btn-new button-secondary button">Làm mới</Button>
+        <Button className="btn-cancel button-third button" onClick={handleOpenDeleteModel}>Xóa khóa học</Button>
+      </div>
+
+      
 
       {isModelDeleteOpen && (
         <ModelOverlay
