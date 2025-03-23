@@ -92,13 +92,93 @@ export default function AddLecture() {
     }
   }
 
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+
+    const course = form.querySelector<HTMLSelectElement>('select[name="course"]');
+    const lesson = form.querySelector<HTMLSelectElement>('select[name="lesson"]');
+    const nameInput = form.querySelector<HTMLInputElement>('input[name="name"]');
+    const descriptionInput = form.querySelector<HTMLTextAreaElement>('textarea[name="description"]');
+    const videoInput = form.querySelector<HTMLInputElement>('input[name="clip"]');
+
+    const showError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null, message: string) => {
+      if (input) {
+        const formText = input.parentElement?.querySelector<HTMLElement>(".lecture-form__text");
+        if (formText) {
+          formText.innerText = message;
+          formText.style.display = "block";
+        }
+        input.focus();
+      }
+    };
+
+    if (!course?.value.trim()) {
+      showError(course, "Vui lòng chọn khóa học!");
+      return;
+    }
+
+    if (!lesson?.value.trim()) {
+      showError(lesson, "Vui lòng chọn chương!");
+      return;
+    }
+
+    if (!nameInput?.value.trim()) {
+      showError(nameInput, "Vui lòng nhập tên bài học!");
+      return;
+    }
+    
+    if (descriptionInput?.value.trim() === "" && !descriptionInput.value.trim()) {
+      showError(descriptionInput, "Vui lòng nhập mô tả cho bài học!");
+      return;
+    }
+    
+    if (!videoInput?.value.trim() || videoInput?.value.trim() === "") {
+      showError(videoInput, "Vui lòng nhập đường dẫn video cho bài học!");
+      return;
+    }
+    
+    const body = {
+      maChuongHoc: lesson?.value,
+      tenBaiHoc: nameInput?.value.trim(),
+      moTaBaiHoc: descriptionInput?.value.trim(),
+      video: videoSrc.trim(),
+    }
+
+    try {
+      const res = await fetch("http://localhost:1000/create-bai-hoc", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
+      if (res.ok) {
+        handleResetForm();
+        handleOpenModel();
+        setTimeout(() => handleCloseDelSuccessModel(), 2300);
+      } else {
+        console.error("Lỗi tạo khóa học:", await res.text());
+      }
+    } catch (error) {
+      console.error("Lỗi: ", error);
+    }
+  }
+
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const handleOpenModel = () => {
+    setIsModelOpen(true);
+  }
+
+  const handleCloseDelSuccessModel = () => {
+    setIsModelOpen(false);
+  }
+
   return (
     <div className="add-lecture__wrapper">
         <Header title="Thêm bài học"></Header>
         <AdminNav></AdminNav>
       
         <div className="add-lecture__inner">
-          <form action="" className="add-lecture__form">
+          <form onSubmit={handleSubmit} action="" className="add-lecture__form">
             <div className="lecture-form__inner">
               {/* Chọn khóa học */}
               <div className="lecture-form__group">
@@ -118,6 +198,7 @@ export default function AddLecture() {
                     </option>
                   ))}
                 </select>
+                <span className="lecture-form__text">Vui lòng chọn khóa học</span>
               </div>
 
               {/* Chọn chương */}
@@ -131,6 +212,7 @@ export default function AddLecture() {
                     </option>
                   ))}
                 </select>
+                <span className="lecture-form__text">Vui lòng chọn chương</span>
               </div>
 
               {/* Tên bài học */}
@@ -149,9 +231,9 @@ export default function AddLecture() {
 
               {/* Video bài học */}
               <div className="lecture-form__group">
-                <label htmlFor="video" className="lecture-form__label">Video bài học</label>
-                <input name="video" type="text" className="lecture-form__input input-video" onBlur={handleBlur} onChange={handleVideoSrc}/>
-                <span className="lecture-form__text">Video bài học không được để trống</span>
+                <label htmlFor="clip" className="lecture-form__label">Video bài học</label>
+                <input name="clip" type="text" className="lecture-form__input input-video" onBlur={handleBlur} onChange={handleVideoSrc}/>
+                <span className="lecture-form__text">Vui lòng nhập đường dẫn video cho bài học!</span>
               </div>
             </div>
 
@@ -177,7 +259,18 @@ export default function AddLecture() {
             </div>
           </form>
         </div>
+
+        {isModelOpen && (
+          <ModelOverlay
+            className="model-image_third"
+            icon="Successful.svg"
+            secondOption=""
+            title="Thêm bài học"
+            desc="Thêm bài học thành công!"
+            onClose={handleCloseDelSuccessModel}
+            children="">
+          </ModelOverlay>
+        )}
     </div>
-    
   );
 }

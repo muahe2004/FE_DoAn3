@@ -73,6 +73,7 @@ export default function AddLesson() {
       });
 
       if (lessonRes.ok) {
+        handleOpenModel();
         setTimeout(() => handleCloseDelSuccessModel(), 2300);
         handleResetForm();
       } else {
@@ -145,7 +146,7 @@ export default function AddLesson() {
           </div>
 
           <div className="lesson-form__action"> 
-            <Button type="submit" className="btn-add" onClick={handleOpenModel}>Thêm chương</Button>
+            <Button type="submit" className="btn-add">Thêm chương</Button>
             <Button className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button>
             <Button className="btn-cancle button-third button">Hủy bỏ</Button>
           </div>
