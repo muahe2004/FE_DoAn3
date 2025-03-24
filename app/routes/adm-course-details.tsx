@@ -209,6 +209,7 @@ export default function AdminCourseDetails() {
           );
 
           setChuongHocList(lessonInfo); 
+          console.log(lessonInfo);
         } catch (error) {
           console.error("Lỗi:", error);
         }
@@ -220,14 +221,14 @@ export default function AdminCourseDetails() {
   // Accordion
   const [openIndexes, setOpenIndexes] = useState<number[]>([]);
 
+  // Hàm xử lý mở/đóng accordion
   const toggleAccordion = (index: number) => {
     setOpenIndexes((prevIndexes) =>
       prevIndexes.includes(index)
-        ? prevIndexes.filter((i) => i !== index) // Nếu đã mở thì đóng lại
-        : [...prevIndexes, index] // Nếu chưa mở thì thêm vào
+        ? prevIndexes.filter((i) => i !== index) // Nếu đã mở thì xóa khỏi danh sách (đóng lại)
+        : [...prevIndexes, index] // Nếu chưa mở thì thêm vào danh sách (mở ra)
     );
-  };
-
+};
 
   return (
     <div className="update-course__wrapper">
@@ -290,46 +291,25 @@ export default function AdminCourseDetails() {
 
           <div className="accordion">
             <h2 className="accordion-title">Nội dung khóa học</h2>
+            {/* Nội dung accordion */}
             <div className="accordion-inner">
-              {["1. Giới thiệu về JavaScript", "2. Cú pháp cơ bản"].map((title, index) => (
-                <div className="accordion-item" key={index}>
-                  <button
-                    type="button"
-                    className="accordion-header"
-                    onClick={() => toggleAccordion(index)}
-                  >
-                    {title}
-                  </button>
-                  <div
-                    className={`accordion-content ${openIndexes.includes(index) ? "open" : ""}`}
-                  >
-                    <ul className="accordion-list">
-                      {index === 0 ? (
-                        <>
-                          <li className="accordion-list_item">Lời khuyên trước khi học JavaScript</li>
-                          <li className="accordion-list_item">Cài đặt môi trường học JavaScript</li>
-                        </>
-                      ) : (
-                        <>
-                          <li className="accordion-list_item">Biến và kiểu dữ liệu</li>
-                          <li className="accordion-list_item">Cấu trúc điều kiện và vòng lặp</li>
-                        </>
-                      )}
-                    </ul>
+              {chuongHocList.map((chuong, index) => (
+                  <div className="accordion-item" key={chuong.maChuongHoc}>
+                      <button type="button" className="accordion-header" onClick={() => toggleAccordion(index)}>
+                        {chuong.tenChuongHoc} 
+                      </button>
+                      <div className={`accordion-content ${openIndexes.includes(index) ? "open" : ""}`}>
+                        <ul className="accordion-list">
+                            {chuong.danhSachBaiHoc.map((baiHoc) => (
+                                <li key={baiHoc.maBaiHoc} className="accordion-list_item">
+                                    {baiHoc.tenBaiHoc}
+                                </li>
+                            ))}
+                        </ul>
+                      </div>
                   </div>
-                </div>
               ))}
             </div>
-            <style>
-              {`
-                .accordion-content {
-                  display: none;
-                }
-                .accordion-content.open {
-                  display: block;
-                }
-              `}
-            </style>
           </div>
 
         </form>
