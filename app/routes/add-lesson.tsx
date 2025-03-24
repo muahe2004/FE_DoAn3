@@ -120,8 +120,8 @@ export default function AddLesson() {
   
   return (
     <div className="add-lesson__wrapper">
-        <Header title="Thêm chương học"></Header>
-        <AdminNav></AdminNav>
+      <Header title="Thêm chương học"></Header>
+      <AdminNav></AdminNav>
 
       <div className="add-lesson__inner">
         <form onSubmit={handleSubmit} action="" className="lesson-form">

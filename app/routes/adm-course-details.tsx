@@ -295,9 +295,13 @@ export default function AdminCourseDetails() {
             <div className="accordion-inner">
               {chuongHocList.map((chuong, index) => (
                   <div className="accordion-item" key={chuong.maChuongHoc}>
-                      <button type="button" className="accordion-header" onClick={() => toggleAccordion(index)}>
-                        {chuong.tenChuongHoc} 
-                      </button>
+                      <div className="accordion-head">
+                        <button type="button" className="accordion-lesson" onClick={() => toggleAccordion(index)}>
+                          {chuong.tenChuongHoc} 
+                        </button>
+                        <Button to={`/admin-lesson-details/${chuong.maChuongHoc}`} type="button" className=" button-third accordion-btn">. . .</Button>
+                      </div>
+
                       <div className={`accordion-content ${openIndexes.includes(index) ? "open" : ""}`}>
                         <ul className="accordion-list">
                             {chuong.danhSachBaiHoc.map((baiHoc) => (
