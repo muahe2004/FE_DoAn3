@@ -50,12 +50,12 @@ export default function AddLesson() {
     }
 
     if(!course?.value.trim()) {
-      console.log("Vui lòng chọn khóa học");
+      showError(nameInput, "Vui lòng chọn khóa học!");
       return;
     }
 
     if (!nameInput?.value.trim()) {
-      console.log("Vui lòng nhập tên chương");
+      showError(nameInput, "Vui lòng nhập tên chương!");
       return;
     }
 
@@ -65,7 +65,6 @@ export default function AddLesson() {
     }
 
     try {
-      console.log(body);
       const lessonRes = await fetch("http://localhost:1000/create-chuong-hoc", {
         method: "POST",
         headers: {"Content-Type" : "application/json"},

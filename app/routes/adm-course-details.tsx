@@ -175,8 +175,23 @@ export default function AdminCourseDetails() {
     setIsModelDelSuccessfullOpen(false);
   }
 
-  // Thử nghiệm load chương, bài học
-  const [loading, setLoading] = useState(true);
+  const handleResetForm = () => {
+
+    setTenKhoaHoc("");
+    setMoTaKhoaHoc("");
+    setDoKho("Dễ");
+    setGiaBan("");
+
+    const form = document.querySelector<HTMLFormElement>(".update-lesson__form");
+    if (form) {
+        const errorMessages = form.querySelectorAll<HTMLElement>(".lesson-form__text");
+        errorMessages.forEach((msg) => {
+            msg.style.display = "none";
+        });
+    } else {
+        console.log("Không thấy form");
+    }
+};
 
   const [chuongHocList, setChuongHocList] = useState<
     { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
@@ -321,7 +336,7 @@ export default function AdminCourseDetails() {
 
       <div className="form-action update-form__action">
         <Button type="button" className="btn-save" onClick={handleOpen}>Lưu lại</Button>
-        <Button className="btn-new button-secondary button">Làm mới</Button>
+        <Button type="button" className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button>
         <Button className="btn-cancel button-third button" onClick={handleOpenDeleteModel}>Xóa khóa học</Button>
       </div>
 
@@ -353,14 +368,14 @@ export default function AdminCourseDetails() {
 
       {isModelDelSuccessfullOpen && (
         <ModelOverlay
-        className="model-image_third"
-        icon="Successful.svg"
-        secondOption=""
-        title="Xóa khóa học"
-        desc="Xóa thông tin khóa học thành công!"
-        onClose={handleCloseDelSuccessModel}
-        children="">
-      </ModelOverlay>
+          className="model-image_third"
+          icon="Successful.svg"
+          secondOption=""
+          title="Xóa khóa học"
+          desc="Xóa thông tin khóa học thành công!"
+          onClose={handleCloseDelSuccessModel}
+          children="">
+        </ModelOverlay>
       )}
     </div>
   );
