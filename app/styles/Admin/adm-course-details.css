@@ -48,12 +48,18 @@
 }
 
 .accordion-list_item {
-    width: 70%;
-    padding: 10px;
-    border-bottom: 1px solid #fafafa;
+    margin-top: 5px;
+    width: calc(70% - 110px);
     cursor: pointer;
-    /* background: #ccc; */
+    background: #fafafa;
     display: flex;
+}
+
+.accordion-list__link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
 }
 
 .accordion-content {

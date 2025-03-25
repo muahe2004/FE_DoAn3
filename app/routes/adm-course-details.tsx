@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import {  Link, useParams, useNavigate } from "react-router-dom";
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 import Button from "~/components/Button";
@@ -321,7 +321,9 @@ export default function AdminCourseDetails() {
                         <ul className="accordion-list">
                             {chuong.danhSachBaiHoc.map((baiHoc) => (
                                 <li key={baiHoc.maBaiHoc} className="accordion-list_item">
+                                  <Link to={`/admin-lecture-details/${baiHoc.maBaiHoc}`} className="accordion-list__link">
                                     {baiHoc.tenBaiHoc}
+                                  </Link>
                                 </li>
                             ))}
                         </ul>

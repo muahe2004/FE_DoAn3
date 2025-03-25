@@ -10,6 +10,7 @@ export default [
     route("add-lesson", "routes/add-lesson.tsx"),
     route("admin-lesson-details/:maChuongHoc", "routes/adm-lesson-details.tsx"),
     route("add-lecture", "routes/add-lecture.tsx"),
+    route("admin-lecture-details/:maBaiHoc", "routes/adm-lecture-details.tsx"),
     // route("admin-analysis", "routes/admin-analysis.tsx"),
     // route("admin-analysis", "routes/admin-analysis.tsx"),
 
