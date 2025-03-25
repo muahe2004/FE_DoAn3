@@ -34,7 +34,7 @@
 }
 
 .accordion-btn {
-    width: 50px;
+    width: 35px;
     font-size: 14px;
     margin-left: 10px;
     padding: 5px;
@@ -68,6 +68,12 @@
 
 .accordion-content.open {
     display: block;
+}
+
+.accordion-icon {
+    width: 24px;
+    height: 24px;
+    /* background: yellowgreen; */
 }
 
 .update-form__action {

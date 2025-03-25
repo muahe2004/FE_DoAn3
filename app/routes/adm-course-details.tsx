@@ -314,7 +314,9 @@ export default function AdminCourseDetails() {
                         <button type="button" className="accordion-lesson" onClick={() => toggleAccordion(index)}>
                           {chuong.tenChuongHoc} 
                         </button>
-                        <Button to={`/admin-lesson-details/${chuong.maChuongHoc}`} type="button" className=" button-third accordion-btn">. . .</Button>
+                        <Button to={`/admin-lesson-details/${chuong.maChuongHoc}`} type="button" className=" button-third accordion-btn">
+                          <img className="accordion-icon" src="../icons/Update.svg" alt="" />
+                        </Button>
                       </div>
 
                       <div className={`accordion-content ${openIndexes.includes(index) ? "open" : ""}`}>

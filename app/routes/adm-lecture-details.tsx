@@ -21,6 +21,8 @@ export default function AdminLectureDetails() {
     const [tenBaiHoc, setTenBaiHoc] = useState("");
     const [moTaBaiHoc, setMoTaBaiHoc] = useState("");
     const [video, setVideo] = useState("");
+    const [maKhoaHoc, setMaKhoaHoc] = useState("");
+
 
 
     useEffect(() => {
@@ -34,6 +36,7 @@ export default function AdminLectureDetails() {
                     setMoTaBaiHoc(data.moTaBaiHoc);
                     setVideo(data.video);
                     setLesson(data.maChuongHoc);
+                    setMaKhoaHoc(data.maKhoaHoc);
                 } else {
                     console.log("Lỗi khi lấy thông tin bài học!");
                 } 
@@ -64,6 +67,7 @@ export default function AdminLectureDetails() {
         fetchLessons();
     }, [maBaiHoc]); 
 
+    // Video
     const handleVideoSrc = (event: React.ChangeEvent<HTMLInputElement>) => {
         const url = event.target.value;
         
@@ -80,7 +84,6 @@ export default function AdminLectureDetails() {
         }
     };
     
-    
     // submit
     const handleUpdateLesson = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -93,7 +96,7 @@ export default function AdminLectureDetails() {
 
 
 
-        const showError = (input: HTMLInputElement | null, message: string) => {
+        const showError = (input: HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null, message: string) => {
             if (input) {
               const formErr = input.parentElement?.querySelector(".lecture-form__text") as HTMLElement | null;
               if (formErr) {
@@ -104,63 +107,83 @@ export default function AdminLectureDetails() {
             }
         }
 
-        if (!name?.value.trim()) {
-            showError(name, "Vui lòng nhập tên chương!");
+        if (!lesson?.value.trim()) {
+            showError(lesson, "Vui lòng chọn chương!");
+            handleClose();
             return;
         }
 
+        if (!name?.value.trim()) {
+            showError(name, "Vui lòng nhập tên bài học!");
+            handleClose();
+            return;
+        }
+
+        if (!desc?.value.trim()) {
+            showError(desc, "Vui lòng nhập mô tả bài học!");
+            handleClose();
+            return;
+        }
+
+        if (!video?.value.trim()) {
+            showError(video, "Vui lòng nhập link video bài học!");
+            handleClose();
+            return;
+        }
+        
+
         const body = {
-            lesson: lesson?.value.trim(),
-            name: name.value.trim(),
+            maChuongHoc: lesson?.value.trim(),
+            tenBaiHoc: name.value.trim(),
             moTaBaiHoc: desc?.value.trim(),
             video: video?.value.trim(),
         }
         
         console.log(body);
 
-        // try {
-        //     const res = await fetch(`http://localhost:1000/update-lesson/${maChuongHoc}`, {
-        //         method: "PUT",
-        //         headers: {"Content-Type" : "application/json"},
-        //         body: JSON.stringify(body)
-        //     });
+        try {
+            const res = await fetch(`http://localhost:1000/update-bai-hoc/${maBaiHoc}`, {
+                method: "PUT",
+                headers: {"Content-Type" : "application/json"},
+                body: JSON.stringify(body)
+            });
 
-        //     if (res.ok) {
-        //         handleClose();
-        //         handleOpenSuccessModel();
-        //         setTimeout(() => handleCloseSuccessModel(), 2300);
-        //     } else {
-        //         console.log("Sửa thất bại!");
-        //     }
+            if (res.ok) {
+                handleClose();
+                handleOpenSuccessModel();
+                setTimeout(() => handleCloseSuccessModel(), 2300);
+            } else {
+                console.log("Sửa thất bại!");
+            }
 
-        // } catch (error) {
-        //     console.log("Lỗi: ", error);
-        // }
+        } catch (error) {
+            console.log("Lỗi: ", error);
+        }
 
     };
 
     // Xóa
-    const handleDeleteLesson = async () => {
+    const handleDeleteLecture = async () => {
 
-        console.log("Xóa bài học");
+        // console.log("Xóa bài học");
+        // console.log(maKhoaHoc);
 
-        // try {
-        //     const response = await fetch(`http://localhost:1000/delete-lesson/${maChuongHoc}`, {
-        //         method: "DELETE",
-        //     });
+        try {
+            const response = await fetch(`http://localhost:1000/delete-bai-hoc/${maBaiHoc}`, {
+                method: "DELETE",
+            });
         
-        //     if (response.ok) {
-        //         console.log("Xóa thành công");
-        //         handleCloseDeleteModel();
-        //         handleOpenDelSuccessModel();
-        //         setTimeout(() => navigate(`/admin-course-details/${maKhoaHoc}`), 2200);
-        //     } else {
-        //         console.log("Lỗi khi xóa chương");
-        //         return; 
-        //     }
-        // } catch (error) {
-        //     console.log("Lỗi: ", error);
-        // }
+            if (response.ok) {
+                handleCloseDeleteModel();
+                handleOpenDelSuccessModel();
+                setTimeout(() => navigate(`/admin-course-details/${maKhoaHoc}`), 2300);
+            } else {
+                console.log("Lỗi khi xóa bài học");
+                return; 
+            }
+        } catch (error) {
+            console.log("Lỗi: ", error);
+        }
     }
 
     // blur
@@ -237,8 +260,13 @@ export default function AdminLectureDetails() {
             <div className="update-lecture__inner">
                 <form onSubmit={handleUpdateLesson} action="" className="update-lecture__form">
                     <div className="lecture-form__inner">
-                        {/* Chọn khóa học */}
-                        
+
+                        {/* Mã bài học */}
+                        <div className="lecture-form__group">
+                            <label htmlFor="ID" className="lecture-form__label">Mã bài học</label>
+                            <input name="ID" type="text" className="lecture-form__input input-readOnly" readOnly  value={maBaiHoc} />
+                            {/* <span className="lecture-form__text">Tên bài học không được để trống</span> */}
+                        </div>
 
                         {/* Chọn chương */}
                         <div className="lecture-form__group">
@@ -306,7 +334,7 @@ export default function AdminLectureDetails() {
                     <div className="lecture-form__action"> 
                         <Button type="button" className="btn-add" onClick={handleOpen}>Lưu lại</Button>
                         <Button type="button" className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button>
-                        <Button type="button" className="btn-cancle button-third button" onClick={handleOpenDeleteModel}>Xóa chương</Button>
+                        <Button type="button" className="btn-cancle button-third button" onClick={handleOpenDeleteModel}>Xóa bài học</Button>
                     </div>
 
                     {isModalOpen && (
@@ -314,10 +342,10 @@ export default function AdminLectureDetails() {
                             className="model-image_second"
                             icon="Question.svg"
                             secondOption="Hủy bỏ" 
-                            title="Sửa tên chương"
-                            desc="Bạn có chắc chắn muốn sửa tên chương không?"
+                            title="Sửa bài học"
+                            desc="Bạn có chắc chắn muốn sửa bài học không?"
                             onClose={handleClose}>
-                            <Button type="submit">Lưu lại</Button>
+                            <Button type="submit">Sửa bài học</Button>
                         </ModelOverlay>
                     )}
                 </form>
@@ -328,8 +356,8 @@ export default function AdminLectureDetails() {
                     className="model-image_third"
                     icon="Successful.svg"
                     secondOption=""
-                    title="Sửa tên chương"
-                    desc="Cập nhật tên chương thành công!"
+                    title="Sửa bài học"
+                    desc="Cập nhật bài học thành công!"
                     onClose={handleCloseSuccessModel}
                     children="">
                 </ModelOverlay>
@@ -340,10 +368,10 @@ export default function AdminLectureDetails() {
                     className="model-image"
                     icon="Exclamation.svg"
                     secondOption="Hủy bỏ" 
-                    title="Xóa chương"
-                    desc="Bạn có chắc chắn muốn xóa chương không?"
+                    title="Xóa bài học"
+                    desc="Bạn có chắc chắn muốn xóa bài học không?"
                     onClose={handleCloseDeleteModel}>
-                    <Button type="submit" className="button-delete" onClick={handleDeleteLesson}>Xóa chương</Button>
+                    <Button type="submit" className="button-delete" onClick={handleDeleteLecture}>Xóa bài học</Button>
                 </ModelOverlay>
             )}
 
@@ -352,8 +380,8 @@ export default function AdminLectureDetails() {
                     className="model-image_third"
                     icon="Successful.svg"
                     secondOption=""
-                    title="Xóa chương"
-                    desc="Xóa thông tin chương thành công!"
+                    title="Xóa bài học"
+                    desc="Xóa thông tin bài học thành công!"
                     onClose={handleCloseDelSuccessModel}
                     children="">
                 </ModelOverlay>
