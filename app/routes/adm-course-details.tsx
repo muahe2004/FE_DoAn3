@@ -243,7 +243,7 @@ export default function AdminCourseDetails() {
         ? prevIndexes.filter((i) => i !== index) // Nếu đã mở thì xóa khỏi danh sách (đóng lại)
         : [...prevIndexes, index] // Nếu chưa mở thì thêm vào danh sách (mở ra)
     );
-};
+  };
 
   return (
     <div className="update-course__wrapper">

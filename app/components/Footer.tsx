@@ -16,7 +16,7 @@ const Footer: React.FC<FooterProps> = ({title}) => {
                 <div className="footer-column footer-column_first">
                     <div className="column-top">
                         <Link to="/">
-                            <img className="footer-img" src="./public/images/ML.jpg" alt="MLearning Logo"/>
+                            <img className="footer-img" src="/images/ML.jpg" alt="MLearning Logo"/>
                         </Link>
                         <h2 className="column-title column-title__top">MLearning</h2>
                     </div>
@@ -127,13 +127,13 @@ const Footer: React.FC<FooterProps> = ({title}) => {
                 <p className="footer-paragraph">© 2018 - 2025 MLearning. Nền tảng học lập trình hàng đầu Việt Nam</p>
                 <div className="list-link">
                     <Link to="">
-                        <img className="footer-icon" src="./public/icons/Facebook.svg" alt="" />
+                        <img className="footer-icon" src="/icons/Facebook.svg" alt="" />
                     </Link>
                     <Link to="">
-                        <img className="footer-icon" src="./public/icons/Youtube.svg" alt="" />
+                        <img className="footer-icon" src="/icons/Youtube.svg" alt="" />
                     </Link>
                     <Link to="">
-                        <img className="footer-icon" src="./public/icons/Tiktok.svg" alt="" />
+                        <img className="footer-icon" src="/icons/Tiktok.svg" alt="" />
                     </Link>
                 </div>
             </div>
