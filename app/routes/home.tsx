@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom"
+import { data, Link } from "react-router-dom"
 
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
@@ -8,6 +8,15 @@ import Course from "~/components/Course";
 
 import "../styles/home.css";
 
+interface KhoaHoc {
+  maKhoaHoc: string;
+  tenKhoaHoc: string;
+  moTaKhoaHoc: string;
+  hinhAnh: string;
+  doKho: string;
+  giaBan: number;
+  tongSoBaiHoc: number;
+}
 
 export default function Home() {
 
@@ -21,6 +30,35 @@ export default function Home() {
     }, 3000); 
 
     return () => clearInterval(interval);
+  }, []);
+
+  
+// Khóa học có phí
+  const [listFeeCourse, setListFeeCourse] = useState<KhoaHoc[]>([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:1000/api/courses/get-home-fee-courses`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setListFeeCourse(data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  // Khóa học miễn phí
+  const [listFreeCourses, setListFreeCourse] = useState<KhoaHoc[]>([]);
+
+  useEffect(() => {
+    fetch('http://localhost:1000/api/courses/get-home-no-fee-courses')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setListFreeCourse(data);
+      })
+      .catch((err) => {
+        console.log("Lỗi: ", err);
+      })
   }, []);
 
   return (
@@ -51,37 +89,20 @@ export default function Home() {
       <section className="courses-container">
         <h2 className="container-title">Khóa học Pro</h2>
         <div className="list-courses">
-          <Course 
-            maKhoaHoc="KH001"
-            tenKhoaHoc="Javascript cơ bản" 
-            giaBan="499.000"
-            hinhAnh="https://files.fullstack.edu.vn/f8-prod/courses/19/66aa28194b52b.png"
-            children=""
-          ></Course>
-
-          <Course 
-            maKhoaHoc="KH002"
-            tenKhoaHoc="HTML CSS cơ bản" 
-            giaBan="499.000"
-            hinhAnh="https://files.fullstack.edu.vn/f8-prod/courses/15/62f13d2424a47.png"
-            children=""
-          ></Course>
-
-          <Course 
-            maKhoaHoc="KH003"
-            tenKhoaHoc="Ngôn ngữ Sass" 
-            giaBan="499.000"
-            hinhAnh="https://files.fullstack.edu.vn/f8-prod/courses/27/64e184ee5d7a2.png"
-            children=""
-          ></Course>
-
-          <Course 
-            maKhoaHoc="KH004"
-            tenKhoaHoc="NodeJS cơ bản" 
-            giaBan="499.000"
-            hinhAnh="https://files.fullstack.edu.vn/f8-prod/courses/6.png"
-            children=""
-          ></Course>
+          {
+            listFeeCourse.map((khoaHoc, indexx) => (
+              <Course 
+                key={khoaHoc.maKhoaHoc}
+                maKhoaHoc={khoaHoc.maKhoaHoc}
+                tenKhoaHoc={khoaHoc.tenKhoaHoc}
+                giaBan={new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", minimumFractionDigits: 0 }).format(khoaHoc.giaBan)}
+                hinhAnh={khoaHoc.hinhAnh}
+                doKho={khoaHoc.doKho}
+                children=""
+                tongSoBaiHoc={khoaHoc.tongSoBaiHoc}
+            ></Course>
+            ))
+          }
         </div>
       </section>
 
@@ -89,37 +110,20 @@ export default function Home() {
       <section className="courses-container">
         <h2 className="container-title">Khóa học miễn phí</h2>
         <div className="list-courses">
-          <Course 
-            maKhoaHoc="KH001"
-            tenKhoaHoc="Kiến thức nền tảng" 
-            giaBan="0"
-            hinhAnh="https://files.fullstack.edu.vn/f8-prod/courses/7.png"
-            children=""
-          ></Course>
-
-          <Course 
-            maKhoaHoc="KH002"
-            tenKhoaHoc="C++ cơ bản" 
-            giaBan="0"
-            hinhAnh="https://files.fullstack.edu.vn/f8-prod/courses/21/63e1bcbaed1dd.png"
-            children=""
-          ></Course>
-
-          <Course 
-            maKhoaHoc="KH003"
-            tenKhoaHoc="Responsive Web Design" 
-            giaBan="0"
-            hinhAnh="https://files.fullstack.edu.vn/f8-prod/courses/3.png"
-            children=""
-          ></Course>
-
-          <Course 
-            maKhoaHoc="KH004"
-            tenKhoaHoc="Ubuntu và Terminal" 
-            giaBan="0"
-            hinhAnh="https://files.fullstack.edu.vn/f8-prod/courses/14/624faac11d109.png"
-            children=""
-          ></Course>
+          {
+            listFreeCourses.map((khoaHoc, index) => (
+              <Course 
+                key={khoaHoc.maKhoaHoc}
+                maKhoaHoc={khoaHoc.maKhoaHoc}
+                tenKhoaHoc={khoaHoc.tenKhoaHoc}
+                giaBan={new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", minimumFractionDigits: 0 }).format(khoaHoc.giaBan)}
+                hinhAnh={khoaHoc.hinhAnh}
+                doKho={khoaHoc.doKho}
+                children=""
+                tongSoBaiHoc={khoaHoc.tongSoBaiHoc}
+            ></Course>
+            ))
+          }
         </div>
       </section>
 

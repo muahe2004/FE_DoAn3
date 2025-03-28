@@ -18,6 +18,8 @@
     object-fit: cover;
     /* margin-bottom: 10px; */
     /* border-radius: 12px; */
+    border: 1px solid #ccc;
+    border-radius: 12px 12px 0 0;
 }
 
 .course-content {
@@ -36,8 +38,10 @@
 }
 
 .old-price {
+    font-size: 14px;
     color: #ccc;
     text-decoration: line-through;
+    margin-right: 10px;
 }
 
 .main-price {
@@ -62,11 +66,12 @@
 
 
 
-.avatar-mentor {
+.info-icon {
     width: 20px;
     height: 20px;
     border-radius: 50%;
     margin-right: 5px;
+    font-size: 13px;
 }
 
 

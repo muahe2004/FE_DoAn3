@@ -9,9 +9,11 @@ interface CourseProps {
     giaBan: string;
     children: React.ReactNode; 
     hinhAnh: string;
+    doKho: string;
+    tongSoBaiHoc: number;
 }
 
-const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, children, hinhAnh}) => {
+const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, children, hinhAnh, doKho, tongSoBaiHoc}) => {
   return (
     <div className="course">
       <Link to={`courses/course-details/${maKhoaHoc}`}>
@@ -24,24 +26,24 @@ const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, children,
         </h3>
 
         <div className="price-container">
-          <span className="old-price">{giaBan} VND</span>
-          <span className="main-price">{giaBan} VND</span>
+          <span className="old-price">{giaBan}</span>
+          <span className="main-price">{giaBan}</span>
         </div>
 
         <div className="more-info">
             <div className="info-item">
-                <img className="avatar-mentor" src="/images/lvm.jpg" alt="" />
-                <span>Minh Minh</span>
+                <img className="info-icon" src="/images/ML.jpg" alt="MLearning" />
+                <span>MLearning</span>
             </div>
 
             <div className="info-item">
-                <img className="item-icon" src="/icons/Video.svg" alt="" />
-                <span>591</span>
+                <img className="item-icon" src="/icons/Video.svg" alt="Tổng số bài học" />
+                <span>{tongSoBaiHoc}</span>
             </div>
 
             <div className="info-item">
-                <img className="item-icon" src="/icons/Clock.svg" alt="" />
-                <span>116h50p</span>
+                <img className="item-icon" src="/icons/Code.svg" alt="Độ khó" />
+                <span>{doKho}</span>
             </div>
         </div>
       </section>

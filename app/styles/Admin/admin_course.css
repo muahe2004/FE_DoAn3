@@ -3,7 +3,7 @@
     align-items: center;
     height: 90px;
     background: #fff;
-    padding: 10px 5px;
+    padding: 10px 20px 10px 5px;
     margin-bottom: 5px;
     border-radius: 8px;
     justify-content: space-between;
@@ -67,12 +67,13 @@
 }
 
 .admin-course_price {
-    width: 15%;
+    width: 10%;
     /* background: palegoldenrod; */
     font-size: 18px;
     color: orange;
     /* text-align: center; */
     font-weight: 600;
+    text-align: right;
 }
 
 .course-icon {

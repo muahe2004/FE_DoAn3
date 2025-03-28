@@ -33,7 +33,7 @@ export default function AdminCourseDetails() {
       })
       .catch((err) => console.error(err));
   }, [maKhoaHoc]);
-
+  
   // Xử lý phần ảnh
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];

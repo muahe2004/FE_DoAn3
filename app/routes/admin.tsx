@@ -60,7 +60,7 @@ export default function Admin() {
 
           {/* Giá */}
           <div className="course-price course-price_head">
-              <span>GIÁ BÁN</span>
+              <span>GIÁ (VNĐ)</span>
           </div>
 
           {/* Sửa */}

@@ -19,11 +19,11 @@
     margin-bottom: 10px;
     display: flex;
     align-items: center;
-    padding: 0 5px;
     justify-content: space-between;
     font-weight: 700;
     font-size: 20px;
     color: #fff;
+    padding: 0 20px 0 5px;
 }
 
 .course-id_head {
@@ -55,15 +55,15 @@
 }
 
 .course-price_head {
-    width: 15%;
+    width: 10%;
     font-size: 20px;
     color: #fff;
     font-size: 20px;
     font-weight: 700;
+    text-align: right;
 }
 
 .list-course__inner {
     width: 100%;
     min-height: 300px;
-    /* background: aquamarine; */
 }
