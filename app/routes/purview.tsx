@@ -4,10 +4,10 @@ import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 
 
-export default function About() {
+export default function Purview() {
   return (
     <div>
-      <Header title="Về MLearning"></Header>
+      <Header title="Điều khoản"></Header>
       <Navbar></Navbar>
       <Footer title=""></Footer>
       

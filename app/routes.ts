@@ -5,6 +5,9 @@ export default [
     route("login", "routes/login.tsx"),
     route("admin", "routes/admin.tsx"),
     route("about", "routes/about.tsx"),
+    route("contact", "routes/contact.tsx"),
+    route("purview", "routes/purview.tsx"),
+
     route("roadmap", "routes/roadmap.tsx"),
     route("courses/course-details/:maKhoaHoc", "routes/course-details.tsx"),
     route("add-course", "routes/add-course.tsx"),
