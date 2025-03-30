@@ -9,7 +9,7 @@ export default function About() {
     <div>
       <Header title="Về MLearning"></Header>
       <Navbar></Navbar>
-      <Footer title=""></Footer>
+      <Footer></Footer>
       
     </div>
     

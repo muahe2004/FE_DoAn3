@@ -38,7 +38,7 @@ export default function CourseDetails() {
     
         
 
-        <Footer title=""></Footer>
+        <Footer></Footer>
     </div>
     
   );

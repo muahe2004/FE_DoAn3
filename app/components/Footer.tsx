@@ -4,11 +4,10 @@ import {Link} from "react-router-dom";
 import "../styles/footer.css";
 
 interface FooterProps {
-    title: string,
 }
 
 
-const Footer: React.FC<FooterProps> = ({title}) => {
+const Footer: React.FC<FooterProps> = ({}) => {
     return (
         <footer className="footer">
             <div className="footer-inner">

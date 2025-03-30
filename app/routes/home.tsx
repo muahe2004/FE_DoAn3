@@ -216,7 +216,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Footer title=""></Footer>
+      <Footer></Footer>
     </div>
   );
 }

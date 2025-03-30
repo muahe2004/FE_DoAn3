@@ -9,7 +9,7 @@ export default function Contact() {
     <div>
       <Header title="Liên hệ"></Header>
       <Navbar></Navbar>
-      <Footer title=""></Footer>
+      <Footer></Footer>
       
     </div>
     

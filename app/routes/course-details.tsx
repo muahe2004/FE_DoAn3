@@ -251,7 +251,7 @@ export default function CourseDetails() {
             </div>
         </div>
 
-        <Footer title=""></Footer>
+        <Footer></Footer>
     </div>
     
   );
