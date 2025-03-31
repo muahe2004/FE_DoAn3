@@ -63,8 +63,6 @@ export default function Login() {
             matKhau: password.value.trim()
         }
 
-        // console.log(body);
-
         try {
             const res = await fetch("http://localhost:1000/login", {
                 method: "POST",
@@ -150,7 +148,7 @@ export default function Login() {
                     Đăng nhập bằng Google
                 </Button>
 
-                <Link to="" className="login-btnSignUp">Đăng ký</Link>
+                <Link to="/register" className="login-btnSignUp">Đăng ký</Link>
             </form>
         </div>
     </div>

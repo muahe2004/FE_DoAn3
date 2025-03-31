@@ -1,7 +1,7 @@
-.login-wrapper {
+.register-wrapper {
     width: 100%;
     height: 100vh;
-    background-image: url("/images/thumbLogin.jpg"); /* Đường dẫn từ public */
+    background-image: url("/images/thumbLogin.jpg"); 
     background-size: cover;
     background-position: center;
     display: flex;
@@ -10,9 +10,9 @@
 }
 
 
-.login-inner {
+.register-inner {
     width: 25%;
-    height: 70%;
+    height: 89%;
     background: transparent; 
     border-radius: 12px;
     padding: 20px;
@@ -20,7 +20,7 @@
     z-index: 1; 
 }
 
-.login-inner::before {
+.register-inner::before {
     content: "";
     position: absolute;
     top: 0;
@@ -34,7 +34,7 @@
     z-index: -1; 
 }
 
-.login-title {
+.register-title {
     font-size: 36px;
     font-weight: 700;
     text-align: center;
@@ -44,21 +44,21 @@
 }
 
 
-.login-form {
+.register-form {
     width: 100%;
     height: calc(100% - 66px);
     border-radius: 8px;
 }
 
-.login-group {
+.register-group {
     margin-bottom: 10px;
 }
 
-.login-label {
+.register-label {
     color: #fff;
 }
 
-.login-input {
+.register-input {
     margin-top: 5px;
     background: #fff;
     width: 100%;
@@ -71,23 +71,23 @@
     transition: .25s;
 }
 
-.login-input:focus {
+.register-input:focus {
     border-color: #21a2ff;
     background: #e4f4ff;
 }
 
-.login-text {
+.register-text {
     color: #f72e2e;
     /* display: none; */
     opacity: 0;
 }
 
-.login-btn {
+.register-btn {
     width: 100%;
     margin-bottom: 10px;
 }
 
-.login-google {
+.register-google {
     background: transparent;
     border: 1px solid #ccc;
     display: flex;
@@ -95,13 +95,13 @@
     justify-content: center;
 }
 
-.login-icon {
+.register-icon {
     width: 24px;
     height: 24px;
     margin-right: 10px;
 }
 
-.login-btnSignUp {
+.register-btnSignUp {
     border-top: 1px solid #ccc;
     padding-top: 15px;
     margin-top: 30px;
@@ -113,6 +113,6 @@
     transition: .25s;
 }
 
-.login-btnSignUp:hover {
+.register-btnSignUp:hover {
     color: #fff;
 }

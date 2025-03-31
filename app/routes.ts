@@ -3,11 +3,11 @@ import { type RouteConfig, index, route} from "@react-router/dev/routes";
 export default [
     index("routes/home.tsx"), 
     route("login", "routes/login.tsx"),
+    route("register", "routes/register.tsx"),
     route("admin", "routes/admin.tsx"),
     route("about", "routes/about.tsx"),
     route("contact", "routes/contact.tsx"),
     route("purview", "routes/purview.tsx"),
-
     route("roadmap", "routes/roadmap.tsx"),
     route("courses/course-details/:maKhoaHoc", "routes/course-details.tsx"),
     route("add-course", "routes/add-course.tsx"),
