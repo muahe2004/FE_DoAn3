@@ -68,7 +68,13 @@
     padding: 0 10px;
     border-radius: 8px;
     outline: none;
-    border: none;
+    border: 2px solid #fff;
+    transition: .25s;
+}
+
+.login-input:focus {
+    border-color: #21a2ff;
+    background: #e4f4ff;
 }
 
 .login-text {
@@ -105,4 +111,9 @@
     cursor: pointer;
     text-align: center;
     display: inline-block;
+    transition: .25s;
+}
+
+.login-btnSignUp:hover {
+    color: #fff;
 }

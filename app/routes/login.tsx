@@ -20,14 +20,24 @@ export default function CourseDetails() {
         .catch(err => console.error("Lỗi:", err));
     }, []);
 
-    const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const isEmailValid = (email: string): boolean => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      };
+      
+      const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const input = event.target;
-        const formErr = input.parentElement?.querySelector(".lecture-form__text") as HTMLElement | null;
-    
+        const formErr = input.parentElement?.querySelector(".login-text") as HTMLElement | null;
+      
         if (formErr) {
-          formErr.style.display = input.value.trim() ?  "none" : "block";
+          if (input.type === "email") {
+            formErr.style.opacity = isEmailValid(input.value.trim()) ? "0" : "1";
+          } else {
+            formErr.style.opacity = input.value.trim() ? "0" : "1";
+          }
         }
-      }
+    };
+      
 
   return (
     <div className="login-wrapper">
@@ -38,18 +48,18 @@ export default function CourseDetails() {
             <form action="" className="login-form">
                 {/* Tài khoản */}
                 <div className="login-group">
-                    <label htmlFor="name" className="login-label">Email</label>
-                    <input name="name" type="text" className="login-input" onBlur={handleBlur}/>
-                    <span className="login-text">Email không được để trống</span>
+                    <label htmlFor="email" className="login-label">Email</label>
+                    <input name="email" type="email" className="login-input" onBlur={handleBlur}/>
+                    <span className="login-text">Email không hợp lệ</span>
                 </div>
                 {/* Mật khẩu */}
                 <div className="login-group">
-                    <label htmlFor="name" className="login-label">Mật khẩu</label>
-                    <input name="name" type="text" className="login-input" onBlur={handleBlur}/>
+                    <label htmlFor="password" className="login-label">Mật khẩu</label>
+                    <input name="password" type="password" className="login-input" onBlur={handleBlur}/>
                     <span className="login-text">Mật khẩu không được để trống</span>
                 </div>
 
-                <Button className="login-btn" type="button" to="">Học ngay bây giờ</Button>
+                <Button className="login-btn" type="button" to="">Đăng nhập</Button>
                 <Button className="login-btn login-google" to="">
                     <img className="login-icon" src="./icons/Google.svg" alt="" />
                     Đăng nhập bằng Google
