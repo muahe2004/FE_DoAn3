@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
                     
                     <Link to={role ? (role === "Admin" ? "/admin" : "/users") : "/login"}>
-                        <img src="/images/lvm.jpg" alt="" className="header-avatar" />
+                        <img src="/images/defaultAvatar.png" alt="" className="header-avatar" />
                     </Link>
                 </div>
             </div>
