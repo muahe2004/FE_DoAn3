@@ -1,0 +1,108 @@
+.login-wrapper {
+    width: 100%;
+    height: 100vh;
+    background-image: url("/images/thumbLogin.jpg"); /* Đường dẫn từ public */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.login-inner {
+    width: 25%;
+    height: 70%;
+    background: transparent; 
+    border-radius: 12px;
+    padding: 20px;
+    position: relative; 
+    z-index: 1; 
+}
+
+.login-inner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    border: 1px solid #fff;
+    opacity: 0.5;
+    border-radius: 12px;
+    z-index: -1; 
+}
+
+.login-title {
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    width: 100%;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+
+.login-form {
+    width: 100%;
+    height: 100%;
+    /* background: #fff; */
+    border-radius: 8px;
+}
+
+.login-group {
+    margin-bottom: 10px;
+}
+
+.login-label {
+    color: #fff;
+}
+
+.login-input {
+    margin-top: 5px;
+    background: #fff;
+    width: 100%;
+    height: 40px;
+    color: #000;
+    padding: 0 10px;
+    border-radius: 8px;
+    outline: none;
+    border: none;
+}
+
+.login-text {
+    color: #f72e2e;
+    /* display: none; */
+    opacity: 0;
+}
+
+.login-btn {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.login-google {
+    background: transparent;
+    border: 1px solid #ccc;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+
+.login-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.login-btnSignUp {
+    border-top: 1px solid #ccc;
+    padding-top: 15px;
+    margin-top: 30px;
+    width: 100%;
+    color: #ccc;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+}

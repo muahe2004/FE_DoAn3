@@ -1,12 +1,9 @@
 
 import { useEffect, useState } from "react";
 import {  Link, useParams, useNavigate } from "react-router-dom";
-import Navbar from "~/components/Navbar";
-import Header from "~/components/Header";
-import Footer from "~/components/Footer";
 import Button from "~/components/Button";
 
-
+import "../styles/login.css";
 
 
 export default function CourseDetails() {
@@ -20,33 +17,47 @@ export default function CourseDetails() {
             // body: JSON.stringify({ email: "lyvanminh@gmail.com", matKhau: "muahe2004" }) 
         })
         .then(res => res.json())
-        .then(data => {
-            // getRole();  
-        })
         .catch(err => console.error("Lỗi:", err));
     }, []);
 
-    // const getRole = () => {
-    //     fetch('http://localhost:1000/role', {
-    //         method: 'GET',
-    //         credentials: 'include' 
-    //     })
-    //     .then(response => response.json())
-    //     .then(data => console.log(data))
-    //     .catch(error => console.error('Lỗi:', error));
-    // };
-
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const input = event.target;
+        const formErr = input.parentElement?.querySelector(".lecture-form__text") as HTMLElement | null;
     
-    
+        if (formErr) {
+          formErr.style.display = input.value.trim() ?  "none" : "block";
+        }
+      }
 
   return (
-    <div className="">
-        <Navbar></Navbar>
-        <Header title="Đăng nhập"></Header>
+    <div className="login-wrapper">
     
-        
+        <div className="login-inner">
+            <h1 className="login-title">Đăng nhập</h1>
 
-        <Footer></Footer>
+            <form action="" className="login-form">
+                {/* Tài khoản */}
+                <div className="login-group">
+                    <label htmlFor="name" className="login-label">Email</label>
+                    <input name="name" type="text" className="login-input" onBlur={handleBlur}/>
+                    <span className="login-text">Email không được để trống</span>
+                </div>
+                {/* Mật khẩu */}
+                <div className="login-group">
+                    <label htmlFor="name" className="login-label">Mật khẩu</label>
+                    <input name="name" type="text" className="login-input" onBlur={handleBlur}/>
+                    <span className="login-text">Mật khẩu không được để trống</span>
+                </div>
+
+                <Button className="login-btn" type="button" to="">Học ngay bây giờ</Button>
+                <Button className="login-btn login-google" to="">
+                    <img className="login-icon" src="./icons/Google.svg" alt="" />
+                    Đăng nhập bằng Google
+                </Button>
+
+                <Link to="" className="login-btnSignUp">Đăng ký</Link>
+            </form>
+        </div>
     </div>
     
   );
