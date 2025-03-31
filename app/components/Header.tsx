@@ -1,30 +1,36 @@
-import {Link} from "react-router-dom";
-
-
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "../styles/header.css";
 
 interface HeaderProps {
-    title: string,
-
+    title: string;
 }
 
+const Header: React.FC<HeaderProps> = ({ title }) => {
+    const [role, setRole] = useState<string | null>(null);
 
-const Header: React.FC<HeaderProps> = ({title}) => {
+    useEffect(() => {
+        fetch("http://localhost:1000/role", { 
+            method: "GET",
+            credentials: "include",
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            setRole(data.role);  
+        })
+        .catch((err) => console.error("Lỗi:", err));
+    }, []);
+
     return (
         <header className="header">
-        
             <div className="header-wrapper">
                 <h1 className="header-logo">
                     <Link to="/">
-                        <img
-                        className="header-image"
-                        src="/images/ML.jpg"
-                        alt="MLearning Logo"
-                        />
+                        <img className="header-image" src="/images/ML.jpg" alt="MLearning Logo" />
                     </Link>
-                    <Link className="header-title" to="/">
+                    <span className="header-title">
                         {title}
-                    </Link>
+                    </span>
                 </h1>
 
                 <div className="header-search">
@@ -37,8 +43,10 @@ const Header: React.FC<HeaderProps> = ({title}) => {
                         <button className="header-button">Khóa học của tôi</button>
                     </div>
                     <img className="header-notify" src="/icons/Bell-ring.svg" alt="" />
-                    <Link rel="stylesheet" to="/admin">
-                        <img src="/images/lvm.jpg" alt="" className="header-avtar" />
+
+                    
+                    <Link to={role ? (role === "Admin" ? "/admin" : "/users") : "/login"}>
+                        <img src="/images/lvm.jpg" alt="" className="header-avatar" />
                     </Link>
                 </div>
             </div>

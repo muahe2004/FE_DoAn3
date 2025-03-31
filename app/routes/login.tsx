@@ -14,21 +14,29 @@ export default function CourseDetails() {
 
     useEffect(() => {
         fetch(`http://localhost:1000/login`, {
-            method: "POST",  // Vì API đăng nhập thường là POST
-            credentials: "include", // Bắt buộc để gửi cookies lên server
+            method: "POST",  
+            credentials: "include", 
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email: "phanNgocLinh@gmail.com", matKhau: "123456" }) 
+            // body: JSON.stringify({ email: "lyvanminh@gmail.com", matKhau: "muahe2004" }) 
         })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log("Phản hồi từ server:", data);
+        .then(res => res.json())
+        .then(data => {
+            // getRole();  
         })
-        .catch((err) => console.error("Lỗi:", err));
+        .catch(err => console.error("Lỗi:", err));
     }, []);
+
+    // const getRole = () => {
+    //     fetch('http://localhost:1000/role', {
+    //         method: 'GET',
+    //         credentials: 'include' 
+    //     })
+    //     .then(response => response.json())
+    //     .then(data => console.log(data))
+    //     .catch(error => console.error('Lỗi:', error));
+    // };
+
     
-
-
-
     
 
   return (
