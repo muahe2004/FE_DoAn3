@@ -8,6 +8,20 @@ import Course from "~/components/Course";
 
 import "../styles/home.css";
 
+// fake my courses
+const myCourses = [
+  {
+    maKhoaHoc: "KH001",
+    tenKhoaHoc: "Khóa học số 1",
+    hinhAnh: "http://localhost:1000/uploads/COURSE.png"
+  },
+  {
+    maKhoaHoc: "KH002",
+    tenKhoaHoc: "Khóa học số 1",
+    hinhAnh: "http://localhost:1000/uploads/COURSE.png"
+  }
+]
+
 interface KhoaHoc {
   maKhoaHoc: string;
   tenKhoaHoc: string;
@@ -214,6 +228,10 @@ export default function Home() {
             <span className="moreInfo-note">Quốc gia đang sử dụng</span>
           </div>
         </div>
+      </section>
+
+      <section className="my-course">
+
       </section>
 
       <Footer></Footer>

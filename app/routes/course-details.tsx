@@ -5,75 +5,20 @@ import Navbar from "~/components/Navbar";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import Button from "~/components/Button";
+import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/course-details.css";
+// import { userInfo } from "os";
 
-// Fake dữ liệu
-// const chuongHocList = [
-//     {
-//         maChuongHoc: "CH001",
-//         tenChuongHoc: "Giới thiệu về khóa học",
-//         danhSachBaiHoc: [
-//         {
-//             maBaiHoc: "BH001",
-//             tenBaiHoc: "Lời khuyên trước khóa học",
-//             moTaBaiHoc: "Tổng quan về JavaScript và cách sử dụng.",
-//             video: "intro_js.mp4",
-//         },
-//         {
-//             maBaiHoc: "BH002",
-//             tenBaiHoc: "Cài đặt môi trường",
-//             moTaBaiHoc: "Hướng dẫn thiết lập môi trường lập trình JS.",
-//             video: "setup_js.mp4",
-//         },
-//         {
-//             maBaiHoc: "BH003",
-//             tenBaiHoc: "Biến và kiểu dữ liệu",
-//             moTaBaiHoc: "Giới thiệu về các kiểu dữ liệu trong JavaScript.",
-//             video: "variables_js.mp4",
-//         },
-//         {
-//             maBaiHoc: "BH004",
-//             tenBaiHoc: "Câu lệnh điều kiện",
-//             moTaBaiHoc: "Hướng dẫn sử dụng if-else và switch-case.",
-//             video: "conditions_js.mp4",
-//         }
-//         ]
-//     },
-//     {
-//         maChuongHoc: "CH002",
-//         tenChuongHoc: "Giới thiệu về khóa học",
-//         danhSachBaiHoc: [
-//         {
-//             maBaiHoc: "BH001",
-//             tenBaiHoc: "Lời khuyên trước khóa học",
-//             moTaBaiHoc: "Tổng quan về JavaScript và cách sử dụng.",
-//             video: "intro_js.mp4",
-//         },
-//         {
-//             maBaiHoc: "BH002",
-//             tenBaiHoc: "Cài đặt môi trường",
-//             moTaBaiHoc: "Hướng dẫn thiết lập môi trường lập trình JS.",
-//             video: "setup_js.mp4",
-//         },
-//         {
-//             maBaiHoc: "BH003",
-//             tenBaiHoc: "Biến và kiểu dữ liệu",
-//             moTaBaiHoc: "Giới thiệu về các kiểu dữ liệu trong JavaScript.",
-//             video: "variables_js.mp4",
-//         },
-//         {
-//             maBaiHoc: "BH004",
-//             tenBaiHoc: "Câu lệnh điều kiện",
-//             moTaBaiHoc: "Hướng dẫn sử dụng if-else và switch-case.",
-//             video: "conditions_js.mp4",
-//         }
-//         ]
-//     },
-// ];
+
+interface UserInfo {
+    maNguoiDung: string;
+    email: string;
+  }
 
 
 export default function CourseDetails() {
+    const navigate = useNavigate();
 
     const { maKhoaHoc } = useParams();
     const [tenKhoaHoc, setTenKhoaHoc] = useState("");
@@ -98,8 +43,6 @@ export default function CourseDetails() {
           .catch((err) => console.error(err));
     }, [maKhoaHoc]);
 
-
-
     const [chuongHocList, setChuongHocList] = useState<
         { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
     >([]);
@@ -119,19 +62,18 @@ export default function CourseDetails() {
                     let danhSachBaiHoc = [];
 
                     if (resLecture.ok) {
-                    danhSachBaiHoc = await resLecture.json();
+                        danhSachBaiHoc = await resLecture.json();
                     }
 
                     return { 
-                    maChuongHoc: lesson.maChuongHoc, 
-                    tenChuongHoc: lesson.tenChuongHoc,
-                    danhSachBaiHoc 
+                        maChuongHoc: lesson.maChuongHoc, 
+                        tenChuongHoc: lesson.tenChuongHoc,
+                        danhSachBaiHoc 
                     };
                 })
             );
 
             setChuongHocList(lessonInfo); 
-            console.log(lessonInfo);
         } catch (error) {
             console.error("Lỗi:", error);
         }
@@ -151,6 +93,94 @@ export default function CourseDetails() {
             : [...prevIndexes, index] // Nếu chưa mở thì thêm vào danh sách (mở ra)
         );
     };
+
+    const handleRegisterCourse = async () => {
+        // Lấy thông tin người dùng từ localStorage
+        const userInfoStr = localStorage.getItem("userInfo");
+        if (!userInfoStr) {
+            console.log("Không tìm thấy thông tin người dùng trong localStorage.");
+            return;
+        }
+        const userInfo = JSON.parse(userInfoStr);
+        const maNguoiDung = userInfo.maNguoiDung;
+    
+        // Kiểm tra khóa học miễn phí
+        if (parseFloat(giaBan) === 0) {
+            console.log("Đăng ký khóa học thành công (Miễn phí)!");
+            await registerCourse(maNguoiDung, parseFloat(giaBan));
+            navigate(`/learning/${maKhoaHoc}`);
+            return;
+        }
+    
+        // Kiểm tra số dư tài khoản
+        try {
+            const res = await fetch("http://localhost:1000/balance", { 
+                method: "GET",
+                credentials: "include",
+            });
+    
+            if (!res.ok) {
+                console.error("Lỗi khi lấy số dư: ", res.statusText);
+                return;
+            }
+    
+            const data = await res.json();
+            const soDu = parseFloat(data.soDu);
+    
+            if (soDu < parseFloat(giaBan)) {
+                console.log("Không đủ tiền!");
+                return;
+            }
+    
+            // Tiến hành đăng ký khóa học
+            await registerCourse(maNguoiDung, parseFloat(giaBan));
+            navigate(`/learning/${maKhoaHoc}`);
+    
+        } catch (error) {
+            console.error("Lỗi khi gọi API:", error);
+        }
+    };
+    
+    // Hàm đăng ký khóa học
+    const registerCourse = async (maNguoiDung: string, giaBan: number) => {
+        const body = {
+            maKhoaHoc: maKhoaHoc,
+            maNguoiDung: maNguoiDung,
+            trangThai: "Đang học",
+            giaBan: giaBan
+        };
+    
+        try {
+            const registerRes = await fetch("http://localhost:1000/courses/resgister", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            });
+    
+            if (registerRes.ok) {
+                console.log("Đăng ký khóa học thành công!");
+            } else {
+                console.error("Lỗi khi đăng ký khóa học:", await registerRes.text());
+            }
+        } catch (error) {
+            console.error("Lỗi khi gọi API đăng ký khóa học:", error);
+        }
+    };
+    
+
+    // Ẩn hiện model
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const handleOpen = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleClose = () => {
+        setIsModalOpen(false);
+    };
+
+    
+    
 
   return (
     <div className="course-details__wrapper">
@@ -210,12 +240,12 @@ export default function CourseDetails() {
 
 
 
-                    <Button className="thumb-btn" children="Đăng ký ngay" type="button"></Button>
+                    <Button className="thumb-btn" children="Đăng ký ngay" type="button" onClick={handleOpen}></Button>
 
                     <ul className="thumb-list">
                         <li className="thumb-item">
                             <img src="/icons/Code.svg" alt="" className="thumb-icon" />
-                            <span>Trình độ cơ bản</span>
+                            <span>Độ khó: {doKho}</span>
                         </li>
 
                         <li className="thumb-item">
@@ -237,6 +267,18 @@ export default function CourseDetails() {
             </div>
         </div>
 
+
+        { isModalOpen && (
+            <ModelOverlay 
+                icon="Question.svg" 
+                title="Thanh toán" 
+                desc="Xác nhận thanh toán ?" 
+                secondOption="Hủy" 
+                onClose={handleClose} 
+                className="model-image_second">
+                <Button onClick={handleRegisterCourse} type="button">Thanh toán</Button>    
+            </ModelOverlay>
+        )}
         <Footer></Footer>
     </div>
     

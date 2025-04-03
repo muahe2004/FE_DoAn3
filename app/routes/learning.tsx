@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useReducer, useState } from "react";
 import LearningHeader from "~/components/Learning-header";
 import Button from "~/components/Button";
@@ -51,7 +51,7 @@ const valueQuestion = [
 ];
 
 export default function Learning() {
-    const maKhoaHoc = 'KH002';
+    const { maKhoaHoc } = useParams();
     const [chuongHocList, setChuongHocList] = useState<
         { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
     >([]);
