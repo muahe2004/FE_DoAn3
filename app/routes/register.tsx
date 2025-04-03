@@ -44,61 +44,138 @@ export default function Register() {
     event.preventDefault();
 
     const form = event.currentTarget;
-
     const name = form.querySelector<HTMLInputElement>('input[name="name"]');
     const email = form.querySelector<HTMLInputElement>('input[name="email"]');
     const password = form.querySelector<HTMLInputElement>('input[name="password"]');
+    const confirmPasswordInput = form.querySelector<HTMLInputElement>('input[name="re-password"]');
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
 
     const showError = (input: HTMLInputElement | null, message: string) => {
-        if (input) {
-          const formText = input.parentElement?.querySelector<HTMLElement>(".login-text");
-          if (formText) {
-            formText.innerText = message;
-            formText.style.opacity = "1";
-          }
-          input.focus();
+      if (input) {
+        const formText = input.parentElement?.querySelector<HTMLElement>(".register-text");
+        if (formText) {
+          formText.innerText = message;
+          formText.style.opacity = "1";
         }
+        input.focus();
+      }
     };
 
     if (!email?.value.trim()) {
-        showError(email, "Email không hợp lệ!");
-        return;
+      showError(email, "Email không hợp lệ!");
+      return;
     }
 
     if (!name?.value.trim()) {
-        showError(name, "Tên người dùng không hợp lệ!");
-        return;
+      showError(name, "Tên người dùng không hợp lệ!");
+      return;
     }
 
     if (!password?.value.trim()) {
-        showError(password, "Mật khẩu không được để trống!");
-        return;
+      showError(password, "Mật khẩu không được để trống!");
+      return;
+    }
+
+    if (!confirmPasswordInput?.value.trim() || password.value.trim() !== confirmPasswordInput.value.trim()) {
+      showError(confirmPasswordInput, "Mật khẩu nhập lại không khớp!");
+      return;
     }
 
     const body = {
-        tenNguoiDung: name?.value.trim(),
-        email: email.value.trim(),
-        matKhau: password.value.trim()
+      tenNguoiDung: name.value.trim(),
+      email: email.value.trim(),
+      matKhau: password.value.trim()
+    };
+
+    // Vô hiệu hóa nút đăng ký để tránh gửi nhiều lần
+    if (submitButton) submitButton.disabled = true;
+
+    try {
+      const res = await fetch("http://localhost:1000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        Login(email.value.trim(), password.value.trim());
+      } else if (res.status === 409) {
+        showError(email, "Email này đã được sử dụng!");
+      } else {
+        const errorMessage = await res.text();
+        console.error("Lỗi khi đăng ký:", errorMessage);
+        alert("Đăng ký thất bại, vui lòng thử lại!");
+      }
+    
+    } catch (err) {
+      console.log("Lỗi: ", err);
+    } finally {
+      if (submitButton) submitButton.disabled = false;
+    }
+  };
+
+  const Login = async (email: string, password: string) => {
+
+    const body = {
+      email: email,
+      matKhau: password
     }
 
     try {
-        const res = await fetch("http://localhost:1000/users", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(body),
-          })
-          if (res.ok) {
-            // await getUserInfo(body.email);
-            // await getRole();
-            // navigate("/");
-            console.log("OK");
-          } else {
-            console.error("Lỗi khi đăng ký:", await res.text());
-        }
+      const res = await fetch("http://localhost:1000/login", {
+        method: "POST",
+        credentials: "include", 
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        await getUserInfo(body.email);
+        await getRole();
+      } else {
+        console.error("Lỗi khi đăng nhập:", await res.text());
+      }
     } catch (err) {
-        console.log("Lỗi: ", err);
+        console.error("Lỗi:", err);
     }
-  }
+  };
+
+  const getUserInfo = async (email: string) => {
+    try {
+      const response = await fetch(`http://localhost:1000/users/${encodeURIComponent(email)}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (!response.ok) throw new Error("Lỗi khi lấy thông tin!");
+
+      const data = await response.json();
+      localStorage.setItem("userInfo", JSON.stringify(data));
+    } catch (err) {
+      console.error("Lỗi:", err);
+    }
+  };
+
+  const getRole = async () => {
+      try {
+        const res = await fetch("http://localhost:1000/role", { 
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (!res.ok) throw new Error("Lỗi khi lấy vai trò!");
+
+        const data = await res.json();
+
+        if (data.role !== "Admin") {
+          navigate("/");
+        } else {
+          navigate("/admin");
+        }
+      } catch (err) {
+        console.error("Lỗi:", err);
+      }
+  };
 
   return (
     <div className="register-wrapper">

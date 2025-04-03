@@ -5,6 +5,7 @@ export default [
     route("login", "routes/login.tsx"),
     route("register", "routes/register.tsx"),
     route("admin", "routes/admin.tsx"),
+    route("learning", "routes/learning.tsx"),
     route("about", "routes/about.tsx"),
     route("contact", "routes/contact.tsx"),
     route("purview", "routes/purview.tsx"),
@@ -16,9 +17,4 @@ export default [
     route("admin-lesson-details/:maChuongHoc", "routes/adm-lesson-details.tsx"),
     route("add-lecture", "routes/add-lecture.tsx"),
     route("admin-lecture-details/:maBaiHoc", "routes/adm-lecture-details.tsx"),
-    // route("admin-analysis", "routes/admin-analysis.tsx"),
-    // route("admin-analysis", "routes/admin-analysis.tsx"),
-
-
-
 ] satisfies RouteConfig;

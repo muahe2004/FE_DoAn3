@@ -1,6 +1,8 @@
 
 import { useEffect, useState } from "react";
 import {  Link, useParams, useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js";
+
 import Button from "~/components/Button";
 
 import "../styles/login.css";
@@ -73,7 +75,6 @@ export default function Login() {
               if (res.ok) {
                 await getUserInfo(body.email);
                 await getRole();
-                // navigate("/");
               } else {
                 console.error("Lỗi khi đăng nhập:", await res.text());
             }
@@ -143,10 +144,15 @@ export default function Login() {
                 </div>
 
                 <Button className="login-btn" type="submit" to="">Đăng nhập</Button>
-                <Button className="login-btn login-google" to="">
+                <Button
+                    className="login-btn login-google"
+                    onClick={() => window.location.href = "http://localhost:1000/auth/google/callback"}
+                    >
                     <img className="login-icon" src="./icons/Google.svg" alt="" />
                     Đăng nhập bằng Google
                 </Button>
+
+
 
                 <Link to="/register" className="login-btnSignUp">Đăng ký</Link>
             </form>

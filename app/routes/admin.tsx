@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
@@ -19,6 +20,34 @@ interface CourseProps {
 
 export default function Admin() {
   const [courses, setCourses] = useState<CourseProps[]>([]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getRole = async () => {
+      try {
+        const res = await fetch("http://localhost:1000/role", {
+          method: "GET",
+          credentials: "include", 
+        });
+
+        if (!res.ok) {
+          navigate("/login"); 
+          return;
+        }
+
+        const data = await res.json();
+
+        if (data.role !== "Admin") {
+          navigate("/"); 
+        }
+      } catch (err) {
+        navigate("/login"); 
+      }
+    };
+
+    getRole(); 
+  }, [navigate]);
 
 
   useEffect(() => {

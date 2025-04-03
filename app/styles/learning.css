@@ -1,0 +1,197 @@
+.learning-wrapper {
+    /* width: 100%;
+    height: 100vh;
+    background: yellowgreen; */
+}
+
+.learning-inner {
+    width: 100%;
+    background: #1a1d1e;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+    margin-top: 60px;
+}
+
+.learning-container {
+    width: 75%;
+}
+
+.learning-iframe {
+    width: 100%;
+    height: calc(100vh - 201px);
+}
+
+.learning-name {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 20px 0;
+    padding-left: 80px;
+    /* background: paleturquoise; */
+}
+
+.learning-desc {
+    color: #fff;
+    padding-left: 80px;
+    margin-bottom: 20px;
+}
+
+.learning-sidebar {
+    width: 25%;
+    height: calc(100vh - 120px);
+    background: #282a30;
+    position: fixed;
+    right: 0;
+    top: 60px;
+    overflow-y: auto;
+    scrollbar-width: thin; /* Mỏng hơn */
+}
+
+/* Sidebar */
+/* .learning-sidebar {
+    
+} */
+
+.learning-accordion__item {
+    margin-bottom: 3px;
+    /* overflow-y: auto; */
+}
+
+.learning-accordion__head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.learning-accordion__lesson {
+    background: #1a1d1e;
+    width: 100%;
+    padding: 15px 10px;
+    text-align: left;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.learning-accordion__btn {
+    width: 35px;
+    font-size: 14px;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+.learning-accordion__list--item {
+    margin-top: 2px;
+    width: 100%;
+    cursor: pointer;
+    background: #1a1d1e;
+    display: flex;
+}
+
+.learning-accordion__list--btn {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px 10px 10px 30px ;
+    color: #fff;
+    text-align: left;
+    /* background: red; */
+    cursor: pointer;
+}
+
+.learning-accordion__content {
+    display: none;
+}
+
+.learning-accordion__content.open {
+    display: block;
+}
+
+.learning-action {
+    width: 100%;
+    height: 60px;
+    background: #1a1d1e;
+    /* background: #fff; */
+    position: fixed;
+    bottom: 0;
+    /* opacity: 0.9; */
+    border-top: 1px solid #282a30;
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+}
+
+.learning-action__discussion {
+    /* width: 50%; */
+    width: 37.5%;
+    /* background: yellow; */
+}
+
+.learning-action__button {
+    /* background: #ccc; */
+    padding: 5px;
+    border-radius: 999px;
+    border: 1px solid #fff;
+    cursor: pointer;
+}
+
+.learning-action__timeline {
+    width: 25%;
+    /* background: yellowgreen; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.learning-action__btn {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.learning-action__icon {
+    width: 24px;
+    height: 24px;
+}
+
+.learning-action__lesson {
+    color: #fff;
+    width: 37.5%;
+    /* background: yellow; */
+    text-align: right;
+}
+
+
+
+
+/* Câu hỏi trắc nghiệm */
+.learning-title {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.learning-listQuesion {
+    margin-top: 40px;
+    padding-left: 80px;
+}
+
+.listQuesion-item {
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.listQuesion-item__ques {
+    margin-bottom: 10px;
+}
+
+.listQuesion-item__result {
+    margin-bottom: 5px;
+}
+
+.listQuesion-item__input {
+    margin-right: 10px;
+}

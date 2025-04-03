@@ -195,20 +195,6 @@ export default function CourseDetails() {
                 </div>
 
                 <div className="course-video__thumb">
-                    {/* <div className="lecture-video">
-                        {videoSrc ? (
-                            <iframe 
-                            className="video-iframe"
-                            src={videoSrc} 
-                            title="YouTube Video"
-                            allow="autoplay; encrypted-media"
-                            allowFullScreen
-                            ></iframe>
-                        ) : (
-                            <p className="no-video">Video bài học</p>
-                        )}
-                    </div> */}
-
                     <iframe
                         className="course-video__iframe"
                         src="https://www.youtube.com/embed/o_VDcEy029M"

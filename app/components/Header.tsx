@@ -4,9 +4,10 @@ import "../styles/header.css";
 
 interface HeaderProps {
     title: string;
+    className?: string; 
 }
 
-const Header: React.FC<HeaderProps> = ({ title }) => {
+const Header: React.FC<HeaderProps> = ({ title, className }) => {
     const [role, setRole] = useState<string | null>(null);
 
     useEffect(() => {
@@ -22,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
     }, []);
 
     return (
-        <header className="header">
+        <header className={`header ${className || ""}`}>
             <div className="header-wrapper">
                 <h1 className="header-logo">
                     <Link to="/">

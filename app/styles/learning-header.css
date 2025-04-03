@@ -1,0 +1,66 @@
+.learning-header {
+    height: 60px;
+    background: #1a1d1e;
+    width: 100%;
+
+    /* padding: 10px 20px; */
+    padding: 5px 30px;
+
+    /* display: flex; */
+    align-items: center;
+    position: fixed;
+    top: 0;
+    border-bottom: 1px solid #1a1d1e;
+    z-index: 999;
+}
+
+.learning-header__wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.learning-header__image {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+}
+
+.learning-header__title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+}
+
+.learning-header__icon {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 10px;
+    top: 20px;
+}
+
+.learning-header__container {
+    display: flex;
+    align-items: center;
+}
+
+
+.learning-header__button {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.learning-header__notify {
+    width: 24px;
+    height: 24px;
+    margin-left: 20px;
+}
+
+.learning-header__avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 20px;
+}

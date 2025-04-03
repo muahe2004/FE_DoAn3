@@ -1,6 +1,6 @@
 .course-details__wrapper {
     width: 100%;
-    height: calc(100vh - 80px);
+    /* height: calc(100vh - 80px); */
 }
 
 .course-details__inner {
@@ -113,15 +113,18 @@
 
 .course-video__thumb {
     width: calc(30% - 10px);
-    /* background: palegreen; */
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    
-    
+    /* background: #ccc; */
+    position: sticky;
+    top: 100px; 
+    /* z-index: 10;  */
+    height: 100%;
 }
+
+
 
 .course-video__iframe {
     width: 100%;
