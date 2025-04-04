@@ -174,6 +174,12 @@ export default function CourseDetails() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpen = () => {
+        // Lấy thông tin người dùng từ localStorage
+        const userInfoStr = localStorage.getItem("userInfo");
+        if (!userInfoStr) {
+            navigate("/login");
+            return;
+        }
         setIsModalOpen(true);
     };
 
