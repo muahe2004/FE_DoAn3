@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../styles/learning-header.css";
 
 interface LearningHeaderProps {
     title: string;
     className?: string; 
+}
+
+interface RegisteredCourse {
+    maKhoaHoc: string;
+    tenKhoaHoc: string;
+    hinhAnh: string;
+    trangThai: string;
 }
 
 const LearningHeader: React.FC<LearningHeaderProps> = () => {
@@ -32,9 +39,9 @@ const LearningHeader: React.FC<LearningHeaderProps> = () => {
                 </h1>
 
                 <div className="learning-header__container">
-                    <div className="learning-header__menu">
-                        <button className="learning-header__button">Khóa học của tôi</button>
-                    </div>
+                    {/* <div className="learning-header__menu">
+                        <button className="learning-header__button" onClick={handleOpenMycourses}>Khóa học của tôi</button>
+                    </div> */}
                     <img className="learning-header__notify" src="/icons/Bell-ring-white.svg" alt="" />
 
                     
@@ -43,6 +50,8 @@ const LearningHeader: React.FC<LearningHeaderProps> = () => {
                     </Link>
                 </div>
             </div>
+
+            
         </header>
     );
 };

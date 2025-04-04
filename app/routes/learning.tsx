@@ -238,7 +238,7 @@ export default function Learning() {
       <div className="learning-action">
             <div className="learning-action__discussion">
                 <button className="learning-action__button">
-                    <img className="learning-action__icon" src="./icons/Question.svg" alt="" />
+                    <img className="learning-action__icon" src="/icons/Question.svg" alt="" />
                 </button>
             </div>
 

@@ -79,6 +79,9 @@
     color: #000;
     font-size: 16px;
     font-weight: 600;
+    padding: 10px 0;
+    cursor: pointer;
+    /* background: #ccc; */
 }
 
 .header-notify {
@@ -95,4 +98,58 @@
     margin-left: 20px;
 }
 
-/* Learning header */
+/* My course */
+
+.my-course {
+    padding: 10px 0 10px 10px;
+    width: 380px;
+    height: 500px;
+    background: #fff;
+    position: fixed;
+    top: 90px;
+    right: 130px;
+    border-radius: 12px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.9);
+    z-index: 999;
+    box-sizing: border-box;
+    transition: opacity 0.5s ease, visibility 0s ease 0.5s; 
+    opacity: 0; 
+    visibility: hidden; 
+}
+
+.my-course.visible {
+    opacity: 1; 
+    visibility: visible; 
+}
+
+.my-course__content {
+    width: 100%;
+    height: 100%;
+    /* background: yellowgreen; */
+    overflow-y: auto;
+}
+
+.my-course__item {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.my-course__image {
+    width: 120px;
+    height: 80px;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.my-course__box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+}
+
+.my-course__name {
+    font-weight: 700;
+    width: 100%;
+}

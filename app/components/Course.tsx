@@ -1,7 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/course.css";
-{/* <link rel="stylesheet" href="../../styles/Admin/admin_course.css" /> */}
-
 
 interface CourseProps {
     maKhoaHoc: string; 
@@ -14,15 +12,39 @@ interface CourseProps {
 }
 
 const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, children, hinhAnh, doKho, tongSoBaiHoc}) => {
+  const navigate = useNavigate(); // Hook để điều hướng người dùng
+
+  const handleCourseClick = () => {
+    const myCourses = localStorage.getItem("myCourses");
+
+    if (myCourses) {
+      const listCourses = JSON.parse(myCourses);
+
+      // Kiểm tra xem maKhoaHoc có trong listCourses hay không
+      const courseExists = listCourses.some((course: { maKhoaHoc: string }) => course.maKhoaHoc === maKhoaHoc);
+
+      // Nếu có, chuyển hướng đến trang /learning/:maKhoaHoc, nếu không, đến /course-details/:maKhoaHoc
+      if (courseExists) {
+        navigate(`/learning/${maKhoaHoc}`);
+      } else {
+        navigate(`/courses/course-details/${maKhoaHoc}`);
+      }
+    } else {
+      console.log("No courses found in localStorage");
+      navigate(`/courses/course-details/${maKhoaHoc}`);
+    }
+  };
+
   return (
     <div className="course">
-      <Link to={`courses/course-details/${maKhoaHoc}`}>
+      {/* Sự kiện onClick để điều hướng khi click vào khóa học */}
+      <div onClick={handleCourseClick}>
         <img src={hinhAnh} alt={tenKhoaHoc} className="course-image" />
-      </Link>
+      </div>
 
       <section className="course-content">
         <h3 className="course-comp_name">
-          <Link to={`courses/course-details/${maKhoaHoc}`}>{tenKhoaHoc}</Link>
+          <span onClick={handleCourseClick}>{tenKhoaHoc}</span>
         </h3>
 
         <div className="price-container">
@@ -52,4 +74,3 @@ const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, children,
 };
 
 export default Course;
- 

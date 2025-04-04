@@ -8,20 +8,6 @@ import Course from "~/components/Course";
 
 import "../styles/home.css";
 
-// fake my courses
-const myCourses = [
-  {
-    maKhoaHoc: "KH001",
-    tenKhoaHoc: "Khóa học số 1",
-    hinhAnh: "http://localhost:1000/uploads/COURSE.png"
-  },
-  {
-    maKhoaHoc: "KH002",
-    tenKhoaHoc: "Khóa học số 1",
-    hinhAnh: "http://localhost:1000/uploads/COURSE.png"
-  }
-]
-
 interface KhoaHoc {
   maKhoaHoc: string;
   tenKhoaHoc: string;
@@ -31,6 +17,8 @@ interface KhoaHoc {
   giaBan: number;
   tongSoBaiHoc: number;
 }
+
+
 
 export default function Home() {
 
@@ -63,17 +51,23 @@ export default function Home() {
   // Khóa học miễn phí
   const [listFreeCourses, setListFreeCourse] = useState<KhoaHoc[]>([]);
 
+  
+
   useEffect(() => {
     fetch('http://localhost:1000/api/courses/get-home-no-fee-courses')
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setListFreeCourse(data);
       })
       .catch((err) => {
         console.log("Lỗi: ", err);
       })
   }, []);
+
+  
+
+  // Đóng mở my courses
+  const [isCourseVisible, setIsCourseVisible] = useState(false); 
 
   return (
     <div className="home-Wrapper">
@@ -230,9 +224,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="my-course">
-
-      </section>
+      
+      
 
       <Footer></Footer>
     </div>
