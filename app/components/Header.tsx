@@ -35,38 +35,38 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         setIsCourseVisible(true);
     }
 
-    
-
+    // Khóa học của tôi
     const [listRegisteredCourse, setListRegisteredCourse] = useState<RegisteredCourse []>([]);
     const [isClient, setIsClient] = useState(false); // Biến để xác định môi trường client
 
-    // Kiểm tra khi component đã mounted (client-side)
     useEffect(() => {
     setIsClient(true);
     }, []);
 
+    const [anhDaiDien, setAnhDaiDien] = useState("http://localhost:1000/uploads/defaultAvatar.png");
     // Lấy thông tin người dùng từ localStorage chỉ khi trên client
     useEffect(() => {
-    if (!isClient) return; 
+        if (!isClient) return; 
 
-    const userInfoStr = localStorage.getItem("userInfo");
-    if (!userInfoStr) {
-        console.log("Không tìm thấy thông tin người dùng trong localStorage.");
-        return;
-    }
+        const userInfoStr = localStorage.getItem("userInfo");
+        if (!userInfoStr) {
+            console.log("Không tìm thấy thông tin người dùng trong localStorage.");
+            return;
+        }
 
-    const userInfo = JSON.parse(userInfoStr);
-    const maNguoiDung = userInfo.maNguoiDung;
+        const userInfo = JSON.parse(userInfoStr);
+        const maNguoiDung = userInfo.maNguoiDung;
+        setAnhDaiDien(userInfo.anhDaiDien);
 
-    fetch(`http://localhost:1000/courses/registered/${maNguoiDung}`)
-        .then((res) => res.json())
-        .then((data) => {
-            setListRegisteredCourse(data);
-            localStorage.setItem("myCourses", JSON.stringify(data));
-        })
-        .catch((err) => {
-            console.log("Lỗi: ", err);
-        });
+        fetch(`http://localhost:1000/courses/registered/${maNguoiDung}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setListRegisteredCourse(data);
+                localStorage.setItem("myCourses", JSON.stringify(data));
+            })
+            .catch((err) => {
+                console.log("Lỗi: ", err);
+            });
     }, [isClient]);
 
     // Tạo ref cho phần tử danh sách khóa học
@@ -112,7 +112,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
                     
                     <Link to={role ? (role === "Admin" ? "/admin" : "/users") : "/login"}>
-                        <img src="/images/defaultAvatar.png" alt="" className="header-avatar" />
+                        <img src={anhDaiDien} alt="" className="header-avatar" />
                     </Link>
                 </div>
             </div>

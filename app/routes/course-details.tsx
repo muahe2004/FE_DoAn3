@@ -128,7 +128,9 @@ export default function CourseDetails() {
             const soDu = parseFloat(data.soDu);
     
             if (soDu < parseFloat(giaBan)) {
-                console.log("Không đủ tiền!");
+                handleClose();
+                handleNoBalanceOpen();
+                // setTimeout(handleNoBalanceClose, 3000)
                 return;
             }
     
@@ -179,7 +181,16 @@ export default function CourseDetails() {
         setIsModalOpen(false);
     };
 
-    
+    // Ẩn hiện model k đủ tèn
+    const [isModalNoBalanceOpen, setIsModalNoBalanceOpen] = useState(false);
+
+    const handleNoBalanceOpen = () => {
+        setIsModalNoBalanceOpen(true);
+    };
+
+    const handleNoBalanceClose = () => {
+        setIsModalNoBalanceOpen(false);
+    };
     
 
   return (
@@ -279,8 +290,19 @@ export default function CourseDetails() {
                 <Button onClick={handleRegisterCourse} type="button">Thanh toán</Button>    
             </ModelOverlay>
         )}
+
+        { isModalNoBalanceOpen && (
+            <ModelOverlay 
+                icon="Exclamation.svg" 
+                title="Thanh toán" 
+                desc="Số dư của bạn hiện không đủ" 
+                secondOption="Đóng" 
+                onClose={handleNoBalanceClose} 
+                className="model-image_second">
+                <Button onClick={handleRegisterCourse} type="button">Nạp tiền</Button>    
+            </ModelOverlay>
+        )}
         <Footer></Footer>
     </div>
-    
   );
 }
