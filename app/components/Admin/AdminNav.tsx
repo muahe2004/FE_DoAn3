@@ -36,7 +36,7 @@ export default function AdminNav() {
                     </li>
 
                     <li className="navbar-item">
-                        <Link to="/admin-analysis" className="navbar-link">
+                        <Link to="/admin-analytics" className="navbar-link">
                             <img src="/icons/Chart.svg" alt="Hỏi đáp" className="navbar-icon" />
                             <span>Thống kê</span>
                         </Link>

@@ -5,6 +5,7 @@ export default [
     route("login", "routes/login.tsx"),
     route("register", "routes/register.tsx"),
     route("admin", "routes/admin.tsx"),
+    route("admin-analytics", "routes/adm-analytics.tsx"),
     route("learning/:maKhoaHoc", "routes/learning.tsx"),
     route("about", "routes/about.tsx"),
     route("contact", "routes/contact.tsx"),

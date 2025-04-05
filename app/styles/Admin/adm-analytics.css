@@ -1,0 +1,121 @@
+.analytics-wrapper {
+    width: 100%;
+    height: 100vh;
+    /* background: yellowgreen; */
+    padding-top: 88px;
+}
+
+.analytics-inner {
+    width: calc(100% - 120px);
+    height: 100%;
+    background: #fff;
+    margin-left: 110px;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.analytics-containers {
+    width: 100%;
+    height: 100px;
+    /* background: yellowgreen; */
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.analytics-containers__item {
+    height: 100%;
+    width: 24%;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    /* align-items: center; */
+    /* padding: 10px; */
+    display: flex;
+    align-items: center;
+    background: #005fa3;
+}
+
+.analytics-containers__item--second {
+    background: #4da674;
+}
+
+.analytics-containers__item--third {
+    background: #f1ac20;
+}
+
+.analytics-containers__item--fourth {
+    background: #e95354;
+}
+
+.analytics-containers__box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.analytics-containers__title {
+    width: 65%;
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+    color: #fff;
+}
+
+.analytics-containers__value {
+    width: 35%;
+    font-weight: 700;
+    font-size: 28px;
+    color: #fff;
+    /* background: #ccc; */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background: #fff; */
+    /* opacity: 0.2; */
+}
+
+.analytics-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    /* margin-left: 50px; */
+}
+
+
+.analytics-content {
+    width: 100%;
+    height: calc(100% - 140px);
+    display: flex;
+    justify-content: space-between;
+}
+
+.analytics-chart__column {
+    width: 60%;
+    height: 100%;
+    /* padding-left: 10px; */
+    /* background: yellowgreen; */
+    font-size: 12px;
+    border: 1px solid #a4d8fd;
+    border-radius: 8px;
+}
+
+.analytics-chart__wheel {
+    width: calc(40% - 10px);
+    height: 100%;
+    /* display: flex; */
+    align-items: center;
+    /* background: #ccc; */
+    border: 1px solid #a4d8fd;
+    border-radius: 8px;
+}
+
+.analytics-chart__title {
+    background: linear-gradient(45deg, #21a2ff, #8951ff);
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+    height: 35px;
+    line-height: 35px;
+    color: #fff;
+    font-weight: 700;
+}
