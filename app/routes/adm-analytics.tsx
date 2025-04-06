@@ -278,7 +278,6 @@ export default function Analytics() {
                   ))}
                 </Pie>
                 <Tooltip />
-                {/* <Legend /> */}
               </PieChart>
             </ResponsiveContainer>
           </div>
