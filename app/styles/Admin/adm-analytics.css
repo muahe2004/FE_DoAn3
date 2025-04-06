@@ -75,6 +75,15 @@
     /* opacity: 0.2; */
 }
 
+.analytics-containers__title--fourth {
+    width: 40%;
+}
+
+.analytics-containers__value--fourth {
+    font-size: 20px;
+    width: 60%;
+}
+
 .analytics-title {
     font-size: 20px;
     font-weight: 700;

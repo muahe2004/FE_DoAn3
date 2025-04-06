@@ -1,4 +1,7 @@
-import { Link } from "react-router-dom";
+import { data, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import type { TooltipProps } from 'recharts';
+
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 import {
@@ -106,10 +109,9 @@ const fakeMost = [
 
 const colors = ['#005fa3', '#4da674', '#f1ac20', '#e95354', '#21a2ff'];
 
-import type { TooltipProps } from 'recharts';
 
 
-// Tooltip custom dùng TSX
+// Tooltip custom 
 const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
     return (
@@ -135,15 +137,78 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
 
 
 export default function Analytics() {
+  // doanh thu 12 tháng
+  const [benefit, setBenefit] = useState([])
+  useEffect(() => {
+    fetch(`http://localhost:1000/courses/benefit/12`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setBenefit(data)
+      })
+  }, []);
 
-const getRandomColor = () => {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-};
+  // 5 khóa nhiều học viên nhất
+  const [most, setMost] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:1000/courses/most')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setMost(data);
+      })
+  }, [])
+
+  // số học viên
+  const [students, setStudent] = useState(0);
+  useEffect(() => {
+    fetch('http://localhost:1000/courses/sum-student')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setStudent(data);
+      })
+  }, [])
+
+  // số khóa vip
+  const [vipCourses, setVipCourses] = useState(0);
+  useEffect(() => {
+    fetch('http://localhost:1000/api/courses/count-vip')
+      .then((res) => res.json())
+      .then((data) => {console.log(data); setVipCourses(data);});
+  })
+
+  // số khóa free
+  const [freeCourses, setFreeCourses] = useState(0);
+  useEffect(() => {
+    fetch('http://localhost:1000/api/courses/count-free')
+      .then((res) => res.json())
+      .then((data) => {console.log(data); setFreeCourses(data);});
+  })
+
+  // tổng doanh thu
+  const [sumBenefit, setSumBenefit] = useState(0);
+  useEffect(() => {
+    fetch('http://localhost:1000/courses/sum-benefit')
+      .then((res) => res.json())
+      .then((data) => {console.log(data); setSumBenefit(data);})
+  })
+
+  const formattedMoney = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(sumBenefit);
+  
+
+  // Random màu
+  const getRandomColor = () => {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+  };
       
   return (
     <div className="analytics-wrapper">
@@ -154,22 +219,22 @@ const getRandomColor = () => {
         <div className="analytics-containers">
             <div className="analytics-containers__item">
               <span className="analytics-containers__title">Khóa học free</span>
-              <span className="analytics-containers__value">5</span>
+              <span className="analytics-containers__value">{freeCourses}</span>
             </div>
 
             <div className="analytics-containers__item analytics-containers__item--second"> 
               <span className="analytics-containers__title">Khóa học vip</span>
-              <span className="analytics-containers__value">5</span>
+              <span className="analytics-containers__value">{vipCourses}</span>
             </div>
 
             <div className="analytics-containers__item analytics-containers__item--third">
               <span className="analytics-containers__title">Học viên</span>
-              <span className="analytics-containers__value">200</span>
+              <span className="analytics-containers__value">{students}</span>
             </div>
 
             <div className="analytics-containers__item analytics-containers__item--fourth">
-              <span className="analytics-containers__title">Doanh thu</span>
-              <span className="analytics-containers__value">10</span>
+              <span className="analytics-containers__title analytics-containers__title--fourth">Doanh thu</span>
+              <span className="analytics-containers__value analytics-containers__value--fourth">{formattedMoney}</span>
             </div>
         </div>
 
@@ -177,7 +242,7 @@ const getRandomColor = () => {
           {/* Cột */}
           <div className="analytics-chart__column">
             <ResponsiveContainer width="100%">
-              <BarChart data={fakeDoanhThu}  margin={{ top: 20, right: 0, left: 50, bottom: 0 }}>
+              <BarChart data={benefit}  margin={{ top: 20, right: 0, left: 50, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="thang" />
                 <YAxis />
@@ -200,7 +265,7 @@ const getRandomColor = () => {
             <ResponsiveContainer width="100%">
               <PieChart>
                 <Pie
-                  data={fakeMost}
+                  data={most}
                   dataKey="soHocVien"
                   nameKey="tenKhoaHoc"
                   cx="50%"
@@ -208,7 +273,7 @@ const getRandomColor = () => {
                   outerRadius={150}
                   label
                 >
-                  {fakeMost.map((entry, index) => (
+                  {most.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                   ))}
                 </Pie>
