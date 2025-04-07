@@ -1,0 +1,143 @@
+.user-wrapper {
+    width: 100%;
+    height: 1000px;
+    /* background: yellowgreen; */
+}
+
+.user-inner {
+    width: calc(100% - 110px);
+    height: calc(100% - 110px);
+    background: #fff;
+    margin-left: 110px;
+    margin-top: 90px;
+    border-radius: 4px;
+    display: flex;
+}
+
+.user-inner__info {
+    width: 28%;
+    height: 100%;
+    /* background: #ccc; */
+    padding: 20px 40px;
+    /* border-right: 1px solid #ccc; */
+}
+
+.inner-info__avatar {
+    width: 250px;
+    height: 250px;
+    /* border-radius: 999px; */
+    /* background: yellowgreen; */
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.inner-info__image {
+    width: 100%;
+    height: 100%;
+    border-radius: 999px;
+}
+
+.inner-info__box {
+    display: block;
+}
+
+.inner-info__name {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.inner-info__email {
+    display: block;
+    width: 100%;
+    white-space: nowrap;        
+    overflow: hidden;           
+    text-overflow: ellipsis;    
+    color: #a2a2a2;
+}
+
+
+.user-inner__features {
+    width: 75%;
+    height: 100%;
+    /* background: palegoldenrod; */
+    padding: 10px;
+}
+
+.user-inner__head {
+    display: flex;
+    align-items: center; /* căn giữa dọc */
+    margin-bottom: 10px;
+}
+
+.user-inner__icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.user-inner__title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+.user-inner__courses {
+    display: flex;
+    flex-wrap: wrap;
+    /* gap: 10px; */
+}
+
+.inner-courses__item {
+    width: calc(25% - 9px);
+    height: 180px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    margin-left: 12px;
+    background: #f5f5f5;
+    overflow: hidden;
+    transition: .25s;
+}
+
+.inner-courses__item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.inner-courses__item:nth-child(4n - 3) {
+    /* CSS ở đây */
+    margin-left: 0;
+}
+
+.inner-courses__thumb {
+    width: 100%;
+    height: 70%;
+}
+
+.inner-courses__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.inner-course__content {
+    display: block;
+    align-items: center;
+    /* background: yellowgreen; */
+    height: 30%;
+    width: 100%;
+    /* justify-content: center; */
+    margin-top: 5px;
+}
+
+.inner-course__name {
+    font-weight: 600;
+    height: 100%;
+    padding: 0 10px;
+    font-size: 15px;
+    align-items: center;
+    display: block;
+    width: 100%;
+}

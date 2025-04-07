@@ -11,7 +11,7 @@ interface CourseProps {
     tongSoBaiHoc: number;
 }
 
-const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, children, hinhAnh, doKho, tongSoBaiHoc}) => {
+const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, hinhAnh, doKho, tongSoBaiHoc}) => {
   const navigate = useNavigate(); // Hook để điều hướng người dùng
 
   const handleCourseClick = () => {

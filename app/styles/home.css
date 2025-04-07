@@ -6,7 +6,6 @@
     margin-left: 100px;
     margin-top: 80px;
     height: calc(100vh - 80px);
-    background: red;
     width: calc(100% - 100px);
     overflow: hidden;
 }

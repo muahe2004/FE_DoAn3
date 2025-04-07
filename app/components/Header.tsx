@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import Button from "./Button";
 import axios from "axios";
 import "../styles/header.css";
 
@@ -32,12 +33,6 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         .catch((err) => console.error("Lỗi:", err));
     }, []);
 
-    const [isCourseVisible, setIsCourseVisible] = useState(false); 
-
-    const handleOpenMycourses = () => {
-        setIsCourseVisible(true);
-    }
-
     // Khóa học của tôi
     const [listRegisteredCourse, setListRegisteredCourse] = useState<RegisteredCourse []>([]);
     const [isClient, setIsClient] = useState(false); // Biến để xác định môi trường client
@@ -46,8 +41,11 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         setIsClient(true);
     }, []);
 
-    const [anhDaiDien, setAnhDaiDien] = useState("http://localhost:1000/uploads/defaultAvatar.png");
     // Lấy thông tin người dùng từ localStorage chỉ khi trên client
+    const [anhDaiDien, setAnhDaiDien] = useState("http://localhost:1000/uploads/defaultAvatar.png");
+    const [tenNguoiDung, setTenNguoiDung] = useState("Student");
+    const [email, setEmail] = useState("Student@gmail.com");
+
     useEffect(() => {
         if (!isClient) return; 
 
@@ -55,11 +53,15 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         if (!userInfoStr) {
             console.log("Không tìm thấy thông tin người dùng trong localStorage.");
             return;
-        }
+        } 
+        
+        setIsLogin(true);
 
         const userInfo = JSON.parse(userInfoStr);
         const maNguoiDung = userInfo.maNguoiDung;
         setAnhDaiDien(userInfo.anhDaiDien);
+        setTenNguoiDung(userInfo.tenNguoiDung);
+        setEmail(userInfo.email);
 
         fetch(`http://localhost:1000/courses/registered/${maNguoiDung}`)
             .then((res) => res.json())
@@ -72,10 +74,15 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
             });
     }, [isClient]);
 
-    // Tạo ref cho phần tử danh sách khóa học
+    // Đóng mở courses
+    const [isCourseVisible, setIsCourseVisible] = useState(false); 
+
+    const handleOpenMycourses = () => {
+        setIsCourseVisible(true);
+    }
+
     const courseRef = useRef<HTMLDivElement | null>(null);
 
-    // Đóng phần tử khi click ngoài
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (courseRef.current && !courseRef.current.contains(event.target as Node)) {
@@ -90,6 +97,9 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         };
     }, []);
 
+    
+
+    // Đóng mở actions
     const [isMenuVisible, setIsMenuVisible] = useState(false);
 
     const handleOpenActions = () => {
@@ -115,7 +125,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         };
     }, []);
     
-
+    // Đăng xuất
     const handleLogout = async () => {
         console.log("Đăng xuất");
 
@@ -130,10 +140,13 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
             navigate("/");
             setRole(null);
             setIsMenuVisible(false);
+            setIsLogin(false);
         } catch (error) {
             console.error("Lỗi khi logout:", error);
         }
     }
+
+    const [isLogin, setIsLogin] = useState(false);
     
     return (
         <header className={`header ${className || ""}`}>
@@ -152,21 +165,37 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                     <input className="header-input" type="text" />
                 </div>
 
-                <div className="header-container">
+                {
+                    isLogin ? (
+                        <div className="header-container">
+                            <div className="header-menu">
+                                <button className="header-button" type="button" onClick={handleOpenMycourses}>Khóa học của tôi</button>
+                            </div>
+                            <img className="header-notify" src="/icons/Bell-ring.svg" alt="" />
+
+                            <div className="" onClick={handleOpenActions}>
+                                <img src={anhDaiDien} alt="" className="header-avatar" />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="header-container header-container__logout">
+                            <Button className="button-secondary header-btn" to="/register">Đăng ký</Button>
+                            <Button className="header-btn" to="/login">Đăng nhập</Button>
+                        </div>
+                    )
+                }
+
+
+                {/* <div className="header-container">
                     <div className="header-menu">
                         <button className="header-button" type="button" onClick={handleOpenMycourses}>Khóa học của tôi</button>
                     </div>
                     <img className="header-notify" src="/icons/Bell-ring.svg" alt="" />
 
-                    
-                    {/* <Link to={role ? (role === "Admin" ? "/admin" : "/users") : "/login"}>
-                        <img src={anhDaiDien} alt="" className="header-avatar" />
-                    </Link> */}
-
                     <div className="" onClick={handleOpenActions}>
                         <img src={anhDaiDien} alt="" className="header-avatar" />
                     </div>
-                </div>
+                </div> */}
             </div>
 
             {/* Danh sách khóa học đã đăng ký */}
@@ -195,32 +224,32 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                         <div className="header-action__info">
                             <img src={anhDaiDien} alt="" className="header-action__avatar" />
                             <div className="header-action__box">
-                                <span className="header-action__name">Lý Văn Minh</span>
-                                <span className="header-action__mail">lyvanminh@gmail.com</span>
+                                <span className="header-action__name">{tenNguoiDung}</span>
+                                <span className="header-action__mail">{email}</span>
                             </div>
                         </div>
 
                         <div className="header-action__row">
                             <span className="header-action__item">
-                                <Link to={role ? (role === "Admin" ? "/admin" : "/users") : "/login"}>Trang cá nhân</Link>
+                                <Link className="header-action__link" to={role ? (role === "Admin" ? "/admin" : "/user") : "/login"}>Trang cá nhân</Link>
                             </span>
                         </div>
 
                         <div className="header-action__row">
                             <span className="header-action__item header-action__item--pd">
-                                <Link to="">Viết blog</Link>
+                                <Link className="header-action__link" to="">Viết blog</Link>
                             </span>
                             <span className="header-action__item header-action__item--pd">
-                                <Link to="">Bài viết của tôi</Link>
+                                <Link className="header-action__link" to="">Bài viết của tôi</Link>
                             </span>
                             <span className="header-action__item">
-                                <Link to="">Bài viết đã lưu</Link>
+                                <Link className="header-action__link" to="">Bài viết đã lưu</Link>
                             </span>
                         </div>
 
                         <div className="header-action__row">
                             <span className="header-action__item header-action__item--pd">
-                                <Link to="">Cài đặt</Link>
+                                <Link className="header-action__link" to="">Cài đặt</Link>
                             </span>
                             <span className="header-action__item">
                                 <button onClick={handleLogout}>Đăng xuất</button>
