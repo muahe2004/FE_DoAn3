@@ -11,6 +11,8 @@ export default [
     route("about", "routes/about.tsx"),
     route("contact", "routes/contact.tsx"),
     route("purview", "routes/purview.tsx"),
+    route("payment", "routes/payment.tsx"),
+    route("payment-done", "routes/payment-done.tsx"),
     route("roadmap", "routes/roadmap.tsx"),
     route("courses/course-details/:maKhoaHoc", "routes/course-details.tsx"),
     route("add-course", "routes/add-course.tsx"),

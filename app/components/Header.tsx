@@ -36,29 +36,56 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     // Khóa học của tôi
     const [listRegisteredCourse, setListRegisteredCourse] = useState<RegisteredCourse []>([]);
     const [isClient, setIsClient] = useState(false); // Biến để xác định môi trường client
-
-    useEffect(() => {
-        setIsClient(true);
-    }, []);
-
-    // Lấy thông tin người dùng từ localStorage chỉ khi trên client
+    const [userInfoReady, setUserInfoReady] = useState(false);
     const [anhDaiDien, setAnhDaiDien] = useState("http://localhost:1000/uploads/defaultAvatar.png");
     const [tenNguoiDung, setTenNguoiDung] = useState("Student");
     const [email, setEmail] = useState("Student@gmail.com");
 
     useEffect(() => {
-        if (!isClient) return; 
+        setIsClient(true);
+    }, []);
+
+    useEffect(() => {
+        const fetchGoogleUserInfo = async () => {
+            try {
+                const res = await fetch("http://localhost:1000/auth-google/get-user-info", {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                });
+
+                if (!res.ok) {
+                    console.log("Chưa đăng nhập hoặc token không hợp lệ");
+                    return;
+                }
+
+                const data = await res.json();
+                localStorage.setItem("userInfo", JSON.stringify(data));
+                console.log("Lưu thành công userInfo từ Google:", data);
+
+                // Báo hiệu đã có user info
+                setUserInfoReady(true);
+            } catch (err) {
+                console.error("Lỗi khi lấy thông tin người dùng Google:", err);
+            }
+        };
+
+        fetchGoogleUserInfo();
+    }, []);
+
+    useEffect(() => {
+        if (!isClient || !userInfoReady) return;
 
         const userInfoStr = localStorage.getItem("userInfo");
         if (!userInfoStr) {
             console.log("Không tìm thấy thông tin người dùng trong localStorage.");
             return;
-        } 
-        
-        setIsLogin(true);
+        }
 
         const userInfo = JSON.parse(userInfoStr);
         const maNguoiDung = userInfo.maNguoiDung;
+
+        setIsLogin(true);
         setAnhDaiDien(userInfo.anhDaiDien);
         setTenNguoiDung(userInfo.tenNguoiDung);
         setEmail(userInfo.email);
@@ -70,9 +97,10 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                 localStorage.setItem("myCourses", JSON.stringify(data));
             })
             .catch((err) => {
-                console.log("Lỗi: ", err);
+                console.log("Lỗi khi lấy danh sách khóa học:", err);
             });
-    }, [isClient]);
+    }, [isClient, userInfoReady]);
+
 
     // Đóng mở courses
     const [isCourseVisible, setIsCourseVisible] = useState(false); 
@@ -147,6 +175,8 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     }
 
     const [isLogin, setIsLogin] = useState(false);
+
+    
     
     return (
         <header className={`header ${className || ""}`}>
@@ -225,7 +255,8 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                             <img src={anhDaiDien} alt="" className="header-action__avatar" />
                             <div className="header-action__box">
                                 <span className="header-action__name">{tenNguoiDung}</span>
-                                <span className="header-action__mail">{email}</span>
+                                <span className="header-action__mail">@{email.split("@")[0]}</span>
+
                             </div>
                         </div>
 
