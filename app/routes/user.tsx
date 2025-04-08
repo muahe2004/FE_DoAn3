@@ -85,6 +85,47 @@ export default function User() {
             }
         }
     }, []);
+
+    const [tenNguoiDung, setTenNguoiDung] = useState("User name");
+    const [email, setEmail] = useState("User email");
+    const [anhDaiDien, setAnhDaiDien] = useState("http://localhost:1000/uploads/defaultAvatar.png");
+
+    useEffect(() => {
+        const myInfo = localStorage.getItem("userInfo");
+        if (!myInfo) {
+            console.log("Không tìm thấy thông tin người dùng trong localStorage.");
+            return;
+        } 
+
+        const userInfo = JSON.parse(myInfo);
+        setAnhDaiDien(userInfo.anhDaiDien);
+        setTenNguoiDung(userInfo.tenNguoiDung);
+        setEmail(userInfo.email);
+    }, []);
+
+    const [soDu, setSoDu] = useState(0);
+
+    useEffect(() => {
+        fetch("http://localhost:1000/balance", { 
+            method: "GET",
+            credentials: "include",
+        })
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error("Lỗi khi lấy số dư: " + res.statusText);
+            }
+            return res.json();
+        })
+        .then((data) => {
+            const soDuMoi = parseFloat(data.soDu);
+            setSoDu(soDuMoi);
+        })
+        .catch((error) => {
+            console.error("Lỗi khi gọi API:", error);
+        });
+    }, []);
+    
+
     
     return (
         
@@ -100,8 +141,23 @@ export default function User() {
                 </div>
 
                 <div className="inner-info__box">
-                    <span className="inner-info__name">Nguyễn Thị Thảo My </span>
-                    <span className="inner-info__email" title="lyvanminh280504@gmail.com">lyvanminh280504@gmail.com</span>
+                    <span className="inner-info__name">{tenNguoiDung}</span>
+                    <span className="inner-info__email" title="lyvanminh280504@gmail.com">{email}</span>
+
+                    <div className="inner-info__group">
+                        <img src="./icons/Money-check.svg" alt="" className="inner-info__icon" />
+                        <span className="inner-info__title">Số dư:</span>
+                        <span className="inner-info__number">{soDu.toLocaleString("vi-VN")} ₫</span>
+                    </div>
+
+                    <div className="inner-info__group">
+                        <img src="./icons/Github.svg" alt="" className="inner-info__icon" />
+                        <span className="inner-info__title">
+                            <a href="https://github.com/muahe2004" target="_blank" rel="noopener noreferrer">
+                                muahe2004
+                            </a>
+                        </span>
+                    </div>
                 </div>
             </div>
 
