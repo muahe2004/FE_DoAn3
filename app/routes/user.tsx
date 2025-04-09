@@ -4,6 +4,7 @@ import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 import Course from "~/components/Course";
+import Button from "~/components/Button";
 
 import "../styles/user.css";
 
@@ -148,6 +149,7 @@ export default function User() {
                         <img src="./icons/Money-check.svg" alt="" className="inner-info__icon" />
                         <span className="inner-info__title">Số dư:</span>
                         <span className="inner-info__number">{soDu.toLocaleString("vi-VN")} ₫</span>
+                        <Button to="" className="inner-info__deposit">Nạp tiền</Button>
                     </div>
 
                     <div className="inner-info__group">

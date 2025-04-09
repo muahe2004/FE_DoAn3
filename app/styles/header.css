@@ -206,6 +206,17 @@
 .header-action__mail {
     width: 100%;
     font-size: 12px;
+    display: block;
+}
+
+.header-action__desc {
+    font-size: 12px;
+}
+
+.header-action__balance {
+    width: 100%;
+    font-size: 14px;
+    color: orange;
 }
 
 .header-action__row {

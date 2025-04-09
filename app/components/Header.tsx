@@ -176,7 +176,28 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
     const [isLogin, setIsLogin] = useState(false);
 
-    
+    // lay so du
+    const [soDu, setSoDu] = useState(0);
+
+    useEffect(() => {
+        fetch("http://localhost:1000/balance", { 
+            method: "GET",
+            credentials: "include",
+        })
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error("Lỗi khi lấy số dư: " + res.statusText);
+            }
+            return res.json();
+        })
+        .then((data) => {
+            const soDuMoi = parseFloat(data.soDu);
+            setSoDu(soDuMoi);
+        })
+        .catch((error) => {
+            console.error("Lỗi khi gọi API:", error);
+        });
+    }, []);
     
     return (
         <header className={`header ${className || ""}`}>
@@ -214,18 +235,6 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                         </div>
                     )
                 }
-
-
-                {/* <div className="header-container">
-                    <div className="header-menu">
-                        <button className="header-button" type="button" onClick={handleOpenMycourses}>Khóa học của tôi</button>
-                    </div>
-                    <img className="header-notify" src="/icons/Bell-ring.svg" alt="" />
-
-                    <div className="" onClick={handleOpenActions}>
-                        <img src={anhDaiDien} alt="" className="header-avatar" />
-                    </div>
-                </div> */}
             </div>
 
             {/* Danh sách khóa học đã đăng ký */}
@@ -256,13 +265,20 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                             <div className="header-action__box">
                                 <span className="header-action__name">{tenNguoiDung}</span>
                                 <span className="header-action__mail">@{email.split("@")[0]}</span>
-
+                                <span className="header-action__desc">SD: </span>
+                                <span className="header-action__balance">{soDu.toLocaleString("vi-VN")} ₫</span> 
                             </div>
                         </div>
 
                         <div className="header-action__row">
                             <span className="header-action__item">
                                 <Link className="header-action__link" to={role ? (role === "Admin" ? "/admin" : "/user") : "/login"}>Trang cá nhân</Link>
+                            </span>
+                        </div>
+
+                        <div className="header-action__row">
+                            <span className="header-action__item">
+                                <Link className="header-action__link" to="">Nạp tiền</Link>
                             </span>
                         </div>
 
