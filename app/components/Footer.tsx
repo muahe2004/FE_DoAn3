@@ -4,12 +4,13 @@ import {Link} from "react-router-dom";
 import "../styles/footer.css";
 
 interface FooterProps {
+    className?: string; // Tuỳ chọn thêm className nếu cần
 }
 
 
-const Footer: React.FC<FooterProps> = ({}) => {
+const Footer: React.FC<FooterProps> = ({className}) => {
     return (
-        <footer className="footer">
+        <footer className={`footer ${className || ""}`}>
             <div className="footer-inner">
                 {/* Cột 1 */}
                 <div className="footer-column footer-column_first">

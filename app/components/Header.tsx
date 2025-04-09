@@ -278,7 +278,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
                         <div className="header-action__row">
                             <span className="header-action__item">
-                                <Link className="header-action__link" to="">Nạp tiền</Link>
+                                <Link className="header-action__link" to="/payment">Nạp tiền</Link>
                             </span>
                         </div>
 
