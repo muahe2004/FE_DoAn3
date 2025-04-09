@@ -1,0 +1,131 @@
+
+.chatbot-wrapper {
+    width: 100%;
+    height: 100% ;
+    z-index: 999;
+    position: fixed;
+}
+
+.chatbot-wrapper::before {
+    content: "";
+    width: 100%;
+    height: 100% ;
+    background: #000;
+    opacity: 0.5;
+    z-index: -1;
+    position: fixed;
+}
+
+.chatbot-inner {
+    width: 90%;
+    height: 90%;
+    background: #fff;
+    z-index: 999;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #21a2ff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.chatbot-header {
+    background: #171717;
+    height: 50px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.chatbot-name {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.chatbot-close {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgb(250, 81, 81);
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.chatbot-container {
+    height: calc(100% - 130px);
+    background: #212121;
+}
+
+.chatbot-form {
+    position: fixed;
+    bottom: 0;
+    z-index: 11;
+    height: 80px;
+    width: 100%;
+    background: #303030;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.chatbot-form__inner {
+    width: calc(100% - 80px);
+    height: 60px;
+}
+
+.chatbot-input {
+    height: 100%;
+    width: 100%;
+    display: block;
+    border: none;
+    outline: none;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 18px;
+    resize: none;
+
+    /* Scrollbar custom */
+    scrollbar-width: thin;            /* Firefox */
+    scrollbar-color: #666 #2d2d2d;    /* Firefox */
+}
+
+.chatbot-input::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chatbot-input::-webkit-scrollbar-track {
+    background: #2d2d2d;
+    border-radius: 8px;
+}
+
+.chatbot-input::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 8px;
+}
+
+.chatbot-input::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+.chatbot-form__actions {
+    width: 70px;
+    height: 60px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.chatbot-btn {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -7,6 +7,7 @@ import Navbar from "~/components/Navbar";
 import Course from "~/components/Course";
 
 import "../styles/home.css";
+import ChatBot from "~/components/ChatBot";
 
 interface KhoaHoc {
   maKhoaHoc: string;
@@ -73,6 +74,7 @@ export default function Home() {
     <div className="home-Wrapper">
       <Header title="Học lập trình" />
       <Navbar></Navbar>
+      <ChatBot></ChatBot>
 
       {/* Slide show */}
       <div className="slide-show">
