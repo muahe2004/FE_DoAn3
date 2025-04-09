@@ -1,0 +1,59 @@
+.payment-done__wrapper {
+    width: 100%;
+    height: 100vh;
+}
+
+.payment-done__inner {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+}
+
+.payment-done__box {
+    display: block;
+    padding-top: 10%;
+    margin-bottom: 20px;
+}
+
+.payment-done__icon {
+    padding: 30px;
+    background: green;
+    border-radius: 999px;
+    margin: 0 auto;
+}
+
+.payment-done__thanks {
+    width: 100%;
+    display: block;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    color: green;
+}
+
+.payment-done__desc {
+    font-size: 20px;
+    color: #363636;
+    text-align: center;
+}
+
+.payment-done__desc--bold {
+    font-weight: 700;
+    color: black;
+}
+
+.payment-done__action {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.payment-done__btn {
+    font-size: 24px;
+    border-radius: 999px;
+}
+
+.payment-done__btn:first-child {
+    margin-right: 40px;
+}
