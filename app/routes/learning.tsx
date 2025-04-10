@@ -5,50 +5,6 @@ import Button from "~/components/Button";
 
 import "../styles/learning.css";
 
-const valueQuestion = [
-    {
-        maCauHoi: "CH001",
-        noiDung: "HTML là viết tắt của cụm từ nào?",
-        dapAn: [ 
-            {
-                maDapAn: "DA001",
-                noiDung: "Hyper Text Markup Language",
-                laDapAnDung: true 
-            },
-            {
-                maDapAn: "DA002",
-                noiDung: "High Technology Modern Language",
-                laDapAnDung: false
-            },
-            {
-                maDapAn: "DA003",
-                noiDung: "Home Tool Markup Language",
-                laDapAnDung: false
-            }
-        ],
-    },
-    {
-        maCauHoi: "CH002",
-        noiDung: "Trong CSS, thuộc tính nào dùng để thay đổi màu chữ?",
-        dapAn: [ 
-            {
-                maDapAn: "DA004",
-                noiDung: "font-color",
-                laDapAnDung: false 
-            },
-            {
-                maDapAn: "DA005",
-                noiDung: "text-color",
-                laDapAnDung: false
-            },
-            {
-                maDapAn: "DA006",
-                noiDung: "color",
-                laDapAnDung: true
-            }
-        ],
-    }
-];
 
 export default function Learning() {
     const { maKhoaHoc } = useParams();
@@ -71,19 +27,18 @@ export default function Learning() {
                     let danhSachBaiHoc = [];
 
                     if (resLecture.ok) {
-                    danhSachBaiHoc = await resLecture.json();
+                        danhSachBaiHoc = await resLecture.json();
                     }
 
                     return { 
-                    maChuongHoc: lesson.maChuongHoc, 
-                    tenChuongHoc: lesson.tenChuongHoc,
-                    danhSachBaiHoc 
+                        maChuongHoc: lesson.maChuongHoc, 
+                        tenChuongHoc: lesson.tenChuongHoc,
+                        danhSachBaiHoc 
                     };
                 })
             );
 
             setChuongHocList(lessonInfo); 
-            console.log(lessonInfo);
         } catch (error) {
             console.error("Lỗi:", error);
         }
@@ -157,11 +112,49 @@ export default function Learning() {
     
     type AnswerMap = {
         [maCauHoi: string]: string;
-      };
+    };
       
-      const [selectedAnswers, setSelectedAnswers] = useState<AnswerMap>({});
+    const [selectedAnswers, setSelectedAnswers] = useState<AnswerMap>({});
 
-      
+    const [listCauHoi, setListCauHoi] = useState<
+        { maCauHoi: string; noiDung: string; danhSachDapAn: any[]} []
+    >([]);
+    
+    useEffect(() => {
+        const fetchQuestion = async () => {
+            const maBaiHoc  = localStorage.getItem("lastSelectedLecture");
+            try {
+                const res = await fetch(`http://localhost:1000/get-cau-hoi/${maBaiHoc}`);
+
+                if (!res.ok) {console.log("Lỗi khi lấy câu hỏi!");}
+
+                const questions: { maCauHoi: string; noiDung: string; }[] = await res.json(); 
+
+                const questionsInfo = await Promise.all(
+                    questions.map(async (question) => {
+                        const resAnswer = await fetch(`http://localhost:1000/get-dap-an/${question.maCauHoi}`);
+                        let listAnswer = [];
+                        
+                        if (resAnswer.ok) {
+                            listAnswer = await resAnswer.json();
+                        }
+
+                        return {
+                            maCauHoi: question.maCauHoi,
+                            noiDung: question.noiDung,
+                            danhSachDapAn: listAnswer,
+                        };
+                    })
+                );
+                console.log("Danh sách câu hỏi:", questionsInfo); // ✅ log ra đây
+                setListCauHoi(questionsInfo);
+                
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
+        }
+        fetchQuestion(); // ✅ gọi hàm
+    }, [])
       
   return (
     <div className="learning-wrapper">
@@ -192,16 +185,20 @@ export default function Learning() {
 
             <div className="learning-listQuesion">
                 <h2 className="learning-title">Câu hỏi ôn tập</h2>
-                {valueQuestion.map((cauHoi, index) => (
+                {listCauHoi.map((cauHoi, index) => (
                     <div className="listQuesion-item" key={cauHoi.maCauHoi}>
                         <p className="listQuesion-item__ques">
                         <strong>Câu {index + 1}: {cauHoi.noiDung}</strong>
                         </p>
                         <ul>
-                            {cauHoi.dapAn.map((dapAn) => {
+                            {cauHoi.danhSachDapAn.map((dapAn) => {
                                 const selected = selectedAnswers[cauHoi.maCauHoi];
                                 const isSelected = selected === dapAn.maDapAn;
-                                const isCorrect = dapAn.laDapAnDung;
+                                const isCorrect =
+                                    typeof dapAn.laDapAnDung === 'object' &&
+                                    Array.isArray(dapAn.laDapAnDung.data)
+                                        ? dapAn.laDapAnDung.data[0] === 1
+                                        : dapAn.laDapAnDung === 1;
                                 const isWrongSelected = isSelected && !isCorrect;
                                 const shouldHighlightCorrect = selected && isCorrect;
 
@@ -231,7 +228,7 @@ export default function Learning() {
                                             }
                                         />
                                         <label className="listQuesion-item__label" htmlFor={dapAn.maDapAn}>
-                                            {dapAn.noiDung}
+                                            {dapAn.noiDungDapAn}
                                         </label>
                                     </li>
                                 );
