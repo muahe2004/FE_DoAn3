@@ -155,7 +155,14 @@ export default function Learning() {
         loadLastLecture();
     }, [chuongHocList])
     
+    type AnswerMap = {
+        [maCauHoi: string]: string;
+      };
+      
+      const [selectedAnswers, setSelectedAnswers] = useState<AnswerMap>({});
 
+      
+      
   return (
     <div className="learning-wrapper">
       <LearningHeader title="Học bài" className="learning-header"></LearningHeader>
@@ -187,17 +194,53 @@ export default function Learning() {
                 <h2 className="learning-title">Câu hỏi ôn tập</h2>
                 {valueQuestion.map((cauHoi, index) => (
                     <div className="listQuesion-item" key={cauHoi.maCauHoi}>
-                        <p className="listQuesion-item__ques"><strong>Câu {index + 1}: {cauHoi.noiDung}</strong></p>
+                        <p className="listQuesion-item__ques">
+                        <strong>Câu {index + 1}: {cauHoi.noiDung}</strong>
+                        </p>
                         <ul>
-                            {cauHoi.dapAn.map((dapAn) => (
-                                <li key={dapAn.maDapAn} className="listQuesion-item__result">
-                                    <input className="listQuesion-item__input" type="radio" name={`cauHoi-${index}`} id={dapAn.maDapAn} />
-                                    <label htmlFor={dapAn.maDapAn}>{dapAn.noiDung}</label>
-                                </li>
-                            ))}
+                            {cauHoi.dapAn.map((dapAn) => {
+                                const selected = selectedAnswers[cauHoi.maCauHoi];
+                                const isSelected = selected === dapAn.maDapAn;
+                                const isCorrect = dapAn.laDapAnDung;
+                                const isWrongSelected = isSelected && !isCorrect;
+                                const shouldHighlightCorrect = selected && isCorrect;
+
+                                return (
+                                    <li
+                                    key={dapAn.maDapAn}
+                                    className={`listQuesion-item__result
+                                        ${isSelected ? 'selected' : ''}
+                                        ${isWrongSelected ? 'uncorrect' : ''}
+                                        ${shouldHighlightCorrect ? 'correct' : ''}
+                                    `}
+                                    >
+                                        <input
+                                            className={`listQuesion-item__input
+                                                ${isWrongSelected ? 'input-uncorrect' : ''}
+                                                ${shouldHighlightCorrect ? 'input-correct' : ''}
+                                            `}
+                                            type="radio"
+                                            name={`cauHoi-${index}`}
+                                            id={dapAn.maDapAn}
+                                            disabled={!!selectedAnswers[cauHoi.maCauHoi]} // khóa chọn lại sau khi chọn
+                                            onChange={() =>
+                                            setSelectedAnswers((prev) => ({
+                                                ...prev,
+                                                [cauHoi.maCauHoi]: dapAn.maDapAn,
+                                            }))
+                                            }
+                                        />
+                                        <label className="listQuesion-item__label" htmlFor={dapAn.maDapAn}>
+                                            {dapAn.noiDung}
+                                        </label>
+                                    </li>
+                                );
+                            })}
+
                         </ul>
                     </div>
-                ))}
+                    ))}
+
             </div>
 
         </div>
