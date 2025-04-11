@@ -1,10 +1,14 @@
 import Button from "~/components/Button";
 
 import "../styles/chat-bot.css";
-import { useRef } from "react";
+import { use, useEffect, useRef, useState } from "react";
 
-
-export default function ChatBot() {
+type ChatBotProps = {
+    isOpen: boolean;
+    onClose: () => void;
+};
+  
+export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const formRef = useRef<HTMLFormElement | null>(null);
 
@@ -15,20 +19,114 @@ export default function ChatBot() {
         if (textarea && form) {
             textarea.style.height = "auto";
     
-            // Nếu người dùng nhập nhiều dòng (ví dụ > 3 dòng)
-            if (textarea.scrollHeight > 72) { // khoảng 3 dòng x 24px/dòng
+            if (textarea.scrollHeight > 96) { // khoảng 3 dòng x 24px/dòng
                 textarea.style.height = "230px";
                 form.style.height = "250px";
             } else {
-                // textarea.style.height = "auto";
-                form.style.height = "80px"; // chiều cao ban đầu
+                form.style.height = "80px"; 
             }
         }
     };
+
+    const handleSendMess = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        sendMessage();
+    };
     
+    const sendMessage = async () => {
+        const form = formRef.current;
+        const input = form?.querySelector<HTMLTextAreaElement>('textarea[name="chat-input"]');
     
+        if (!input?.value.trim()) {
+            console.log("Chưa nhập gì");
+            return;
+        }
+    
+        const userMessage = input.value.trim();
+    
+        // Lấy lịch sử từ localStorage
+        let chatHistory: any[] = [];
+        const storedHistory = localStorage.getItem("chatHistory");
+    
+        if (storedHistory) {
+            try {
+                chatHistory = JSON.parse(storedHistory);
+            } catch (e) {
+                console.warn("Lỗi khi parse chatHistory, sẽ khởi tạo lại.");
+                chatHistory = [];
+            }
+        }
+    
+        // Đẩy câu hỏi mới của người dùng vào lịch sử
+        chatHistory.push({
+            role: "user",
+            parts: [{ text: userMessage }]
+        });
+    
+        const body = { contents: chatHistory };
+    
+        try {
+            const res = await fetch("http://localhost:1000/AIChat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            });
+    
+            if (res.ok) {
+                input.value = ""; 
+                const data = await res.json();
+    
+                const aiReply = data.reply || data.content || "Không có phản hồi";
+    
+                chatHistory.push({
+                    role: "model",
+                    parts: [{ text: aiReply }]
+                });
+    
+                // Cập nhật lại localStorage
+                localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+                setChatHistory([...chatHistory]);
+            } else {
+                console.error("Gửi thất bại. Mã lỗi:", res.status);
+            }
+        } catch (err) {
+            console.log("Lỗi: ", err);
+        }
+    };
+
+    const [chatHistory, setChatHistory] = useState<any[]>([]);
+    
+    useEffect(() => {
+        const storedChat = localStorage.getItem("chatHistory");
+
+        if (storedChat) {
+            try {
+                setChatHistory(JSON.parse(storedChat));
+            } catch {setChatHistory([]);}
+        }
+    }, []);
+    
+
+    const wrapperRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutSide = (event: MouseEvent) => {
+            if (
+                isOpen &&
+                wrapperRef.current &&
+                !wrapperRef.current.contains(event.target as Node)
+            ) {
+                onClose();
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutSide);
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutSide);
+        };
+      }, [isOpen, onClose]);
+
   return (
-    <div className="chatbot-wrapper">
+    <div ref={wrapperRef} className={`chatbot-wrapper ${isOpen ? "open" : "closed"}`}>
       <div className="chatbot-inner">
         {/* Header */}
         <div className="chatbot-header">
@@ -37,7 +135,7 @@ export default function ChatBot() {
             </div>
 
             <div className="chatbot-actions">
-                <button className="chatbot-close">
+                <button onClick={onClose} className="chatbot-close">
                     <img src="./icons/Close.svg" alt="" />
                 </button>
             </div>
@@ -45,18 +143,38 @@ export default function ChatBot() {
 
         {/* Chat box */}
         <div className="chatbot-container">
-
+            {chatHistory.map((item, index) => (
+                <div className={`chat-content ${item.role === "user" ? "chat-item__content" : "chat-item__content--bot"}`}>
+                    <div
+                        key={index}
+                        className={`chat-message ${item.role === "user" ? "user-message" : "bot-message"}`}
+                    >
+                        {item.parts[0].text}
+                    </div>
+                </div>
+        ))}
         </div>
 
         {/* Form */}
-        <form className="chatbot-form" ref={formRef}>
+        <form onSubmit={handleSendMess} className="chatbot-form" ref={formRef}>
             <div className="chatbot-form__inner">
-                {/* <input type="text" className="chatbot-input" /> */}
-                <textarea ref={textareaRef} className="chatbot-input" name="" id="" placeholder="Hỏi gì đó đi.." onInput={handleInput} ></textarea>
+                <textarea
+                    ref={textareaRef}
+                    className="chatbot-input"
+                    name="chat-input"
+                    placeholder="Hỏi gì đó đi.."
+                    onInput={handleInput}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter" && !e.shiftKey) {
+                            e.preventDefault();
+                            sendMessage(); 
+                        }
+                    }}
+                ></textarea>
             </div>
 
             <div className="chatbot-form__actions">
-                <Button className="chatbot-btn" to="">
+                <Button type="submit" className="chatbot-btn" to="" >
                     <img src="./icons/Arrow-top.svg" alt="" />
                 </Button>
             </div>

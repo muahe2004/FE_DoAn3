@@ -74,7 +74,7 @@ export default function Home() {
     <div className="home-Wrapper">
       <Header title="Học lập trình" />
       <Navbar></Navbar>
-      <ChatBot></ChatBot>
+      {/* <ChatBot></ChatBot> */}
 
       {/* Slide show */}
       <div className="slide-show">

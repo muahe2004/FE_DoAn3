@@ -35,7 +35,7 @@
     margin-top: 40px;
     padding: 10px;
     margin-left: 100px;
-    z-index: 2;
+    z-index: 1;
     position: relative;
 }
 
@@ -58,7 +58,7 @@
     margin-left: 100px;
     position: relative;
     height: 100px;
-    z-index: 1;
+    z-index: 0;
     margin-bottom: 450px;
 }
 
@@ -142,7 +142,7 @@
 /* =========== */
 .home-container {
     position: relative;
-    z-index: 2;
+    z-index: 1;
     width: calc(100% - 100px);
     margin-left: 100px;
     padding: 10px;
@@ -233,7 +233,7 @@
 }
 
 /* Phần click me */
-.click-me {
+/* .click-me {
     position: absolute;
     background: #000080;
     top: 80px;
@@ -254,4 +254,4 @@
     top: -5px;
     right: 10px;
 }
-
+ */

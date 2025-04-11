@@ -1,7 +1,14 @@
+import ChatBot from "./ChatBot";
+
 import { Link } from "react-router-dom";
 import "../styles/navbar.css";
+import { useState } from "react";
 
 export default function Navbar() {
+  const [isChatOpen, setIsChatOpen] = useState(false);
+
+  const handleOpenChat = () => setIsChatOpen(true);
+  const handleCloseChat = () => setIsChatOpen(false);
   return (
     <div className="navbar">
       <div className="navbar-wrapper">
@@ -35,10 +42,12 @@ export default function Navbar() {
           </li>
         </ul>
 
-        <button className="navbar-news">
-          <img className="navbar-icon" src="/icons/News.svg" alt="Tin tức" />
+        <button className="navbar-news" onClick={handleOpenChat}>
+          {/* <img className="navbar-icon" src="/icons/News.svg" alt="Tin tức" /> */}
         </button>
       </div>
+
+      <ChatBot isOpen={isChatOpen} onClose={handleCloseChat} ></ChatBot>
     </div>
   );
 }
