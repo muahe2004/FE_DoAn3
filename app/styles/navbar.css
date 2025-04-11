@@ -64,14 +64,10 @@
 }
 
 .navbar-news {
-    padding: 15px;
-    background: #a5c2f294;
-    /* margin-bottom: 0; */
-    border-radius: 50%;
+    border-radius: 999px;
     transition: .5s;
-    
+    width: 70px;
+    height: 70px;
+    font-weight: 700;
 }
 
-.navbar-news:hover {
-    background: #a5c2f2;
-}

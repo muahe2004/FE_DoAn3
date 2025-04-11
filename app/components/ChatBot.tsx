@@ -6,12 +6,14 @@ import { use, useEffect, useRef, useState } from "react";
 type ChatBotProps = {
     isOpen: boolean;
     onClose: () => void;
+    className?: string; // Tuỳ chọn thêm className nếu cần
 };
   
-export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
+export default function ChatBot({ isOpen, onClose, className }: ChatBotProps) {
+
+    // Chỉnh size input
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const formRef = useRef<HTMLFormElement | null>(null);
-
     const handleInput = () => {
         const textarea = textareaRef.current;
         const form = formRef.current;
@@ -33,6 +35,7 @@ export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
         sendMessage();
     };
     
+    // Call api chat
     const sendMessage = async () => {
         const form = formRef.current;
         const input = form?.querySelector<HTMLTextAreaElement>('textarea[name="chat-input"]');
@@ -64,6 +67,13 @@ export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
         });
     
         const body = { contents: chatHistory };
+
+        // Reset chiều cao sau khi gửi
+        input.value = ""; 
+        if (textareaRef.current && formRef.current) {
+            textareaRef.current.style.height = "auto";
+            formRef.current.style.height = "80px";
+        }
     
         try {
             const res = await fetch("http://localhost:1000/AIChat", {
@@ -73,7 +83,8 @@ export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
             });
     
             if (res.ok) {
-                input.value = ""; 
+                
+                setTimeout(scrollToBottom, 100); 
                 const data = await res.json();
     
                 const aiReply = data.reply || data.content || "Không có phản hồi";
@@ -94,8 +105,8 @@ export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
         }
     };
 
+    // Lấy chat từ local
     const [chatHistory, setChatHistory] = useState<any[]>([]);
-    
     useEffect(() => {
         const storedChat = localStorage.getItem("chatHistory");
 
@@ -106,9 +117,8 @@ export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
         }
     }, []);
     
-
+    // Click ra ngoài
     const wrapperRef = useRef<HTMLDivElement>(null);
-
     useEffect(() => {
         const handleClickOutSide = (event: MouseEvent) => {
             if (
@@ -125,8 +135,20 @@ export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
         };
       }, [isOpen, onClose]);
 
+
+    //   Trượt xuống sau khi có res
+      const containerRef = useRef<HTMLDivElement | null>(null);
+      const scrollToBottom = () => {
+        if (containerRef.current) {
+          containerRef.current.scrollTo({
+            top: containerRef.current.scrollHeight,
+            behavior: "smooth"
+          });
+        }
+      };
+
   return (
-    <div ref={wrapperRef} className={`chatbot-wrapper ${isOpen ? "open" : "closed"}`}>
+    <div ref={wrapperRef} className={`chatbot-wrapper ${isOpen ? "open" : "closed"} ${className}`}>
       <div className="chatbot-inner">
         {/* Header */}
         <div className="chatbot-header">
@@ -136,13 +158,13 @@ export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
 
             <div className="chatbot-actions">
                 <button onClick={onClose} className="chatbot-close">
-                    <img src="./icons/Close.svg" alt="" />
+                    <img src="/icons/Close.svg" alt="" />
                 </button>
             </div>
         </div>
 
         {/* Chat box */}
-        <div className="chatbot-container">
+        <div className="chatbot-container" ref={containerRef}>
             {chatHistory.map((item, index) => (
                 <div className={`chat-content ${item.role === "user" ? "chat-item__content" : "chat-item__content--bot"}`}>
                     <div
@@ -175,7 +197,7 @@ export default function ChatBot({ isOpen, onClose }: ChatBotProps) {
 
             <div className="chatbot-form__actions">
                 <Button type="submit" className="chatbot-btn" to="" >
-                    <img src="./icons/Arrow-top.svg" alt="" />
+                    <img src="/icons/Arrow-top.svg" alt="" />
                 </Button>
             </div>
         </form>

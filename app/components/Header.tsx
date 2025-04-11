@@ -164,6 +164,9 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
             localStorage.removeItem("userInfo"); 
             localStorage.removeItem("myCourses");
+            localStorage.removeItem("lastSelectedLecture");
+            localStorage.removeItem("chatHistory");
+
 
             navigate("/");
             setRole(null);

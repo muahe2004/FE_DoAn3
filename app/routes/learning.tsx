@@ -4,6 +4,7 @@ import LearningHeader from "~/components/Learning-header";
 import Button from "~/components/Button";
 
 import "../styles/learning.css";
+import ChatBot from "~/components/ChatBot";
 
 
 export default function Learning() {
@@ -155,128 +156,135 @@ export default function Learning() {
         }
         fetchQuestion(); // ✅ gọi hàm
     }, [])
+
+    const [isChatOpen, setIsChatOpen] = useState(false);
+
+    const handleOpenChat = () => setIsChatOpen(true);
+    const handleCloseChat = () => setIsChatOpen(false);
       
   return (
     <div className="learning-wrapper">
-      <LearningHeader title="Học bài" className="learning-header"></LearningHeader>
-      
-      {/* Nội dung bài học */}
-      <div className="learning-inner">
-        <div className="learning-container">
-            
+        <LearningHeader title="Học bài" className="learning-header"></LearningHeader>
+        
+        {/* Nội dung bài học */}
+        <div className="learning-inner">
+            <div className="learning-container">
+                
 
-            {baiHoc && (
-                <>
-                    {/* Video */}
-                    <iframe
-                        className="learning-iframe"
-                        src={baiHoc ? baiHoc.video : "Đang tải video bài học ..."}
-                        title="YouTube Video"
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen
-                    >
-                    </iframe>
+                {baiHoc && (
+                    <>
+                        {/* Video */}
+                        <iframe
+                            className="learning-iframe"
+                            src={baiHoc ? baiHoc.video : "Đang tải video bài học ..."}
+                            title="YouTube Video"
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen
+                        >
+                        </iframe>
 
-                    <h2 className="learning-name">{baiHoc.tenBaiHoc}</h2>
-                    <p className="learning-desc">{baiHoc.moTaBaiHoc}</p>
-                </>
-            )}
+                        <h2 className="learning-name">{baiHoc.tenBaiHoc}</h2>
+                        <p className="learning-desc">{baiHoc.moTaBaiHoc}</p>
+                    </>
+                )}
 
 
-            <div className="learning-listQuesion">
-                <h2 className="learning-title">Câu hỏi ôn tập</h2>
-                {listCauHoi.map((cauHoi, index) => (
-                    <div className="listQuesion-item" key={cauHoi.maCauHoi}>
-                        <p className="listQuesion-item__ques">
-                        <strong>Câu {index + 1}: {cauHoi.noiDung}</strong>
-                        </p>
-                        <ul>
-                            {cauHoi.danhSachDapAn.map((dapAn) => {
-                                const selected = selectedAnswers[cauHoi.maCauHoi];
-                                const isSelected = selected === dapAn.maDapAn;
-                                const isCorrect =
-                                    typeof dapAn.laDapAnDung === 'object' &&
-                                    Array.isArray(dapAn.laDapAnDung.data)
-                                        ? dapAn.laDapAnDung.data[0] === 1
-                                        : dapAn.laDapAnDung === 1;
-                                const isWrongSelected = isSelected && !isCorrect;
-                                const shouldHighlightCorrect = selected && isCorrect;
+                <div className="learning-listQuesion">
+                    <h2 className="learning-title">Câu hỏi ôn tập</h2>
+                    {listCauHoi.map((cauHoi, index) => (
+                        <div className="listQuesion-item" key={cauHoi.maCauHoi}>
+                            <p className="listQuesion-item__ques">
+                            <strong>Câu {index + 1}: {cauHoi.noiDung}</strong>
+                            </p>
+                            <ul>
+                                {cauHoi.danhSachDapAn.map((dapAn) => {
+                                    const selected = selectedAnswers[cauHoi.maCauHoi];
+                                    const isSelected = selected === dapAn.maDapAn;
+                                    const isCorrect =
+                                        typeof dapAn.laDapAnDung === 'object' &&
+                                        Array.isArray(dapAn.laDapAnDung.data)
+                                            ? dapAn.laDapAnDung.data[0] === 1
+                                            : dapAn.laDapAnDung === 1;
+                                    const isWrongSelected = isSelected && !isCorrect;
+                                    const shouldHighlightCorrect = selected && isCorrect;
 
-                                return (
-                                    <li
-                                    key={dapAn.maDapAn}
-                                    className={`listQuesion-item__result
-                                        ${isSelected ? 'selected' : ''}
-                                        ${isWrongSelected ? 'uncorrect' : ''}
-                                        ${shouldHighlightCorrect ? 'correct' : ''}
-                                    `}
-                                    >
-                                        <input
-                                            className={`listQuesion-item__input
-                                                ${isWrongSelected ? 'input-uncorrect' : ''}
-                                                ${shouldHighlightCorrect ? 'input-correct' : ''}
-                                            `}
-                                            type="radio"
-                                            name={`cauHoi-${index}`}
-                                            id={dapAn.maDapAn}
-                                            disabled={!!selectedAnswers[cauHoi.maCauHoi]} // khóa chọn lại sau khi chọn
-                                            onChange={() =>
-                                            setSelectedAnswers((prev) => ({
-                                                ...prev,
-                                                [cauHoi.maCauHoi]: dapAn.maDapAn,
-                                            }))
-                                            }
-                                        />
-                                        <label className="listQuesion-item__label" htmlFor={dapAn.maDapAn}>
-                                            {dapAn.noiDungDapAn}
-                                        </label>
-                                    </li>
-                                );
-                            })}
+                                    return (
+                                        <li
+                                        key={dapAn.maDapAn}
+                                        className={`listQuesion-item__result
+                                            ${isSelected ? 'selected' : ''}
+                                            ${isWrongSelected ? 'uncorrect' : ''}
+                                            ${shouldHighlightCorrect ? 'correct' : ''}
+                                        `}
+                                        >
+                                            <input
+                                                className={`listQuesion-item__input
+                                                    ${isWrongSelected ? 'input-uncorrect' : ''}
+                                                    ${shouldHighlightCorrect ? 'input-correct' : ''}
+                                                `}
+                                                type="radio"
+                                                name={`cauHoi-${index}`}
+                                                id={dapAn.maDapAn}
+                                                disabled={!!selectedAnswers[cauHoi.maCauHoi]} // khóa chọn lại sau khi chọn
+                                                onChange={() =>
+                                                setSelectedAnswers((prev) => ({
+                                                    ...prev,
+                                                    [cauHoi.maCauHoi]: dapAn.maDapAn,
+                                                }))
+                                                }
+                                            />
+                                            <label className="listQuesion-item__label" htmlFor={dapAn.maDapAn}>
+                                                {dapAn.noiDungDapAn}
+                                            </label>
+                                        </li>
+                                    );
+                                })}
 
-                        </ul>
-                    </div>
-                    ))}
+                            </ul>
+                        </div>
+                        ))}
+
+                </div>
 
             </div>
 
-        </div>
+            {/* Side bar */}
+            <div className="learning-sidebar">
+                <div className="learning-accordion">
+                    <div className="learning-accordion__inner">
+                        {chuongHocList.map((chuong, index) => (
+                        <div className="learning-accordion__item" key={chuong.maChuongHoc}>
+                            <div className="learning-accordion__head">
+                                <button type="button" className="learning-accordion__lesson" onClick={() => toggleAccordion(index)}>
+                                    {index + 1}. {chuong.tenChuongHoc} 
+                                </button>
+                            </div>
 
-        {/* Side bar */}
-        <div className="learning-sidebar">
-            <div className="learning-accordion">
-                <div className="learning-accordion__inner">
-                    {chuongHocList.map((chuong, index) => (
-                    <div className="learning-accordion__item" key={chuong.maChuongHoc}>
-                        <div className="learning-accordion__head">
-                            <button type="button" className="learning-accordion__lesson" onClick={() => toggleAccordion(index)}>
-                                {index + 1}. {chuong.tenChuongHoc} 
-                            </button>
+                            <div className={`learning-accordion__content ${openIndexes.includes(index) ? "open" : ""}`}>
+                                <ul className="learning-accordion__list">
+                                    {chuong.danhSachBaiHoc.map((baiHoc, baiIndex) => (
+                                        <li key={baiHoc.maBaiHoc} className="learning-accordion__list--item">
+                                            <button
+                                                onClick={() => handleClickBaiHoc(baiHoc.maBaiHoc)}
+                                                className="learning-accordion__list--btn"
+                                            >
+                                                {index + 1}.{baiIndex + 1} {baiHoc.tenBaiHoc}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
-
-                        <div className={`learning-accordion__content ${openIndexes.includes(index) ? "open" : ""}`}>
-                            <ul className="learning-accordion__list">
-                                {chuong.danhSachBaiHoc.map((baiHoc, baiIndex) => (
-                                    <li key={baiHoc.maBaiHoc} className="learning-accordion__list--item">
-                                        <button
-                                            onClick={() => handleClickBaiHoc(baiHoc.maBaiHoc)}
-                                            className="learning-accordion__list--btn"
-                                        >
-                                            {index + 1}.{baiIndex + 1} {baiHoc.tenBaiHoc}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
+                        ))}
                     </div>
-                    ))}
                 </div>
             </div>
         </div>
-      </div>
 
-      <div className="learning-action">
+        <div className="learning-action">
             <div className="learning-action__discussion">
+                <Button onClick={handleOpenChat} className="learning-action__button--AI" type="button">AI</Button>
+
                 <button className="learning-action__button">
                     <img className="learning-action__icon" src="/icons/Question.svg" alt="" />
                 </button>
@@ -290,7 +298,9 @@ export default function Learning() {
             <div className="learning-action__lesson">
                 <span className="">Giới thiệu về khóa học</span>
             </div>
-      </div>
+        </div>
+
+        <ChatBot className="learning-chatbot" isOpen={isChatOpen} onClose={handleCloseChat} ></ChatBot>
     </div>
   );
 }
