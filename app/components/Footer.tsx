@@ -2,6 +2,8 @@ import {Link} from "react-router-dom";
 
 
 import "../styles/footer.css";
+import "../styles/Responsive/Components/Footer.css";
+
 
 interface FooterProps {
     className?: string; // Tuỳ chọn thêm className nếu cần

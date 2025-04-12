@@ -1,6 +1,8 @@
 import Button from "~/components/Button";
 
 import "../styles/chat-bot.css";
+import "../styles/Responsive/Components/chat-bot.css";
+
 import { use, useEffect, useRef, useState } from "react";
 
 type ChatBotProps = {
