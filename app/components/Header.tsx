@@ -3,6 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import Button from "./Button";
 import axios from "axios";
 import "../styles/header.css";
+import "../styles/Responsive/Components/header.css";
 
 interface HeaderProps {
     title: string;
@@ -233,8 +234,8 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                         </div>
                     ) : (
                         <div className="header-container header-container__logout">
-                            <Button className="button-secondary header-btn" to="/register">Đăng ký</Button>
-                            <Button className="header-btn" to="/login">Đăng nhập</Button>
+                            <Button className="button-secondary header-btn header-btn__register" to="/register">Đăng ký</Button>
+                            <Button className="header-btn header-btn__login" to="/login">Đăng nhập</Button>
                         </div>
                     )
                 }

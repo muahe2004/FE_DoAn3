@@ -7,7 +7,7 @@ import Navbar from "~/components/Navbar";
 import Course from "~/components/Course";
 
 import "../styles/home.css";
-import ChatBot from "~/components/ChatBot";
+import "../styles/Responsive/home.css";
 
 interface KhoaHoc {
   maKhoaHoc: string;
@@ -99,7 +99,7 @@ export default function Home() {
       <section className="courses-container">
         <h2 className="container-title">Khóa học Pro</h2>
         <div className="list-courses">
-          {
+          {/* {
             listFeeCourse.map((khoaHoc, indexx) => (
               <Course 
                 key={khoaHoc.maKhoaHoc}
@@ -112,7 +112,48 @@ export default function Home() {
                 tongSoBaiHoc={khoaHoc.tongSoBaiHoc}
             ></Course>
             ))
-          }
+          } */}
+
+          <Course
+            maKhoaHoc="kh001"
+            tenKhoaHoc="Javascript"
+            giaBan="300000"
+            hinhAnh="./images/COURSE.png"
+            doKho="Dễ"
+            children=""
+            tongSoBaiHoc="10">
+          </Course>
+
+          <Course
+            maKhoaHoc="kh001"
+            tenKhoaHoc="Javascript"
+            giaBan="300000"
+            hinhAnh="./images/COURSE.png"
+            doKho="Dễ"
+            children=""
+            tongSoBaiHoc="10">
+          </Course>
+
+          <Course
+            maKhoaHoc="kh001"
+            tenKhoaHoc="Javascript"
+            giaBan="300000"
+            hinhAnh="./images/COURSE.png"
+            doKho="Dễ"
+            children=""
+            tongSoBaiHoc="10">
+          </Course>
+
+          <Course
+            maKhoaHoc="kh001"
+            tenKhoaHoc="Javascript"
+            giaBan="300000"
+            hinhAnh="./images/COURSE.png"
+            doKho="Dễ"
+            children=""
+            tongSoBaiHoc="10">
+          </Course>
+
         </div>
       </section>
 
@@ -120,7 +161,7 @@ export default function Home() {
       <section className="courses-container">
         <h2 className="container-title">Khóa học miễn phí</h2>
         <div className="list-courses">
-          {
+          {/* {
             listFreeCourses.map((khoaHoc, index) => (
               <Course 
                 key={khoaHoc.maKhoaHoc}
@@ -133,7 +174,47 @@ export default function Home() {
                 tongSoBaiHoc={khoaHoc.tongSoBaiHoc}
             ></Course>
             ))
-          }
+          } */}
+
+<Course
+            maKhoaHoc="kh001"
+            tenKhoaHoc="Javascript"
+            giaBan="300000"
+            hinhAnh="./images/COURSE.png"
+            doKho="Dễ"
+            children=""
+            tongSoBaiHoc="10">
+          </Course>
+
+          <Course
+            maKhoaHoc="kh001"
+            tenKhoaHoc="Javascript"
+            giaBan="300000"
+            hinhAnh="./images/COURSE.png"
+            doKho="Dễ"
+            children=""
+            tongSoBaiHoc="10">
+          </Course>
+
+          <Course
+            maKhoaHoc="kh001"
+            tenKhoaHoc="Javascript"
+            giaBan="300000"
+            hinhAnh="./images/COURSE.png"
+            doKho="Dễ"
+            children=""
+            tongSoBaiHoc="10">
+          </Course>
+
+          <Course
+            maKhoaHoc="kh001"
+            tenKhoaHoc="Javascript"
+            giaBan="300000"
+            hinhAnh="./images/COURSE.png"
+            doKho="Dễ"
+            children=""
+            tongSoBaiHoc="10">
+          </Course>
         </div>
       </section>
 

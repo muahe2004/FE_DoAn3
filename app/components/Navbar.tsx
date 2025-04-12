@@ -1,8 +1,8 @@
-import ChatBot from "./ChatBot";
-
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/navbar.css";
-import { useState } from "react";
+import "../styles/Responsive/Components/navbar.css";
+import ChatBot from "./ChatBot";
 import Button from "./Button";
 
 export default function Navbar() {

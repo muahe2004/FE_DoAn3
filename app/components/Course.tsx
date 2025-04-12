@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/course.css";
+import "../styles/Responsive/Components/course.css";
 
 interface CourseProps {
     maKhoaHoc: string; 
