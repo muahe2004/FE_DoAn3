@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import "../styles/learning-header.css";
+import "../styles/Responsive/Components/learning-header.css";
+
 
 interface LearningHeaderProps {
     title: string;

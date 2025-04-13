@@ -8,6 +8,45 @@ import ChatBot from "~/components/ChatBot";
 import "../styles/learning.css";
 import "../styles/Responsive/learning.css";
 
+const chuongHocListFake = [
+    {
+      maChuongHoc: 1,
+      tenChuongHoc: "Giới thiệu về JavaScript",
+      danhSachBaiHoc: [
+        { maBaiHoc: 1, tenBaiHoc: "Lời khuyên trước khóa học" },
+        { maBaiHoc: 2, tenBaiHoc: "Cài đặt môi trường" },
+        { maBaiHoc: 3, tenBaiHoc: "Giới thiệu về JavaScript" }
+      ]
+    },
+    {
+      maChuongHoc: 2,
+      tenChuongHoc: "Biến và kiểu dữ liệu",
+      danhSachBaiHoc: [
+        { maBaiHoc: 4, tenBaiHoc: "Sử dụng biến trong JavaScript" },
+        { maBaiHoc: 5, tenBaiHoc: "Các kiểu dữ liệu cơ bản" },
+        { maBaiHoc: 6, tenBaiHoc: "Kiểu dữ liệu Object" }
+      ]
+    },
+    {
+      maChuongHoc: 3,
+      tenChuongHoc: "Câu lệnh điều kiện và vòng lặp",
+      danhSachBaiHoc: [
+        { maBaiHoc: 7, tenBaiHoc: "Câu lệnh if-else" },
+        { maBaiHoc: 8, tenBaiHoc: "Toán tử logic" },
+        { maBaiHoc: 9, tenBaiHoc: "Vòng lặp for và while" }
+      ]
+    },
+    {
+      maChuongHoc: 4,
+      tenChuongHoc: "Functions trong JavaScript",
+      danhSachBaiHoc: [
+        { maBaiHoc: 10, tenBaiHoc: "Hàm là gì?" },
+        { maBaiHoc: 11, tenBaiHoc: "Định nghĩa hàm" },
+        { maBaiHoc: 12, tenBaiHoc: "Hàm bậc cao" }
+      ]
+    }
+  ];
+
 
 
 export default function Learning() {
@@ -295,9 +334,14 @@ export default function Learning() {
 
             {/* Side bar mobile*/}
             <div className={`learning-sidebar__mobile ${isSidebarOpen ? 'open' : ''}`}>
+                <div className="learning-sidebar__act">
+                    <button onClick={handleCloseMenu} className="learning-sidebar__btn">
+                        <img className="learning-sidebar__icon" src="/icons/Arrow-left.svg" alt="" />
+                    </button>
+                </div>
                 <div className="learning-accordion">
                     <div className="learning-accordion__inner">
-                        {chuongHocList.map((chuong, index) => (
+                        {chuongHocListFake.map((chuong, index) => (
                         <div className="learning-accordion__item" key={chuong.maChuongHoc}>
                             <div className="learning-accordion__head">
                                 <button type="button" className="learning-accordion__lesson" onClick={() => toggleAccordion(index)}>
