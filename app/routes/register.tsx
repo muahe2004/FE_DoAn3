@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "~/components/Button";
 
 import "../styles/register.css";
+import "../styles/Responsive/register.css";
 
 export default function Register() {
   const navigate = useNavigate();

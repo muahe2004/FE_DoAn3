@@ -1,0 +1,32 @@
+
+/* PC */
+@media screen and (min-width: 992px) {
+    
+}
+
+/* Tablet and mobile*/
+@media screen and (max-width: 991.98px) {
+    
+}
+       
+
+/* Tablet */
+@media screen and (min-width: 768px) and (max-width: 990.98px){
+        
+}
+
+/* Mobile */
+@media screen and (max-width: 767.98px) {
+
+    .login-wrapper {
+        /* height: 800px; */
+        height: 100vh;
+    }
+
+    .login-inner {
+        width: calc(100% - 20px);
+        height: 60%;
+    }
+
+    
+}    

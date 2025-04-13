@@ -36,16 +36,20 @@ const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, hinhAnh, 
     }
   };
 
+  const handleCourseClickFake = () => {
+    navigate(`/learning/KH002`);
+  };
+
   return (
     <div className="course">
       {/* Sự kiện onClick để điều hướng khi click vào khóa học */}
-      <div onClick={handleCourseClick}>
+      <div onClick={handleCourseClickFake}>
         <img src={hinhAnh} alt={tenKhoaHoc} className="course-image" />
       </div>
 
       <section className="course-content">
         <h3 className="course-comp_name">
-          <span onClick={handleCourseClick}>{tenKhoaHoc}</span>
+          <span onClick={handleCourseClickFake}>{tenKhoaHoc}</span>
         </h3>
 
         <div className="price-container">

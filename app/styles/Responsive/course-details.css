@@ -1,0 +1,59 @@
+
+/* PC */
+@media screen and (min-width: 992px) {
+    
+}
+
+/* Tablet and mobile*/
+@media screen and (max-width: 991.98px) {
+    
+}
+       
+
+/* Tablet */
+@media screen and (min-width: 768px) and (max-width: 990.98px){
+        
+}
+
+/* Mobile */
+@media screen and (max-width: 767.98px) {
+
+    .course-details__inner {
+        margin-top: 60px;
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .course-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .course-info {
+        width: 100%;
+    }
+
+    .course-video__thumb {
+        /* display: none; */
+        /* position: fixed;
+        background: #fff;
+        bottom: 0; */
+        /* height: 60px; */
+        /* display: none; */
+        width: 100%;
+    }
+
+    .course-video__iframe {
+        /* display: none; */
+        /* height: 250px; */
+    }
+
+    .course-accordion__lesson {
+        width: 100%;
+    }
+
+    .course-accordion__list--item {
+        width: 100%;
+    }
+    
+}    

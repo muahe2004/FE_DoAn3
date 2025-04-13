@@ -6,7 +6,7 @@ import CryptoJS from "crypto-js";
 import Button from "~/components/Button";
 
 import "../styles/login.css";
-
+import "../styles/Responsive/login.css";
 
 export default function Login() {
     const navigate = useNavigate(); 

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { data, Link } from "react-router-dom"
 
+
+
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
@@ -22,6 +24,9 @@ interface KhoaHoc {
 
 
 export default function Home() {
+
+  // const API_URL = import.meta.env.VITE_API_URL;
+
 
   const slideRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -55,9 +60,10 @@ export default function Home() {
   
 
   useEffect(() => {
-    fetch('http://localhost:1000/api/courses/get-home-no-fee-courses')
+    fetch(`http://localhost:1000/api/courses/get-home-no-fee-courses`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setListFreeCourse(data);
       })
       .catch((err) => {
@@ -114,46 +120,16 @@ export default function Home() {
             ))
           } */}
 
-          <Course
-            maKhoaHoc="kh001"
-            tenKhoaHoc="Javascript"
-            giaBan="300000"
-            hinhAnh="./images/COURSE.png"
-            doKho="Dễ"
-            children=""
-            tongSoBaiHoc="10">
-          </Course>
-
-          <Course
-            maKhoaHoc="kh001"
-            tenKhoaHoc="Javascript"
-            giaBan="300000"
-            hinhAnh="./images/COURSE.png"
-            doKho="Dễ"
-            children=""
-            tongSoBaiHoc="10">
-          </Course>
-
-          <Course
-            maKhoaHoc="kh001"
-            tenKhoaHoc="Javascript"
-            giaBan="300000"
-            hinhAnh="./images/COURSE.png"
-            doKho="Dễ"
-            children=""
-            tongSoBaiHoc="10">
-          </Course>
-
-          <Course
-            maKhoaHoc="kh001"
-            tenKhoaHoc="Javascript"
-            giaBan="300000"
-            hinhAnh="./images/COURSE.png"
-            doKho="Dễ"
-            children=""
-            tongSoBaiHoc="10">
-          </Course>
-
+            <Course 
+              key="KH002"
+              maKhoaHoc="KH002"
+              tenKhoaHoc="Javascript"
+              giaBan={new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", minimumFractionDigits: 0 }).format(100000)}
+              hinhAnh="http://localhost:1000/uploads/COURSE.png"
+              doKho="dễ"
+              children=""
+              tongSoBaiHoc="10"
+          ></Course>
         </div>
       </section>
 
@@ -176,45 +152,7 @@ export default function Home() {
             ))
           } */}
 
-<Course
-            maKhoaHoc="kh001"
-            tenKhoaHoc="Javascript"
-            giaBan="300000"
-            hinhAnh="./images/COURSE.png"
-            doKho="Dễ"
-            children=""
-            tongSoBaiHoc="10">
-          </Course>
-
-          <Course
-            maKhoaHoc="kh001"
-            tenKhoaHoc="Javascript"
-            giaBan="300000"
-            hinhAnh="./images/COURSE.png"
-            doKho="Dễ"
-            children=""
-            tongSoBaiHoc="10">
-          </Course>
-
-          <Course
-            maKhoaHoc="kh001"
-            tenKhoaHoc="Javascript"
-            giaBan="300000"
-            hinhAnh="./images/COURSE.png"
-            doKho="Dễ"
-            children=""
-            tongSoBaiHoc="10">
-          </Course>
-
-          <Course
-            maKhoaHoc="kh001"
-            tenKhoaHoc="Javascript"
-            giaBan="300000"
-            hinhAnh="./images/COURSE.png"
-            doKho="Dễ"
-            children=""
-            tongSoBaiHoc="10">
-          </Course>
+        
         </div>
       </section>
 

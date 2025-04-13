@@ -2,9 +2,12 @@ import { Link, useParams } from "react-router-dom";
 import { useEffect, useReducer, useState } from "react";
 import LearningHeader from "~/components/Learning-header";
 import Button from "~/components/Button";
+import ChatBot from "~/components/ChatBot";
+
 
 import "../styles/learning.css";
-import ChatBot from "~/components/ChatBot";
+import "../styles/Responsive/learning.css";
+
 
 
 export default function Learning() {
@@ -161,6 +164,18 @@ export default function Learning() {
 
     const handleOpenChat = () => setIsChatOpen(true);
     const handleCloseChat = () => setIsChatOpen(false);
+
+
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    const handleOpenMenu = () => {
+        setIsSidebarOpen(true); // Mở sidebar
+        console.log("Mở menu");
+    };
+
+    const handleCloseMenu = () => {
+        setIsSidebarOpen(false); // Đóng sidebar
+    };
       
   return (
     <div className="learning-wrapper">
@@ -169,11 +184,8 @@ export default function Learning() {
         {/* Nội dung bài học */}
         <div className="learning-inner">
             <div className="learning-container">
-                
-
                 {baiHoc && (
                     <>
-                        {/* Video */}
                         <iframe
                             className="learning-iframe"
                             src={baiHoc ? baiHoc.video : "Đang tải video bài học ..."}
@@ -187,7 +199,6 @@ export default function Learning() {
                         <p className="learning-desc">{baiHoc.moTaBaiHoc}</p>
                     </>
                 )}
-
 
                 <div className="learning-listQuesion">
                     <h2 className="learning-title">Câu hỏi ôn tập</h2>
@@ -248,8 +259,42 @@ export default function Learning() {
 
             </div>
 
+
+            {/*  */}
             {/* Side bar */}
-            <div className="learning-sidebar">
+            <div className="learning-sidebar ">
+                <div className="learning-accordion">
+                    <div className="learning-accordion__inner">
+                        {chuongHocList.map((chuong, index) => (
+                        <div className="learning-accordion__item" key={chuong.maChuongHoc}>
+                            <div className="learning-accordion__head">
+                                <button type="button" className="learning-accordion__lesson" onClick={() => toggleAccordion(index)}>
+                                    {index + 1}. {chuong.tenChuongHoc} 
+                                </button>
+                            </div>
+
+                            <div className={`learning-accordion__content ${openIndexes.includes(index) ? "open" : ""}`}>
+                                <ul className="learning-accordion__list">
+                                    {chuong.danhSachBaiHoc.map((baiHoc, baiIndex) => (
+                                        <li key={baiHoc.maBaiHoc} className="learning-accordion__list--item">
+                                            <button
+                                                onClick={() => handleClickBaiHoc(baiHoc.maBaiHoc)}
+                                                className="learning-accordion__list--btn"
+                                            >
+                                                {index + 1}.{baiIndex + 1} {baiHoc.tenBaiHoc}
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Side bar mobile*/}
+            <div className={`learning-sidebar__mobile ${isSidebarOpen ? 'open' : ''}`}>
                 <div className="learning-accordion">
                     <div className="learning-accordion__inner">
                         {chuongHocList.map((chuong, index) => (
@@ -287,6 +332,10 @@ export default function Learning() {
 
                 <button className="learning-action__button">
                     <img className="learning-action__icon" src="/icons/Question.svg" alt="" />
+                </button>
+
+                <button onClick={handleOpenMenu} className="learning-action__button learning-action__menu">
+                    <img className="learning-action__icon" src="/icons/menu.svg" alt="" />
                 </button>
             </div>
 

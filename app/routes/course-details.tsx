@@ -8,13 +8,53 @@ import Button from "~/components/Button";
 import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/course-details.css";
+import "../styles/Responsive/course-details.css";
 // import { userInfo } from "os";
 
 
 interface UserInfo {
     maNguoiDung: string;
     email: string;
-  }
+};
+
+const chuongHocListFake = [
+    {
+      maChuongHoc: 1,
+      tenChuongHoc: "Giới thiệu về JavaScript",
+      danhSachBaiHoc: [
+        { maBaiHoc: 1, tenBaiHoc: "Lời khuyên trước khóa học" },
+        { maBaiHoc: 2, tenBaiHoc: "Cài đặt môi trường" },
+        { maBaiHoc: 3, tenBaiHoc: "Giới thiệu về JavaScript" }
+      ]
+    },
+    {
+      maChuongHoc: 2,
+      tenChuongHoc: "Biến và kiểu dữ liệu",
+      danhSachBaiHoc: [
+        { maBaiHoc: 4, tenBaiHoc: "Sử dụng biến trong JavaScript" },
+        { maBaiHoc: 5, tenBaiHoc: "Các kiểu dữ liệu cơ bản" },
+        { maBaiHoc: 6, tenBaiHoc: "Kiểu dữ liệu Object" }
+      ]
+    },
+    {
+      maChuongHoc: 3,
+      tenChuongHoc: "Câu lệnh điều kiện và vòng lặp",
+      danhSachBaiHoc: [
+        { maBaiHoc: 7, tenBaiHoc: "Câu lệnh if-else" },
+        { maBaiHoc: 8, tenBaiHoc: "Toán tử logic" },
+        { maBaiHoc: 9, tenBaiHoc: "Vòng lặp for và while" }
+      ]
+    },
+    {
+      maChuongHoc: 4,
+      tenChuongHoc: "Functions trong JavaScript",
+      danhSachBaiHoc: [
+        { maBaiHoc: 10, tenBaiHoc: "Hàm là gì?" },
+        { maBaiHoc: 11, tenBaiHoc: "Định nghĩa hàm" },
+        { maBaiHoc: 12, tenBaiHoc: "Hàm bậc cao" }
+      ]
+    }
+  ];
 
 
 export default function CourseDetails() {
@@ -207,9 +247,9 @@ export default function CourseDetails() {
         <div className="course-details__inner">
             <div className="course-container">
                 <div className="course-info">
-                    <h1 className="course-info__name">{tenKhoaHoc}</h1>
+                    <h1 className="course-info__name">{tenKhoaHoc || "Javascriot cơ bản"}</h1>
                     <p className="course-info__desc">
-                        {moTaKhoaHoc}
+                        {moTaKhoaHoc || "Khóa học giúp người dùng thành thạo Javascript căn bản"} 
                     </p>
                     
                     {/* Danh sách chương. bài học */}

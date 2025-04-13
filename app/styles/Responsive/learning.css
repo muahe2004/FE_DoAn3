@@ -1,0 +1,96 @@
+
+/* PC */
+@media screen and (min-width: 992px) {
+    .learning-action__menu {
+        display: none;
+    }
+}
+
+/* Tablet and mobile*/
+@media screen and (max-width: 991.98px) {
+    
+}
+       
+
+/* Tablet */
+@media screen and (min-width: 768px) and (max-width: 990.98px){
+    .learning-action__menu {
+        display: none;
+    }
+}
+
+/* Mobile */
+@media screen and (max-width: 767.98px) {
+
+    .learning-sidebar {
+        display: none;
+    }
+
+    .learning-sidebar__mobile {
+        position: fixed;
+        top: 60px;
+        right: 0;
+        width: 100%;
+        height: calc(100vh - 120px);
+        background: #282a30;
+        overflow-y: auto;
+        scrollbar-width: thin; 
+        transform: translateX(100%);
+        transition: transform 0.5s ease-in-out;
+        /* z-index: 999; */
+    }
+    
+    /* Khi mở */
+    .learning-sidebar__mobile.open {
+        transform: translateX(0%);
+    }
+    
+
+    .learning-container {
+        width: 100%;
+    }
+
+    .learning-iframe {
+        width: 100%;
+        height: 250px;
+    }
+
+    .learning-name {
+        padding-left: 10px;
+        margin-bottom: 10px;
+    }
+
+    .learning-desc {
+        padding-left: 10px;
+    }
+
+    .learning-listQuesion {
+        /* display: none; */
+        padding: 0 10px;
+    }
+
+    .listQuesion-item__result {
+        width: 100%;
+    }
+
+    .learning-action {
+        padding: 10px;
+    }
+
+    .learning-action__timeline {
+        width: 62.5%;
+    }
+
+    .learning-action__btn {
+        font-size: 14px;
+    }
+
+    .learning-action__btn {
+        margin-right: 10px;
+    }
+
+    .learning-action__lesson {
+        display: none;
+    }
+    
+}    
