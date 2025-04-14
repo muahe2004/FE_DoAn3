@@ -144,7 +144,7 @@ export default function Login() {
                 <Button className="login-btn" type="submit" to="">Đăng nhập</Button>
                 <Button
                     className="login-btn login-google"
-                    onClick={() => window.location.href = "http://localhost:1000/auth/google/callback"}
+                    onClick={() => window.location.href = "http://localhost:1000/auth/google"}
                     >
                     <img className="login-icon" src="./icons/Google.svg" alt="" />
                     Đăng nhập bằng Google

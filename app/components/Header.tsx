@@ -280,6 +280,12 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                             </span>
                         </div>
 
+                        <div className="header-action__row header-action__row--courses">
+                            <span className="header-action__item">
+                                <Link className="header-action__link" to="/payment">Khóa học của tôi</Link>
+                            </span>
+                        </div>
+
                         <div className="header-action__row">
                             <span className="header-action__item">
                                 <Link className="header-action__link" to="/payment">Nạp tiền</Link>

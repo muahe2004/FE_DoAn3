@@ -1,6 +1,8 @@
 import Button from "~/components/Button";
 
 import "../styles/payment-done.css";
+import "../styles/Responsive/payment-done.css";
+
 
 
 export default function PaymentDone() {

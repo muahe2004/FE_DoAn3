@@ -5,6 +5,8 @@ import Navbar from "~/components/Navbar";
 import Button from "~/components/Button";
 
 import "../styles/payment.css";
+import "../styles/Responsive/payment.css";
+
 
 
 export default function Payment() {

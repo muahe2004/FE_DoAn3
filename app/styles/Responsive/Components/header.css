@@ -1,6 +1,10 @@
 
 /* PC */
 @media screen and (min-width: 992px) {
+
+    .header-action__row--courses {
+        display: none;
+    }
     
 }
 
@@ -49,14 +53,15 @@
     }
 
     .header-icon {
-        top: 10px;
+        top: 12px;
         width: 18px;
         height: 18px;
     }
 
     .header-input {
         padding: 5px;
-        font-size: 16px;
+        font-size: 14px;
+        padding-left: 36px;
     }
 
     .header-container__logout {
@@ -80,4 +85,21 @@
         border-radius: 999px;
     }
     
+    .header-menu {
+        display: none;
+    }
+
+    .header-avatar {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header-notify {
+        width: 20px;
+        height: 20px;
+    }
+
+    .header-action {
+        top: 65px;
+    }
 }    
