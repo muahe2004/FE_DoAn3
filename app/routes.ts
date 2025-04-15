@@ -9,6 +9,7 @@ export default [
     route("admin-analytics", "routes/adm-analytics.tsx"),
     route("learning/:maKhoaHoc", "routes/learning.tsx"),
     route("about", "routes/about.tsx"),
+    route("my-courses", "routes/mycourses.tsx"),
     route("contact", "routes/contact.tsx"),
     route("purview", "routes/purview.tsx"),
     route("payment", "routes/payment.tsx"),

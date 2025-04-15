@@ -43,13 +43,13 @@ const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, hinhAnh, 
   return (
     <div className="course">
       {/* Sự kiện onClick để điều hướng khi click vào khóa học */}
-      <div onClick={handleCourseClickFake}>
+      <div onClick={handleCourseClick}>
         <img src={hinhAnh} alt={tenKhoaHoc} className="course-image" />
       </div>
 
       <section className="course-content">
         <h3 className="course-comp_name">
-          <span onClick={handleCourseClickFake}>{tenKhoaHoc}</span>
+          <span onClick={handleCourseClick}>{tenKhoaHoc}</span>
         </h3>
 
         <div className="price-container">
