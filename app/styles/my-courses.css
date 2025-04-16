@@ -1,13 +1,9 @@
 .my-courses__wrapper {
     width: 100%;
-    height: 100vh;
-
-    /* background: yellow; */
 }
 
 .my-courses__inner {
     width: calc(100% - 120px);
-    /* height: calc(100% - 90px); */
     background: #fff;
     margin-left: 110px;
     margin-top: 90px;
@@ -25,7 +21,6 @@
     border-radius: 8px;
     margin-bottom: 20px;
     margin-left: 12px;
-    /* background: yellow; */
     overflow: hidden;
     transition: .25s;
 }
@@ -36,7 +31,6 @@
 }
 
 .courses-card:nth-child(4n - 3) {
-    /* CSS ở đây */
     margin-left: 0;
 }
 
@@ -54,10 +48,8 @@
 .courses-card__content {
     display: block;
     align-items: center;
-    /* background: yellowgreen; */
     height: 30%;
     width: 100%;
-    /* justify-content: center; */
     margin-top: 5px;
 }
 

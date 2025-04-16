@@ -2,8 +2,12 @@ import { Link } from "react-router-dom";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
+import { useEffect, useState } from "react";
+
 
 import "../styles/my-courses.css";
+import "../styles/Responsive/my-courses.css";
+
 
 const fakeMyCourses = [
   {
@@ -44,9 +48,29 @@ const fakeMyCourses = [
   }
 ]
 
+interface RegisteredCourse {
+  maKhoaHoc: string;
+  tenKhoaHoc: string;
+  hinhAnh: string;
+  trangThai: string;
+}
+
 
 
 export default function MyCourses() {
+
+  const [myCourses, setMyCourses] = useState<RegisteredCourse []>([]);
+
+  useEffect(() => {
+    const listCourses = localStorage.getItem("myCourses");
+
+    if (!listCourses) {
+      setMyCourses([]);
+    } else {
+      setMyCourses(JSON.parse(listCourses));
+    }
+  })
+
   return (
     <div className="my-courses__wrapper">
       <Header title="Khóa học của tôi"></Header>
@@ -55,15 +79,15 @@ export default function MyCourses() {
       <div className="my-courses__inner">
 
         {
-          fakeMyCourses.map((course) => (
-            <div className="courses-card">
+          myCourses.map((course) => (
+            <Link to="/" className="courses-card" key={course.maKhoaHoc}>
               <div className="courses-card__thumb">
                 <img src={course.hinhAnh} alt="" className="courses-card__image" />
               </div>
               <div className="courses-card__content">
                 <span className="courses-card__name">{course.tenKhoaHoc}</span>
               </div>
-            </div>
+            </Link>
           ))
         }
 
@@ -74,7 +98,7 @@ export default function MyCourses() {
       </div>
 
       
-      {/* <Footer></Footer> */}
+      <Footer></Footer>
       
     </div>
     
