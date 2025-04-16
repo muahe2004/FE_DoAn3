@@ -69,7 +69,7 @@ export default function MyCourses() {
     } else {
       setMyCourses(JSON.parse(listCourses));
     }
-  })
+  }, [])
 
   return (
     <div className="my-courses__wrapper">
@@ -80,7 +80,7 @@ export default function MyCourses() {
 
         {
           myCourses.map((course) => (
-            <Link to="/" className="courses-card" key={course.maKhoaHoc}>
+            <Link to={`/learning/${course.maKhoaHoc}`} className="courses-card" key={course.maKhoaHoc}>
               <div className="courses-card__thumb">
                 <img src={course.hinhAnh} alt="" className="courses-card__image" />
               </div>
@@ -90,16 +90,8 @@ export default function MyCourses() {
             </Link>
           ))
         }
-
-        
-
-        
-
       </div>
-
-      
       <Footer></Footer>
-      
     </div>
     
   );

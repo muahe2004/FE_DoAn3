@@ -55,6 +55,26 @@ export default function Learning() {
         { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
     >([]);
 
+    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    // Accordion
+    const [openIndexes, setOpenIndexes] = useState<number[]>([]);
+
+    const [baiHoc, setBaiHoc] = useState<any>(null);
+
+    const [selectedAnswers, setSelectedAnswers] = useState<AnswerMap>({});
+
+    const [listCauHoi, setListCauHoi] = useState<
+        { maCauHoi: string; noiDung: string; danhSachDapAn: any[]} []
+    >([]);
+    const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
+
+
+    useEffect(() => {
+        fetchQuestion();
+    }, []);
+
     // API load chương, bài học
     useEffect(() => {
         const fetchLessons = async () => {
@@ -90,9 +110,7 @@ export default function Learning() {
         fetchLessons();
     }, [maKhoaHoc]); 
 
-    // Accordion
-    const [openIndexes, setOpenIndexes] = useState<number[]>([]);
-
+    
     // Hàm xử lý mở/đóng accordion
     const toggleAccordion = (index: number) => {
         setOpenIndexes((prevIndexes) =>
@@ -102,14 +120,12 @@ export default function Learning() {
         );
     };
 
-
-    // lấy luôn bài học đầu tiên
-    const [baiHoc, setBaiHoc] = useState<any>(null);
+    // Lấy bài học đầu tiên
     useEffect(() => {
         if (chuongHocList.length > 0 && chuongHocList[0].danhSachBaiHoc.length > 0) {
             setBaiHoc(chuongHocList[0].danhSachBaiHoc[0]);
         }
-    }, [chuongHocList]); // Chỉ chạy khi chuongHocList thay đổi
+    }, [chuongHocList]); 
 
 
     // Lấy dữ liệu bài học khi click
@@ -121,7 +137,6 @@ export default function Learning() {
             const baiHoc = await res.json();
             setBaiHoc(baiHoc);
     
-            // Lưu vào localStorage
             localStorage.setItem("lastSelectedLecture", maBaiHoc);
         } catch (error) {
             console.error("Lỗi:", error);
@@ -157,55 +172,48 @@ export default function Learning() {
         [maCauHoi: string]: string;
     };
       
-    const [selectedAnswers, setSelectedAnswers] = useState<AnswerMap>({});
+    const fetchQuestion = async () => {
+        setIsLoadingQuestions(true);
+        const maBaiHoc  = localStorage.getItem("lastSelectedLecture");
+        try {
+            const res = await fetch(`http://localhost:1000/get-cau-hoi/${maBaiHoc}`);
 
-    const [listCauHoi, setListCauHoi] = useState<
-        { maCauHoi: string; noiDung: string; danhSachDapAn: any[]} []
-    >([]);
-    
-    useEffect(() => {
-        const fetchQuestion = async () => {
-            const maBaiHoc  = localStorage.getItem("lastSelectedLecture");
-            try {
-                const res = await fetch(`http://localhost:1000/get-cau-hoi/${maBaiHoc}`);
-
-                if (!res.ok) {console.log("Lỗi khi lấy câu hỏi!");}
-
-                const questions: { maCauHoi: string; noiDung: string; }[] = await res.json(); 
-
-                const questionsInfo = await Promise.all(
-                    questions.map(async (question) => {
-                        const resAnswer = await fetch(`http://localhost:1000/get-dap-an/${question.maCauHoi}`);
-                        let listAnswer = [];
-                        
-                        if (resAnswer.ok) {
-                            listAnswer = await resAnswer.json();
-                        }
-
-                        return {
-                            maCauHoi: question.maCauHoi,
-                            noiDung: question.noiDung,
-                            danhSachDapAn: listAnswer,
-                        };
-                    })
-                );
-                console.log("Danh sách câu hỏi:", questionsInfo); // ✅ log ra đây
-                setListCauHoi(questionsInfo);
-                
-            } catch (error) {
-                console.error("Lỗi:", error);
+            if (!res.ok) {
+                console.log("Lỗi khi lấy câu hỏi!");
+                setIsLoadingQuestions(false);
             }
-        }
-        fetchQuestion(); // ✅ gọi hàm
-    }, [])
 
-    const [isChatOpen, setIsChatOpen] = useState(false);
+            const questions: { maCauHoi: string; noiDung: string; }[] = await res.json(); 
+
+            const questionsInfo = await Promise.all(
+                questions.map(async (question) => {
+                    const resAnswer = await fetch(`http://localhost:1000/get-dap-an/${question.maCauHoi}`);
+                    let listAnswer = [];
+                    
+                    if (resAnswer.ok) {
+                        listAnswer = await resAnswer.json();
+                    }
+
+                    return {
+                        maCauHoi: question.maCauHoi,
+                        noiDung: question.noiDung,
+                        danhSachDapAn: listAnswer,
+                    };
+                })
+            );
+            setListCauHoi(questionsInfo);
+            setIsLoadingQuestions(false);
+            
+        } catch (error) {
+            console.error("Lỗi:", error);
+        }
+    }
+
 
     const handleOpenChat = () => setIsChatOpen(true);
     const handleCloseChat = () => setIsChatOpen(false);
 
-
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    
 
     const handleOpenMenu = () => {
         setIsSidebarOpen(true); // Mở sidebar
@@ -241,58 +249,62 @@ export default function Learning() {
 
                 <div className="learning-listQuesion">
                     <h2 className="learning-title">Câu hỏi ôn tập</h2>
-                    {listCauHoi.map((cauHoi, index) => (
-                        <div className="listQuesion-item" key={cauHoi.maCauHoi}>
-                            <p className="listQuesion-item__ques">
-                            <strong>Câu {index + 1}: {cauHoi.noiDung}</strong>
-                            </p>
-                            <ul>
-                                {cauHoi.danhSachDapAn.map((dapAn) => {
-                                    const selected = selectedAnswers[cauHoi.maCauHoi];
-                                    const isSelected = selected === dapAn.maDapAn;
-                                    const isCorrect =
-                                        typeof dapAn.laDapAnDung === 'object' &&
-                                        Array.isArray(dapAn.laDapAnDung.data)
-                                            ? dapAn.laDapAnDung.data[0] === 1
-                                            : dapAn.laDapAnDung === 1;
-                                    const isWrongSelected = isSelected && !isCorrect;
-                                    const shouldHighlightCorrect = selected && isCorrect;
-
-                                    return (
-                                        <li
-                                        key={dapAn.maDapAn}
-                                        className={`listQuesion-item__result
-                                            ${isSelected ? 'selected' : ''}
-                                            ${isWrongSelected ? 'uncorrect' : ''}
-                                            ${shouldHighlightCorrect ? 'correct' : ''}
-                                        `}
-                                        >
-                                            <input
-                                                className={`listQuesion-item__input
-                                                    ${isWrongSelected ? 'input-uncorrect' : ''}
-                                                    ${shouldHighlightCorrect ? 'input-correct' : ''}
-                                                `}
-                                                type="radio"
-                                                name={`cauHoi-${index}`}
-                                                id={dapAn.maDapAn}
-                                                disabled={!!selectedAnswers[cauHoi.maCauHoi]} // khóa chọn lại sau khi chọn
-                                                onChange={() =>
-                                                setSelectedAnswers((prev) => ({
-                                                    ...prev,
-                                                    [cauHoi.maCauHoi]: dapAn.maDapAn,
-                                                }))
-                                                }
-                                            />
-                                            <label className="listQuesion-item__label" htmlFor={dapAn.maDapAn}>
-                                                {dapAn.noiDungDapAn}
-                                            </label>
-                                        </li>
-                                    );
-                                })}
-
-                            </ul>
-                        </div>
-                        ))}
+                    { isLoadingQuestions ? (
+                        <p>Đang tải câu hỏi</p>
+                    ) : (
+                        listCauHoi.map((cauHoi, index) => (
+                            <div className="listQuesion-item" key={cauHoi.maCauHoi}>
+                                <p className="listQuesion-item__ques">
+                                <strong>Câu {index + 1}: {cauHoi.noiDung}</strong>
+                                </p>
+                                <ul>
+                                    {cauHoi.danhSachDapAn.map((dapAn) => {
+                                        const selected = selectedAnswers[cauHoi.maCauHoi];
+                                        const isSelected = selected === dapAn.maDapAn;
+                                        const isCorrect =
+                                            typeof dapAn.laDapAnDung === 'object' &&
+                                            Array.isArray(dapAn.laDapAnDung.data)
+                                                ? dapAn.laDapAnDung.data[0] === 1
+                                                : dapAn.laDapAnDung === 1;
+                                        const isWrongSelected = isSelected && !isCorrect;
+                                        const shouldHighlightCorrect = selected && isCorrect;
+    
+                                        return (
+                                            <li
+                                            key={dapAn.maDapAn}
+                                            className={`listQuesion-item__result
+                                                ${isSelected ? 'selected' : ''}
+                                                ${isWrongSelected ? 'uncorrect' : ''}
+                                                ${shouldHighlightCorrect ? 'correct' : ''}
+                                            `}
+                                            >
+                                                <input
+                                                    className={`listQuesion-item__input
+                                                        ${isWrongSelected ? 'input-uncorrect' : ''}
+                                                        ${shouldHighlightCorrect ? 'input-correct' : ''}
+                                                    `}
+                                                    type="radio"
+                                                    name={`cauHoi-${index}`}
+                                                    id={dapAn.maDapAn}
+                                                    disabled={!!selectedAnswers[cauHoi.maCauHoi]} // khóa chọn lại sau khi chọn
+                                                    onChange={() =>
+                                                    setSelectedAnswers((prev) => ({
+                                                        ...prev,
+                                                        [cauHoi.maCauHoi]: dapAn.maDapAn,
+                                                    }))
+                                                    }
+                                                />
+                                                <label className="listQuesion-item__label" htmlFor={dapAn.maDapAn}>
+                                                    {dapAn.noiDungDapAn}
+                                                </label>
+                                            </li>
+                                        );
+                                    })}
+    
+                                </ul>
+                            </div>
+                        ))
+                    )}
 
                 </div>
 
@@ -317,7 +329,10 @@ export default function Learning() {
                                     {chuong.danhSachBaiHoc.map((baiHoc, baiIndex) => (
                                         <li key={baiHoc.maBaiHoc} className="learning-accordion__list--item">
                                             <button
-                                                onClick={() => handleClickBaiHoc(baiHoc.maBaiHoc)}
+                                                onClick={async () => {
+                                                    await handleClickBaiHoc(baiHoc.maBaiHoc),
+                                                    await fetchQuestion();
+                                                }}
                                                 className="learning-accordion__list--btn"
                                             >
                                                 {index + 1}.{baiIndex + 1} {baiHoc.tenBaiHoc}
@@ -341,7 +356,7 @@ export default function Learning() {
                 </div>
                 <div className="learning-accordion">
                     <div className="learning-accordion__inner">
-                        {chuongHocListFake.map((chuong, index) => (
+                        {chuongHocList.map((chuong, index) => (
                         <div className="learning-accordion__item" key={chuong.maChuongHoc}>
                             <div className="learning-accordion__head">
                                 <button type="button" className="learning-accordion__lesson" onClick={() => toggleAccordion(index)}>
@@ -354,7 +369,11 @@ export default function Learning() {
                                     {chuong.danhSachBaiHoc.map((baiHoc, baiIndex) => (
                                         <li key={baiHoc.maBaiHoc} className="learning-accordion__list--item">
                                             <button
-                                                onClick={() => handleClickBaiHoc(baiHoc.maBaiHoc)}
+                                                onClick={async () => {
+                                                    await handleClickBaiHoc(baiHoc.maBaiHoc),
+                                                    await fetchQuestion(),
+                                                    await handleCloseMenu()
+                                                }}
                                                 className="learning-accordion__list--btn"
                                             >
                                                 {index + 1}.{baiIndex + 1} {baiHoc.tenBaiHoc}

@@ -245,6 +245,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
             {
                 isCourseVisible && (
                     <section className={`my-course ${isCourseVisible ? "visible" : ""}`} ref={courseRef}>
+                        <Link to="/my-courses" className="my-course__more">Xem tất cả</Link>
                         <div className="my-course__content">
                             {listRegisteredCourse.map((course) => (
                                 <Link to={`/learning/${course.maKhoaHoc}`} className="my-course__item" key={course.maKhoaHoc}>
@@ -282,7 +283,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
                         <div className="header-action__row header-action__row--courses">
                             <span className="header-action__item">
-                                <Link className="header-action__link" to="/payment">Khóa học của tôi</Link>
+                                <Link className="header-action__link" to="/my-courses">Khóa học của tôi</Link>
                             </span>
                         </div>
 

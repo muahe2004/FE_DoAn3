@@ -4,6 +4,10 @@
     .learning-action__menu {
         display: none;
     }
+
+    .learning-sidebar__mobile {
+        display: none;
+    }
 }
 
 /* Tablet and mobile*/

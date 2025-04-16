@@ -35,12 +35,12 @@ export default function Navbar() {
             </Link>
           </li>
 
-          <li className="navbar-item">
+          {/* <li className="navbar-item">
             <Link to="/questions" className="navbar-link">
               <img src="/icons/Chat-bubbles-question.svg" alt="Hỏi đáp" className="navbar-icon" />
               <span>Hỏi đáp</span>
             </Link>
-          </li>
+          </li> */}
         </ul>
 
         {/* <button className="navbar-news" onClick={handleOpenChat}>
