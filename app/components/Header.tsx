@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { data, Link, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Button from "./Button";
 import axios from "axios";
@@ -202,6 +202,25 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
             console.error("Lỗi khi gọi API:", error);
         });
     }, []);
+
+    // Tìm kiếm
+    const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+        // Không gọi API nếu rỗng hoặc toàn khoảng trắng
+        if (!inputValue.trim()) return;
+
+        fetch(`http://localhost:1000/api/courses/search/${inputValue}`)
+            .then((res) => {
+                if (!res.ok) {
+                    console.log("Lỗi khi tìm kiếm");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                console.log(data);
+            });
+    }, [inputValue]);
     
     return (
         <header className={`header ${className || ""}`}>
@@ -217,7 +236,21 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
                 <div className="header-search">
                     <img className="header-icon" src="/icons/Search.svg" alt="" />
-                    <input className="header-input" type="text" />
+                    <input 
+                        value={inputValue} 
+                        onChange={(e) => {
+                            setInputValue(e.target.value)
+                        }} 
+                        className="header-input" type="text" 
+                        placeholder="Tìm kiếm khóa học..."
+                    />
+
+                    {/* Ô tìm kiếm */}
+                    <section className={`search-result ${inputValue ? "show" : ""}`}>
+                        <div className="search-result__inner">
+                            
+                        </div>
+                    </section>
                 </div>
 
                 {

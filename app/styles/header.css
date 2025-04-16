@@ -37,6 +37,8 @@
     color: #000;
 }
 
+
+/* TÌM KIẾM ==================================================== */
 .header-search {
     display: flex;
     align-items: center;
@@ -52,21 +54,39 @@
     top: 20px;
 }
 
-
-
 .header-input {
     border: 1px solid #000;
     width: 100%;
     padding: 10px 10px 10px 40px;
     border-radius: 999px;
     color: #000;
-    font-size: 20px;
+    font-size: 16px;
     outline: none;
     transition: 0.25s;
 }
 
 .header-input:focus {
     outline: 1px solid #000;
+}
+
+.search-result {
+    position: absolute;
+    height: 300px;
+    width: 100%;
+    background: black;
+    top: 90%;
+    border-radius: 8px;
+    opacity: 0;
+    transition: .5s;
+}
+
+.search-result.show {
+    opacity: 1;
+    transform: translateY(5%);
+}
+
+.search-result__inner {
+    
 }
 
 .header-container {
@@ -110,8 +130,9 @@
     width: 110px;
 }
 
-/* My course */
 
+
+/* My course */
 .my-course {
     padding: 10px 0 10px 10px;
     width: 380px;

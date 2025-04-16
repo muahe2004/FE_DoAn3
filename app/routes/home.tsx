@@ -119,17 +119,6 @@ export default function Home() {
             ></Course>
             ))
           }
-
-            {/* <Course 
-              key="KH002"
-              maKhoaHoc="KH002"
-              tenKhoaHoc="Javascript"
-              giaBan={new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", minimumFractionDigits: 0 }).format(100000)}
-              hinhAnh="http://localhost:1000/uploads/COURSE.png"
-              doKho="dễ"
-              children=""
-              tongSoBaiHoc="10"
-          ></Course> */}
         </div>
       </section>
 
@@ -252,3 +241,28 @@ export default function Home() {
     </div>
   );
 }
+/*
+
+                  _ooOoo_
+                o8888888o
+                88" . "88
+                (| -_- |)
+                O\  =  /O
+              ____/`---'\____
+            .'  \\|     |//  `.
+          /  \\|||  :  |||//  \
+          /  _||||| -:- |||||-  \
+          |   | \\\  -  /// |   |
+          | \_|  ''\---/''  |_/ |
+          \  .-\__  `-`  ___/-. /
+        ___`. .'  /--.--\  `. .'___
+    ."" '<  `.___\_<|>_/___.' >' "".
+    / | :  `- \`.;`\ _ /`;.`/ - ` : | \
+    \  \ `-.   \_ __\ /__ _/   .-` /  /
+  ======`-.____`-.___\_____/___.-`____.-'======
+                   `=---='
+
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~
+             PHẬT PHÁP VÔ BIÊN
+            TÂM AN VẠN SỰ AN 🙏
+*/
