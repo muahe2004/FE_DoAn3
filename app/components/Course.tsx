@@ -5,7 +5,7 @@ import "../styles/Responsive/Components/course.css";
 interface CourseProps {
     maKhoaHoc: string; 
     tenKhoaHoc: string;
-    giaBan: string;
+    giaBan: number;
     children: React.ReactNode; 
     hinhAnh: string;
     doKho: string;
@@ -53,9 +53,27 @@ const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, hinhAnh, 
         </h3>
 
         <div className="price-container">
-          <span className="old-price">{giaBan}</span>
-          <span className="main-price">{giaBan}</span>
+          {giaBan !== 0 && (
+            <span className="old-price">
+              {new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+                minimumFractionDigits: 0
+              }).format(giaBan*1.9)}
+            </span>
+          )}
+          <span className="main-price">
+            {giaBan === 0
+              ? "Miễn phí"
+              : new Intl.NumberFormat("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                  minimumFractionDigits: 0
+                }).format(giaBan)}
+          </span>
         </div>
+
+
 
         <div className="more-info">
             <div className="info-item">

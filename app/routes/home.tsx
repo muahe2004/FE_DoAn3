@@ -111,7 +111,7 @@ export default function Home() {
                 key={khoaHoc.maKhoaHoc}
                 maKhoaHoc={khoaHoc.maKhoaHoc}
                 tenKhoaHoc={khoaHoc.tenKhoaHoc}
-                giaBan={new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", minimumFractionDigits: 0 }).format(khoaHoc.giaBan)}
+                giaBan={Number(khoaHoc.giaBan)}
                 hinhAnh={khoaHoc.hinhAnh}
                 doKho={khoaHoc.doKho}
                 children=""
@@ -132,7 +132,7 @@ export default function Home() {
                 key={khoaHoc.maKhoaHoc}
                 maKhoaHoc={khoaHoc.maKhoaHoc}
                 tenKhoaHoc={khoaHoc.tenKhoaHoc}
-                giaBan={new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", minimumFractionDigits: 0 }).format(khoaHoc.giaBan)}
+                giaBan={Number(khoaHoc.giaBan)}
                 hinhAnh={khoaHoc.hinhAnh}
                 doKho={khoaHoc.doKho}
                 children=""

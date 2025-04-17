@@ -30,6 +30,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         .then((res) => res.json())
         .then((data) => {
             setRole(data.role);  
+            console.log(role);
         })
         .catch((err) => console.error("Lỗi:", err));
     }, []);
@@ -205,6 +206,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
     // Tìm kiếm
     const [inputValue, setInputValue] = useState("");
+    const [searchResult, setSearchResult] = useState<RegisteredCourse []>([]);
 
     useEffect(() => {
         // Không gọi API nếu rỗng hoặc toàn khoảng trắng
@@ -218,10 +220,56 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                 return res.json();
             })
             .then((data) => {
-                console.log(data);
+                setSearchResult(data);
+                console.log("Kết quả:", searchResult);
             });
     }, [inputValue]);
+
+    const handleCourseClick = (maKhoaHoc: String) => {
+        const myCourses = localStorage.getItem("myCourses");
     
+        if (myCourses) {
+          const listCourses = JSON.parse(myCourses);
+    
+          // Kiểm tra xem maKhoaHoc có trong listCourses hay không
+          const courseExists = listCourses.some((course: { maKhoaHoc: string }) => course.maKhoaHoc === maKhoaHoc);
+    
+          // Nếu có, chuyển hướng đến trang /learning/:maKhoaHoc, nếu không, đến /course-details/:maKhoaHoc
+          if (courseExists) {
+            navigate(`/learning/${maKhoaHoc}`);
+          } else {
+            navigate(`/courses/course-details/${maKhoaHoc}`);
+          }
+        } else {
+          console.log("No courses found in localStorage");
+          navigate(`/courses/course-details/${maKhoaHoc}`);
+        }
+    };
+    
+    // Click ngoài thì phải đóng tìm kiếm
+    const inputRef = useRef<HTMLInputElement>(null);
+    const resultRef = useRef<HTMLDivElement>(null);
+    const [showResult, setShowResult] = useState(false);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+          if (
+            resultRef.current &&
+            !resultRef.current.contains(event.target as Node) &&
+            inputRef.current &&
+            !inputRef.current.contains(event.target as Node)
+          ) {
+            setShowResult(false);
+          }
+        };
+      
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+      
+
     return (
         <header className={`header ${className || ""}`}>
             <div className="header-wrapper">
@@ -237,20 +285,41 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                 <div className="header-search">
                     <img className="header-icon" src="/icons/Search.svg" alt="" />
                     <input 
-                        value={inputValue} 
-                        onChange={(e) => {
-                            setInputValue(e.target.value)
-                        }} 
-                        className="header-input" type="text" 
-                        placeholder="Tìm kiếm khóa học..."
+                        className="header-input" 
+                        ref={inputRef}
+                        type="text"
+                        placeholder="Tìm khóa học..."
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onFocus={() => setShowResult(true)}
                     />
 
                     {/* Ô tìm kiếm */}
-                    <section className={`search-result ${inputValue ? "show" : ""}`}>
+                    <section ref={resultRef} className={`search-result ${showResult && inputValue.trim() ? "show" : ""}`}>
                         <div className="search-result__inner">
-                            
+                            <span className="search-result__inner--title">Kết quả cho: "{inputValue}"</span>
+                            {
+                                searchResult.length === 0 ? (
+                                    <p className="no-res">Không tìm thấy kết quả cho: "{inputValue}"</p>
+                                ) : (
+                                    searchResult.map((item) => (
+                                        <div
+                                            key={item.maKhoaHoc}
+                                            onClick={() => handleCourseClick(item.maKhoaHoc)}
+                                            className="search-result__item">
+                                            <div className="search-result__thumb">
+                                                <img src={item.hinhAnh} alt="" className="search-result__image" />
+                                            </div>
+                                            <div>
+                                                <span className="search-result__name">{item.tenKhoaHoc}</span>
+                                            </div>
+                                        </div>
+                                    )
+                                )
+                            )}
                         </div>
                     </section>
+
                 </div>
 
                 {

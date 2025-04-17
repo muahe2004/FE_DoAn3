@@ -345,7 +345,7 @@ export default function CourseDetails() {
                 secondOption="Đóng" 
                 onClose={handleNoBalanceClose} 
                 className="model-image_second">
-                <Button onClick={handleRegisterCourse} type="button">Nạp tiền</Button>    
+                <Button to="/payment" type="button">Nạp tiền</Button>    
             </ModelOverlay>
         )}
         <Footer></Footer>
