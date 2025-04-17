@@ -297,7 +297,12 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                     {/* Ô tìm kiếm */}
                     <section ref={resultRef} className={`search-result ${showResult && inputValue.trim() ? "show" : ""}`}>
                         <div className="search-result__inner">
-                            <span className="search-result__inner--title">Kết quả cho: "{inputValue}"</span>
+                            <div className="search-result__head">
+                                <span className="search-result__inner--title">Kết quả cho: "{inputValue}"</span>
+                                <span onClick={() => setShowResult(false)} className="search-result__inner--close">
+                                    <img className="search-result__icon" src="/icons/Close.svg" alt="" />
+                                </span>
+                            </div>
                             {
                                 searchResult.length === 0 ? (
                                     <p className="no-res">Không tìm thấy kết quả cho: "{inputValue}"</p>

@@ -5,6 +5,10 @@
     .header-action__row--courses {
         display: none;
     }
+
+    .search-result__inner--close {
+        display: none;
+    }
     
 }
 
@@ -62,6 +66,35 @@
         padding: 5px;
         font-size: 14px;
         padding-left: 36px;
+    }
+
+    .search-result {
+        position: fixed;
+        top: 60px;
+        left: 10px;
+        width: calc(100% - 20px);
+    }
+
+    .search-result.show {
+        transform: translateY(7%);
+    }
+
+    .search-result__head {
+        margin-bottom: 10px;
+    }
+
+    .search-result__inner--title {
+        width: calc(100% - 25px);
+        /* background: yellow; */
+        display: block;
+    }
+
+    .search-result__inner--close {
+        background: rgb(253, 154, 154);
+        width: 25px;
+        height: 25px;
+        border-radius: 999px;
+        padding: 5px;
     }
 
     .header-container__logout {

@@ -79,16 +79,45 @@
     cursor: pointer;
     background: #1a1d1e;
     display: flex;
+    padding-right: 10px;
 }
 
 .learning-accordion__list--btn {
     display: block;
-    width: 100%;
+    width: calc(100% - 20px);
     height: 100%;
     padding: 10px 10px 10px 30px ;
     color: #fff;
     text-align: left;
     cursor: pointer;
+
+    /* background: palevioletred; */
+    display: flex;
+    align-items: center;
+}
+
+.learning-accordion__check {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    padding: 5px;
+    font-size: 14px;
+    /* right: 0; */
+    right: 10px;
+    /* display: inline-block; */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.learning-accordion__check.check-not__done {
+    background: #374151;
+}
+
+.learning-accordion__check.check-done {
+    background: green;
 }
 
 .learning-accordion__content {

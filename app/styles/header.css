@@ -91,11 +91,18 @@
     padding: 10px 20px;
 }
 
+.search-result__head {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
 .search-result__inner--title {
     /* background: yellowgreen; */
     display: block;
-    margin-bottom: 20px;
     color: #8d8b8b;
+    padding-right: 10px;
+
 }
 
 .search-result__item {
