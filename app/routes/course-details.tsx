@@ -87,6 +87,9 @@ export default function CourseDetails() {
         { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
     >([]);
 
+
+    const [listLecture, setListLecture] = useState<string[]>([]);
+
     // API load chương, bài học
     useEffect(() => {
         const fetchLessons = async () => {
@@ -95,6 +98,7 @@ export default function CourseDetails() {
             if (!res.ok) throw new Error("Lỗi khi lấy chương học!");
 
             const lessons: { maChuongHoc: string; tenChuongHoc: string }[] = await res.json();
+
             
             const lessonInfo = await Promise.all(
                 lessons.map(async (lesson) => {
@@ -114,6 +118,11 @@ export default function CourseDetails() {
             );
 
             setChuongHocList(lessonInfo); 
+
+            const lectureList = lessonInfo.flatMap((ch) =>
+                ch.danhSachBaiHoc.map((bh: any) => bh.maBaiHoc)
+            );
+            setListLecture(lectureList);
         } catch (error) {
             console.error("Lỗi:", error);
         }
@@ -121,6 +130,8 @@ export default function CourseDetails() {
 
         fetchLessons();
     }, [maKhoaHoc]); 
+
+
 
     // Accordion
     const [openIndexes, setOpenIndexes] = useState<number[]>([]);
@@ -200,6 +211,7 @@ export default function CourseDetails() {
             });
     
             if (registerRes.ok) {
+                await insertTienDoHoc(maNguoiDung);
                 console.log("Đăng ký khóa học thành công!");
             } else {
                 console.error("Lỗi khi đăng ký khóa học:", await registerRes.text());
@@ -208,6 +220,35 @@ export default function CourseDetails() {
             console.error("Lỗi khi gọi API đăng ký khóa học:", error);
         }
     };
+
+    // THêm tiến độ
+    const insertTienDoHoc = async (maNguoiDung: string) => {
+        try {
+            const res = await fetch("http://localhost:1000/api/lecture/insert-progress", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    maNguoiDung,
+                    baiHocList: listLecture, 
+                }),
+            });
+    
+            if (!res.ok) {
+                throw new Error("Lỗi khi thêm tiến độ học!");
+            }
+    
+            const result = await res.json();
+            console.log("Thêm tiến độ học thành công:", result);
+
+            // console.log(maNguoiDung);
+            // console.log(listLecture);
+        } catch (error) {
+            console.error("Lỗi khi gọi insertTienDo:", error);
+        }
+    };
+    
     
 
     // Ẩn hiện model
