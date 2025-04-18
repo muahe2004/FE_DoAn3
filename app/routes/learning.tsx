@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate, useLocation  } from "react-router-dom";
 import { useEffect, useReducer, useState } from "react";
 import LearningHeader from "~/components/Learning-header";
 import Button from "~/components/Button";
@@ -8,52 +8,14 @@ import ChatBot from "~/components/ChatBot";
 import "../styles/learning.css";
 import "../styles/Responsive/learning.css";
 
-const chuongHocListFake = [
-    {
-      maChuongHoc: 1,
-      tenChuongHoc: "Giới thiệu về JavaScript",
-      danhSachBaiHoc: [
-        { maBaiHoc: 1, tenBaiHoc: "Lời khuyên trước khóa học" },
-        { maBaiHoc: 2, tenBaiHoc: "Cài đặt môi trường" },
-        { maBaiHoc: 3, tenBaiHoc: "Giới thiệu về JavaScript" }
-      ]
-    },
-    {
-      maChuongHoc: 2,
-      tenChuongHoc: "Biến và kiểu dữ liệu",
-      danhSachBaiHoc: [
-        { maBaiHoc: 4, tenBaiHoc: "Sử dụng biến trong JavaScript" },
-        { maBaiHoc: 5, tenBaiHoc: "Các kiểu dữ liệu cơ bản" },
-        { maBaiHoc: 6, tenBaiHoc: "Kiểu dữ liệu Object" }
-      ]
-    },
-    {
-      maChuongHoc: 3,
-      tenChuongHoc: "Câu lệnh điều kiện và vòng lặp",
-      danhSachBaiHoc: [
-        { maBaiHoc: 7, tenBaiHoc: "Câu lệnh if-else" },
-        { maBaiHoc: 8, tenBaiHoc: "Toán tử logic" },
-        { maBaiHoc: 9, tenBaiHoc: "Vòng lặp for và while" }
-      ]
-    },
-    {
-      maChuongHoc: 4,
-      tenChuongHoc: "Functions trong JavaScript",
-      danhSachBaiHoc: [
-        { maBaiHoc: 10, tenBaiHoc: "Hàm là gì?" },
-        { maBaiHoc: 11, tenBaiHoc: "Định nghĩa hàm" },
-        { maBaiHoc: 12, tenBaiHoc: "Hàm bậc cao" }
-      ]
-    }
-  ];
-
-
-
 export default function Learning() {
     const { maKhoaHoc } = useParams();
+
     const [chuongHocList, setChuongHocList] = useState<
         { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
     >([]);
+
+    
 
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -63,17 +25,12 @@ export default function Learning() {
 
     const [baiHoc, setBaiHoc] = useState<any>(null);
 
+    // Câu hỏi
     const [selectedAnswers, setSelectedAnswers] = useState<AnswerMap>({});
-
     const [listCauHoi, setListCauHoi] = useState<
         { maCauHoi: string; noiDung: string; danhSachDapAn: any[]} []
     >([]);
     const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
-
-
-    useEffect(() => {
-        fetchQuestion();
-    }, []);
 
     // API load chương, bài học
     useEffect(() => {
@@ -114,7 +71,6 @@ export default function Learning() {
                     })
                 );
     
-                console.log(lessonInfo);
                 setChuongHocList(lessonInfo);
             } catch (error) {
                 console.error("Lỗi:", error);
@@ -123,8 +79,38 @@ export default function Learning() {
     
         fetchLessons();
     }, [maKhoaHoc]);
-    
 
+    // Bài tiếp theo
+    const handleNextLecture = () => {
+        const allMaBaiHoc = chuongHocList.flatMap(ch => 
+            (ch.danhSachBaiHoc).map(bai => bai.maBaiHoc)
+        );
+
+        const lastLectureID = localStorage.getItem("lastSelectedLecture");
+
+        for (let i=0; i<allMaBaiHoc.length; i++) {
+            if (lastLectureID === allMaBaiHoc[i]) {
+                localStorage.setItem("lastSelectedLecture", allMaBaiHoc[i + 1]);
+                handleClickBaiHoc(allMaBaiHoc[i + 1]);
+            }
+        }
+    }
+
+    // Bài trước
+    const handlePreviousLecture = () => {
+        const allMaBaiHoc = chuongHocList.flatMap(ch => 
+            (ch.danhSachBaiHoc).map(bai => bai.maBaiHoc)
+        );
+
+        const lastLectureID = localStorage.getItem("lastSelectedLecture");
+
+        for (let i=0; i<allMaBaiHoc.length; i++) {
+            if (lastLectureID === allMaBaiHoc[i]) {
+                localStorage.setItem("lastSelectedLecture", allMaBaiHoc[i - 1]);
+                handleClickBaiHoc(allMaBaiHoc[i - 1]);
+            }
+        }
+    }
     
     // Hàm xử lý mở/đóng accordion
     const toggleAccordion = (index: number) => {
@@ -136,24 +122,23 @@ export default function Learning() {
     };
 
     // Lấy bài học hoàn thành gần nhất
-    useEffect(() => {
-        if (chuongHocList.length > 0) {
-            const allBaiHoc = chuongHocList.flatMap(ch => ch.danhSachBaiHoc || []);
+    // useEffect(() => {
+    //     if (chuongHocList.length > 0) {
+    //         const allBaiHoc = chuongHocList.flatMap(ch => ch.danhSachBaiHoc || []);
             
-            // Tìm bài học đã hoàn thành gần nhất
-            const baiHocDaHoc = allBaiHoc.find(bai => bai.daHoanThanh?.data?.[0] === 1);
+    //         const baiHocDaHoc = [...allBaiHoc].reverse().find(bai => bai.daHoanThanh?.data?.[0] === 1);
             
-            if (baiHocDaHoc) {
-                setBaiHoc(baiHocDaHoc);
-            } else if (allBaiHoc.length > 0) {
-                setBaiHoc(allBaiHoc[0]); // chưa học bài nào => chọn bài đầu tiên
-            }
-        }
-    }, [chuongHocList]);
-    
+    //         if (baiHocDaHoc) {
+    //             setBaiHoc(baiHocDaHoc);
+    //         } else if (allBaiHoc.length > 0) {
+    //             setBaiHoc(allBaiHoc[0]); 
+    //         }
 
+    //         localStorage.setItem("lastSelectedLecture", baiHocDaHoc.maBaiHoc);
+    //     }
+    // }, [chuongHocList]);
 
-    // Lấy dữ liệu bài học khi click
+    // Lấy dữ liệu bài học khi chọn bài
     const handleClickBaiHoc = async (maBaiHoc: string) => {
         try {
             const res = await fetch(`http://localhost:1000/search-bai-hoc/${maBaiHoc}`);
@@ -163,40 +148,47 @@ export default function Learning() {
             setBaiHoc(baiHoc);
     
             localStorage.setItem("lastSelectedLecture", maBaiHoc);
+            fetchQuestion();
         } catch (error) {
             console.error("Lỗi:", error);
         }
     };
 
-    // Lấy dữ liệu từ local khi load trang
+    // Lấy dữ liệu bài học được chọn gần nhất đc chọn
     useEffect(() => {
         const loadLastLecture = async () => {
             const lastLectureID = localStorage.getItem("lastSelectedLecture");
-
+    
             if (lastLectureID) {
                 const res = await fetch(`http://localhost:1000/search-bai-hoc/${lastLectureID}`);
-
                 if (res.ok) {
                     const lecture = await res.json();
                     setBaiHoc(lecture);
                     return;
-                } else {
-                    console.log("Lỗi khi lấy thông tin bài học được chọn!");
                 }
             }
-
-            if (chuongHocList.length > 0 && chuongHocList[0].danhSachBaiHoc.length > 0) {
-                setBaiHoc(chuongHocList[0].danhSachBaiHoc[0]);
+    
+            // Nếu không có trong local thì chọn bài học hoàn thành gần nhất
+            const allBaiHoc = chuongHocList.flatMap(ch => ch.danhSachBaiHoc || []);
+            const baiHocDaHoc = [...allBaiHoc].reverse().find(bai => bai.daHoanThanh?.data?.[0] === 1);
+    
+            if (baiHocDaHoc) {
+                setBaiHoc(baiHocDaHoc);
+                localStorage.setItem("lastSelectedLecture", baiHocDaHoc.maBaiHoc);
+            } else if (allBaiHoc.length > 0) {
+                setBaiHoc(allBaiHoc[0]);
+                localStorage.setItem("lastSelectedLecture", allBaiHoc[0].maBaiHoc);
             }
         }
-
-        loadLastLecture();
-    }, [chuongHocList])
     
-    type AnswerMap = {
-        [maCauHoi: string]: string;
-    };
-      
+        if (chuongHocList.length > 0) {
+            loadLastLecture();
+        }
+    }, [chuongHocList]);
+    
+    
+    // Load dữ liệu câu hỏi của bài học
+    type AnswerMap = { [maCauHoi: string]: string;};
     const fetchQuestion = async () => {
         setIsLoadingQuestions(true);
         const maBaiHoc  = localStorage.getItem("lastSelectedLecture");
@@ -234,20 +226,13 @@ export default function Learning() {
         }
     }
 
-
+    // Đóng mở chat AI
     const handleOpenChat = () => setIsChatOpen(true);
     const handleCloseChat = () => setIsChatOpen(false);
 
-    
-
-    const handleOpenMenu = () => {
-        setIsSidebarOpen(true); // Mở sidebar
-        console.log("Mở menu");
-    };
-
-    const handleCloseMenu = () => {
-        setIsSidebarOpen(false); // Đóng sidebar
-    };
+    // Đóng mở sidebar (mobile)
+    const handleOpenMenu = () => setIsSidebarOpen(true); 
+    const handleCloseMenu = () => setIsSidebarOpen(false); 
 
     // Cập nhật đã học sau 30s =))
     useEffect(() => {
@@ -270,6 +255,20 @@ export default function Learning() {
 
         return () => clearTimeout(timer);
     })
+
+
+    // Xóa dữ liệu khi thoát khỏi trang learning
+    const location = useLocation();
+    useEffect(() => {
+        const handleLocationChange = () => {
+          if (!location.pathname.startsWith(`learning/${maKhoaHoc}`)) {
+            localStorage.removeItem("lastSelectedLecture");
+          }
+        };
+        handleLocationChange();
+    
+    }, [location]); 
+        
 
 
     return (
@@ -457,8 +456,8 @@ export default function Learning() {
                 </div>
 
                 <div className="learning-action__timeline">
-                    <Button type="button" className="button-secondary learning-action__btn">BÀI TRƯỚC</Button>
-                    <Button type="button" className="learning-action__btn">BÀI TIẾP THEO</Button>
+                    <Button onClick={handlePreviousLecture} type="button" className="button-secondary learning-action__btn">BÀI TRƯỚC</Button>
+                    <Button onClick={handleNextLecture} type="button" className="learning-action__btn">BÀI TIẾP THEO</Button>
                 </div>
 
                 <div className="learning-action__lesson">

@@ -28,12 +28,12 @@ export default function Navbar() {
             </Link>
           </li>
 
-          <li className="navbar-item">
+          {/* <li className="navbar-item">
             <Link to="/blog" className="navbar-link">
               <img src="/icons/Article.svg" alt="Bài viết" className="navbar-icon" />
               <span>Bài viết</span>
             </Link>
-          </li>
+          </li> */}
 
           {/* <li className="navbar-item">
             <Link to="/questions" className="navbar-link">
