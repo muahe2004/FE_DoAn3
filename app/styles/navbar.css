@@ -63,11 +63,14 @@
     margin-bottom: 0;
 }
 
-.navbar-news {
+.navbar-chat {
     border-radius: 999px;
     transition: .5s;
     width: 70px;
     height: 70px;
-    font-weight: 700;
+    background: linear-gradient(45deg, #21a2ff, #8951ff);
+    color: #fff;
+    font-size: 24px;
+    font-weight: 800;
 }
 

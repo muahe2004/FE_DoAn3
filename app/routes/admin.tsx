@@ -51,7 +51,7 @@ export default function Admin() {
 
 
   useEffect(() => {
-    fetch("http://localhost:1000/get-all-khoahoc") 
+    fetch("http://localhost:1000/api/courses") 
       .then((res) => res.json())
       .then((data) => setCourses(data))
       .catch((error) => console.error("Lỗi khi lấy khóa học:", error));

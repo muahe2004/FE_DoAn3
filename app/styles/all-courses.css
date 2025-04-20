@@ -1,0 +1,27 @@
+.all-courses__wrapper {
+    width: 100%;
+}
+
+
+.all-courses__inner {
+    width: calc(100% - 120px);
+    background: #fff;
+    margin-left: 110px;
+    margin-top: 90px;
+    border-radius: 4px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+
+.all-courses__card {
+    margin-left: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
+.all-courses__card:nth-child(4n - 3) {
+    margin-left: 0;
+}

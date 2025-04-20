@@ -47,7 +47,8 @@ export default function Navbar() {
           <img className="navbar-icon" src="/icons/News.svg" alt="Tin tức" />
         </button> */}
 
-        <Button className="navbar-news" onClick={handleOpenChat} type="button">AI</Button>
+        {/* <Button className="navbar-news" onClick={handleOpenChat} type="button">AI</Button> */}
+        <button className="navbar-chat" onClick={handleOpenChat}>AI</button>
       </div>
 
       <ChatBot isOpen={isChatOpen} onClose={handleCloseChat} ></ChatBot>

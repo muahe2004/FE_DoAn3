@@ -10,6 +10,7 @@ export default [
     route("learning/:maKhoaHoc", "routes/learning.tsx"),
     route("about", "routes/about.tsx"),
     route("my-courses", "routes/mycourses.tsx"),
+    route("all-courses", "routes/all-courses.tsx"),
     route("contact", "routes/contact.tsx"),
     route("purview", "routes/purview.tsx"),
     route("payment", "routes/payment.tsx"),

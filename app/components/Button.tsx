@@ -5,7 +5,7 @@ interface ButtonProps {
   to?: string; 
   children: React.ReactNode; 
   type?: "button" | "submit" | "reset"; // Thêm type cho button
-  className?: string; // Tuỳ chọn thêm className nếu cần
+  className?: string;
   onClick?: () => void; 
 }
 

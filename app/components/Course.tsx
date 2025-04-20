@@ -3,16 +3,17 @@ import "../styles/course.css";
 import "../styles/Responsive/Components/course.css";
 
 interface CourseProps {
-    maKhoaHoc: string; 
-    tenKhoaHoc: string;
-    giaBan: number;
-    children: React.ReactNode; 
-    hinhAnh: string;
-    doKho: string;
-    tongSoBaiHoc: number;
+  maKhoaHoc: string; 
+  tenKhoaHoc: string;
+  giaBan: number;
+  children: React.ReactNode; 
+  hinhAnh: string;
+  doKho: string;
+  tongSoBaiHoc: number;
+  className?: string;
 }
 
-const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, hinhAnh, doKho, tongSoBaiHoc}) => {
+const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, hinhAnh, doKho, tongSoBaiHoc, className}) => {
   const navigate = useNavigate(); // Hook để điều hướng người dùng
 
   const handleCourseClick = () => {
@@ -41,7 +42,7 @@ const Course: React.FC<CourseProps> = ({maKhoaHoc, tenKhoaHoc, giaBan, hinhAnh, 
   };
 
   return (
-    <div className="course">
+    <div className={`course ${className || ""}`}>
       {/* Sự kiện onClick để điều hướng khi click vào khóa học */}
       <div onClick={handleCourseClick}>
         <img src={hinhAnh} alt={tenKhoaHoc} className="course-image" />

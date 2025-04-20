@@ -9,8 +9,8 @@ import "../styles/roadmap.css";
 export default function RoadMap() {
   return (
     <div className="roadmap-wrapper">
-        <Navbar></Navbar>
         <Header title="Lộ trình"></Header>
+        <Navbar></Navbar>
     
         <div className="roadmap-inner">
             <div className="roadmap-container">
@@ -36,12 +36,34 @@ export default function RoadMap() {
                                 </p>
                             </div>
 
-                            <div className="item-thumb">
+                            {/* <div className="item-thumb">
                                 <Link to="/" className="thumb-link">
                                     <img src="./public/images/FE.png" alt="" className="item-img" />
                                 </Link>
-                            </div>
+                            </div> */}
                         </div>
+
+                        <ul className="item-list">
+                            <li className="item-list__card">
+                                <img src="/images/nhapmon.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/html.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/css.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/javascript.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/ubuntu.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/react.png" alt="" className="item-list__img" />
+                            </li>
+                        </ul>
+
 
                     </div>
 
@@ -57,12 +79,33 @@ export default function RoadMap() {
                                 </p>
                             </div>
 
-                            <div className="item-thumb">
+                            {/* <div className="item-thumb">
                                 <Link to="/" className="thumb-link">
                                     <img src="./public/images/FE.png" alt="" className="item-img" />
                                 </Link>
-                            </div>
+                            </div> */}
                         </div>
+
+                        <ul className="item-list">
+                            <li className="item-list__card">
+                                <img src="/images/nhapmon.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/javascript.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/ubuntu.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/node.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/html.png" alt="" className="item-list__img" />
+                            </li>
+                            <li className="item-list__card">
+                                <img src="/images/css.png" alt="" className="item-list__img" />
+                            </li>
+                        </ul>
 
                     </div>
                 </div>

@@ -21,12 +21,7 @@ interface KhoaHoc {
   tongSoBaiHoc: number;
 }
 
-
-
 export default function Home() {
-
-  // const API_URL = import.meta.env.VITE_API_URL;
-
 
   const slideRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -57,8 +52,6 @@ export default function Home() {
   // Khóa học miễn phí
   const [listFreeCourses, setListFreeCourse] = useState<KhoaHoc[]>([]);
 
-  
-
   useEffect(() => {
     fetch(`http://localhost:1000/api/courses/get-home-no-fee-courses`)
       .then((res) => res.json())
@@ -71,16 +64,10 @@ export default function Home() {
       })
   }, []);
 
-  
-
-  // Đóng mở my courses
-  const [isCourseVisible, setIsCourseVisible] = useState(false); 
-
   return (
     <div className="home-Wrapper">
       <Header title="Học lập trình" />
       <Navbar></Navbar>
-      {/* <ChatBot></ChatBot> */}
 
       {/* Slide show */}
       <div className="slide-show">
