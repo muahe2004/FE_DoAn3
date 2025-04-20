@@ -282,7 +282,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                     </span>
                 </h1>
 
-                <div className="header-search">
+                <div className="header-search ">
                     <img className="header-icon" src="/icons/Search.svg" alt="" />
                     <input 
                         className="header-input" 
