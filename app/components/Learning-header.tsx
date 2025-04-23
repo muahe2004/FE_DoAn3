@@ -47,7 +47,7 @@ const LearningHeader: React.FC<LearningHeaderProps> = () => {
                     <img className="learning-header__notify" src="/icons/Bell-ring-white.svg" alt="" />
 
                     
-                    <Link to={role ? (role === "Admin" ? "/admin" : "/users") : "/login"}>
+                    <Link to="/user">
                         <img src="/images/defaultAvatar.png" alt="" className="learning-header__avatar" />
                     </Link>
                 </div>

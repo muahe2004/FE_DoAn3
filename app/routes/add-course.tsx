@@ -30,6 +30,7 @@ export default function AddCourse() {
     }
   };
 
+  // Blur
   const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const input = event.target;
     const formText = input.parentElement?.querySelector(".form-text") as HTMLElement | null;
@@ -39,8 +40,6 @@ export default function AddCourse() {
     }
   };
   
-  
-
   // Add khóa học
   const handleAddCourse = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -52,7 +51,6 @@ export default function AddCourse() {
     const priceInput = form.querySelector<HTMLInputElement>('input[name="price"]');
     const fileInput = form.querySelector<HTMLInputElement>('input[name="file"]');
   
-    // Hàm hiển thị lỗi
     const showError = (input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null, message: string) => {
       if (input) {
         const formText = input.parentElement?.querySelector<HTMLElement>(".form-text");

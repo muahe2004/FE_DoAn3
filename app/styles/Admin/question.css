@@ -1,0 +1,30 @@
+.question__wrapper {
+    width: 100%;
+    height: calc(100vh - 98px);
+    /* background: yellowgreen; */
+}
+
+.question-inner {
+    margin: 88px 0 0 110px;
+    width: calc(100% - 120px);
+    height: 100%;
+    background: #fff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.question-form__action {
+    border-top: 1px solid #ccc;
+    /* height: 80px; */
+    width: 100%;
+    /* background: #ccc; */
+    padding: 20px 10px 0px 10px;
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+}
+
+.btn-mQuestion {
+    margin-right: 10px;
+}

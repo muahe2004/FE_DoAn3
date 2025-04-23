@@ -91,7 +91,7 @@ const Footer: React.FC<FooterProps> = ({className}) => {
                     <h2 className="column-title">HỖ TRỢ</h2>
                     <ul className="list-item">
                         <li className="column-item">
-                            <Link to="/">Hướng dẫn thanh toán</Link>
+                            <Link to="/all-courses">Khóa học</Link>
                         </li>
                         <li className="column-item">
                             <Link to="/">Điều kiện giao dịch chung</Link>

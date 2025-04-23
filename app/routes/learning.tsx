@@ -121,23 +121,6 @@ export default function Learning() {
         );
     };
 
-    // Lấy bài học hoàn thành gần nhất
-    // useEffect(() => {
-    //     if (chuongHocList.length > 0) {
-    //         const allBaiHoc = chuongHocList.flatMap(ch => ch.danhSachBaiHoc || []);
-            
-    //         const baiHocDaHoc = [...allBaiHoc].reverse().find(bai => bai.daHoanThanh?.data?.[0] === 1);
-            
-    //         if (baiHocDaHoc) {
-    //             setBaiHoc(baiHocDaHoc);
-    //         } else if (allBaiHoc.length > 0) {
-    //             setBaiHoc(allBaiHoc[0]); 
-    //         }
-
-    //         localStorage.setItem("lastSelectedLecture", baiHocDaHoc.maBaiHoc);
-    //     }
-    // }, [chuongHocList]);
-
     // Lấy dữ liệu bài học khi chọn bài
     const handleClickBaiHoc = async (maBaiHoc: string) => {
         try {
