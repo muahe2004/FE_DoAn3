@@ -8,6 +8,7 @@ import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/course-details.css";
 import "../styles/Responsive/course-details.css";
+import PopUp from "~/components/PopUp";
 
 interface UserInfo {
     maNguoiDung: string;
@@ -132,8 +133,8 @@ export default function CourseDetails() {
             const soDu = parseFloat(data.soDu);
     
             if (soDu < parseFloat(giaBan)) {
-                handleClose();
-                handleNoBalanceOpen();
+                handleClosePay();
+                handleOpenNoBalance();
                 return;
             }
     
@@ -197,34 +198,22 @@ export default function CourseDetails() {
             console.error("Lỗi khi gọi insertTienDo:", error);
         }
     };
-    
-    // Ẩn hiện model
-    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleOpen = () => {
+    // Ẩn hiện popup
+    const [isClosedPay, setIsClosedPay] = useState(true);
+    const handleOpenPay = () => { 
         const userInfoStr = localStorage.getItem("userInfo");
         if (!userInfoStr) {
             navigate("/login");
             return;
         }
-        setIsModalOpen(true);
+        setIsClosedPay(false)
     };
-
-    const handleClose = () => {
-        setIsModalOpen(false);
-    };
-
-    // Ẩn hiện model k đủ tèn
-    const [isModalNoBalanceOpen, setIsModalNoBalanceOpen] = useState(false);
-
-    const handleNoBalanceOpen = () => {
-        setIsModalNoBalanceOpen(true);
-    };
-
-    const handleNoBalanceClose = () => {
-        setIsModalNoBalanceOpen(false);
-    };
+    const handleClosePay = () => { setIsClosedPay(true)};
     
+    const [isClosedNoBalance, setIsClosedNoBalance] = useState(true);
+    const handleOpenNoBalance = () => { setIsClosedNoBalance(false)};
+    const handleCloseNoBalance = () => { setIsClosedNoBalance(true)};
 
   return (
     <div className="course-details__wrapper">
@@ -284,7 +273,7 @@ export default function CourseDetails() {
 
 
 
-                    <Button className="thumb-btn" children="Đăng ký ngay" type="button" onClick={handleOpen}></Button>
+                    <Button className="thumb-btn" children="Đăng ký ngay" type="button" onClick={handleOpenPay}></Button>
 
                     <ul className="thumb-list">
                         <li className="thumb-item">
@@ -311,30 +300,31 @@ export default function CourseDetails() {
             </div>
         </div>
 
+        <PopUp 
+            icon={"Question.svg"} 
+            secondOption={"Hủy bỏ"} 
+            title={"Thanh toán"} 
+            desc={"Xác nhận thanh toán ?"} 
+            onOpen={handleClosePay}
+            isClosed={isClosedPay}
+            className="popup-update"
+            // timeCount={3}
+        >
+            <Button type="button" onClick={handleRegisterCourse}>Thanh toán</Button>
+        </PopUp>
 
-        { isModalOpen && (
-            <ModelOverlay 
-                icon="Question.svg" 
-                title="Thanh toán" 
-                desc="Xác nhận thanh toán ?" 
-                secondOption="Hủy" 
-                onClose={handleClose} 
-                className="model-image_second">
-                <Button onClick={handleRegisterCourse} type="button">Thanh toán</Button>    
-            </ModelOverlay>
-        )}
-
-        { isModalNoBalanceOpen && (
-            <ModelOverlay 
-                icon="Exclamation.svg" 
-                title="Thanh toán" 
-                desc="Số dư của bạn hiện không đủ" 
-                secondOption="Đóng" 
-                onClose={handleNoBalanceClose} 
-                className="model-image_second">
-                <Button to="/payment" type="button">Nạp tiền</Button>    
-            </ModelOverlay>
-        )}
+        <PopUp 
+            icon={"Question.svg"} 
+            secondOption={"Hủy bỏ"} 
+            title={"Thanh toán"} 
+            desc={"Số dư không đủ, nạp tiền ?"} 
+            onOpen={handleCloseNoBalance}
+            isClosed={isClosedNoBalance}
+            className="popup-update"
+            // timeCount={3}
+        >
+            <Button type="button" to="/payment">Nạp tiền</Button>
+        </PopUp>
         <Footer></Footer>
     </div>
   );

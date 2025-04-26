@@ -55,6 +55,14 @@
     background: #2ecc71  ;
 }
 
+.popup-update {
+    background: linear-gradient(45deg, #21a2ff, #8951ff);
+}
+
+.popup-done {
+    background: green;
+}
+
 .popup-icon {
     width: 20px;
     height: 20px;
@@ -89,7 +97,7 @@
 
 .popup-count {
     width: 160px;
-    height: 43px;
+    height: 45px;
     border: 1px solid #ccc;
     padding: 8px 10px;
     border-radius: 8px;
@@ -106,7 +114,8 @@
 }
 
 
-.button-delete {
-    background: red;
-    color: #fff;
+.popup-delete_btn {
+    border: 1px solid red;
+    background: #fff;
+    color: red;
 }

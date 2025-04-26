@@ -3,24 +3,25 @@ import "../styles/popup.css";
 
 interface ModelOverlayProps {
     icon: string;
-    children: React.ReactNode;
-    secondOption: string;
+    children?: React.ReactNode;
+    secondOption?: string;
     title: string;
     desc: string;
     className?: string;
     onOpen: () => void; 
     isClosed: boolean; 
+    timeCount?: number;
 }
 
-const PopUp: React.FC<ModelOverlayProps> = ({ children, secondOption, title, desc, icon, className, onOpen, isClosed }) => {
-    const [varCount, setVarCount] = useState(5);
+const PopUp: React.FC<ModelOverlayProps> = ({ children, secondOption, title, desc, icon, className, timeCount, onOpen, isClosed }) => {
+    const [varCount, setVarCount] = useState(timeCount || 0);
 
     useEffect(() => {
         let intervalId: NodeJS.Timeout;
 
         if (!isClosed) {
             // Reset varCount mỗi lần mở
-            setVarCount(5);
+            setVarCount(timeCount || 0);
 
             intervalId = setInterval(() => {
                 setVarCount(prev => {

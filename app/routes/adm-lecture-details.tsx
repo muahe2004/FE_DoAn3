@@ -9,6 +9,7 @@ import ModelOverlay from "~/components/OverlayModel";
 import "../styles/Admin/adm-lecture-details.css";
 import "../styles/Admin/add-lecture.css";
 import { useParams } from "react-router";
+import PopUp from "~/components/PopUp";
 
 export default function AdminLectureDetails() {
     const navigate = useNavigate();
@@ -109,25 +110,25 @@ export default function AdminLectureDetails() {
 
         if (!lesson?.value.trim()) {
             showError(lesson, "Vui lòng chọn chương!");
-            handleClose();
+            handleCloseUpdate();
             return;
         }
 
         if (!name?.value.trim()) {
             showError(name, "Vui lòng nhập tên bài học!");
-            handleClose();
+            handleCloseUpdate();
             return;
         }
 
         if (!desc?.value.trim()) {
             showError(desc, "Vui lòng nhập mô tả bài học!");
-            handleClose();
+            handleCloseUpdate();
             return;
         }
 
         if (!video?.value.trim()) {
             showError(video, "Vui lòng nhập link video bài học!");
-            handleClose();
+            handleCloseUpdate();
             return;
         }
         
@@ -149,9 +150,9 @@ export default function AdminLectureDetails() {
             });
 
             if (res.ok) {
-                handleClose();
-                handleOpenSuccessModel();
-                setTimeout(() => handleCloseSuccessModel(), 2300);
+                handleCloseUpdate();
+                handleOpenUpdateDone();
+                setTimeout(() => handleCloseUpdateDone(), 2300);
             } else {
                 console.log("Sửa thất bại!");
             }
@@ -174,8 +175,8 @@ export default function AdminLectureDetails() {
             });
         
             if (response.ok) {
-                handleCloseDeleteModel();
-                handleOpenDelSuccessModel();
+                handleCloseDelete();
+                handleOpenDeleteDone();
                 setTimeout(() => navigate(`/admin-course-details/${maKhoaHoc}`), 2300);
             } else {
                 console.log("Lỗi khi xóa bài học");
@@ -214,43 +215,22 @@ export default function AdminLectureDetails() {
         }
     };
     
-    // Ẩn hiện model
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    // Ẩn hiện PopUp
+    const [isClosedUpdate, setIsClosedUpdate] = useState(true);
+    const handleOpenUpdate = () => { setIsClosedUpdate(false)};
+    const handleCloseUpdate = () => { setIsClosedUpdate(true)};
 
-    const handleOpen = () => {
-        setIsModalOpen(true);
-    };
+    const [isClosedUpdateDone, setIsClosedUpdateDone] = useState(true);
+    const handleOpenUpdateDone = () => { setIsClosedUpdateDone(false)};
+    const handleCloseUpdateDone = () => { setIsClosedUpdateDone(true)};
 
-    const handleClose = () => {
-        setIsModalOpen(false);
-    };
+    const [isClosedDelete, setIsClosedDelete] = useState(true);
+    const handleOpenDelete = () => { setIsClosedDelete(false)};
+    const handleCloseDelete = () => { setIsClosedDelete(true)};
 
-    const [isModelSuccessfulModelOpen, setIsModelSuccessfulModelOpen] = useState(false);
-    const handleOpenSuccessModel = () => {
-        setIsModelSuccessfulModelOpen(true);
-    }
-
-    const handleCloseSuccessModel = () => {
-        setIsModelSuccessfulModelOpen(false);
-    }
-
-    const [isModelDeleteOpen, setIsModelDeleteOpen] = useState(false);
-    const handleOpenDeleteModel = () => {
-        setIsModelDeleteOpen(true);
-    }
-
-    const handleCloseDeleteModel = () => {
-        setIsModelDeleteOpen(false);
-    }
-
-    const [isModelDelSuccessfullOpen, setIsModelDelSuccessfullOpen] = useState(false);
-    const handleOpenDelSuccessModel = () => {
-        setIsModelDelSuccessfullOpen(true);
-    }
-
-    const handleCloseDelSuccessModel = () => {
-        setIsModelDelSuccessfullOpen(false);
-    }
+    const [isClosedDeleteDone, setIsClosedDeleteDone] = useState(true);
+    const handleOpenDeleteDone = () => { setIsClosedDeleteDone(false)};
+    const handleCloseDeleteDone = () => { setIsClosedDeleteDone(true)};
     
     return (
         <div className="update-lecture__wrapper">
@@ -332,60 +312,64 @@ export default function AdminLectureDetails() {
 
                     {/* Action */}
                     <div className="lecture-form__action"> 
-                        <Button type="button" className="btn-add" onClick={handleOpen}>Lưu lại</Button>
+                        <Button type="button" className="btn-add" onClick={handleOpenUpdate}>Lưu lại</Button>
                         <Button type="button" className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button>
-                        <Button type="button" className="btn-cancle button-third button" onClick={handleOpenDeleteModel}>Xóa bài học</Button>
+                        <Button type="button" className="btn-cancle button-third button" onClick={handleOpenDelete}>Xóa bài học</Button>
                     </div>
 
-                    {isModalOpen && (
-                        <ModelOverlay
-                            className="model-image_second"
-                            icon="Question.svg"
-                            secondOption="Hủy bỏ" 
-                            title="Sửa bài học"
-                            desc="Bạn có chắc chắn muốn sửa bài học không?"
-                            onClose={handleClose}>
-                            <Button type="submit">Sửa bài học</Button>
-                        </ModelOverlay>
-                    )}
+                    <PopUp 
+                        icon={"Question.svg"} 
+                        secondOption={"Hủy bỏ"} 
+                        title={"Sửa bài học"} 
+                        desc={"Bạn có chắc chắn muốn sửa bài học không?"} 
+                        onOpen={handleCloseUpdate}
+                        isClosed={isClosedUpdate}
+                        className="popup-update"
+                        // timeCount={3}
+                    >
+                        <Button type="submit">Sửa</Button>
+                    </PopUp>
                 </form>
             </div>
 
-            {isModelSuccessfulModelOpen && (
-                <ModelOverlay
-                    className="model-image_third"
-                    icon="Successful.svg"
-                    secondOption=""
-                    title="Sửa bài học"
-                    desc="Cập nhật bài học thành công!"
-                    onClose={handleCloseSuccessModel}
-                    children="">
-                </ModelOverlay>
-            )}
+            <PopUp 
+                icon={"Question.svg"} 
+                secondOption={"Hủy bỏ"} 
+                title={"Xóa bài học"} 
+                desc={"Bạn có chắc chắn muốn xóa bài học không?"} 
+                onOpen={handleCloseDelete}
+                isClosed={isClosedDelete}
+                className="popup-delete"
+                timeCount={5}
+            >
+                <Button type="submit" className="popup-delete_btn" onClick={handleDeleteLecture}>Xóa</Button>
+            </PopUp>
 
-            {isModelDeleteOpen && (
-                <ModelOverlay
-                    className="model-image"
-                    icon="Exclamation.svg"
-                    secondOption="Hủy bỏ" 
-                    title="Xóa bài học"
-                    desc="Bạn có chắc chắn muốn xóa bài học không?"
-                    onClose={handleCloseDeleteModel}>
-                    <Button type="submit" className="button-delete" onClick={handleDeleteLecture}>Xóa bài học</Button>
-                </ModelOverlay>
-            )}
+            <PopUp 
+                icon={"Successful.svg"} 
+                // secondOption={"Hủy bỏ"} 
+                title={"Sửa bài học"} 
+                desc={"Cập nhật thông tin bài học thành công!"} 
+                onOpen={handleCloseUpdateDone}
+                isClosed={isClosedUpdateDone}
+                className="popup-done"
+                // timeCount={5}
+            >
+                {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
+            </PopUp>
 
-            {isModelDelSuccessfullOpen && (
-                <ModelOverlay
-                    className="model-image_third"
-                    icon="Successful.svg"
-                    secondOption=""
-                    title="Xóa bài học"
-                    desc="Xóa thông tin bài học thành công!"
-                    onClose={handleCloseDelSuccessModel}
-                    children="">
-                </ModelOverlay>
-            )}
+            <PopUp 
+                icon={"Successful.svg"} 
+                // secondOption={"Hủy bỏ"} 
+                title={"Xóa bài học"} 
+                desc={"Xóa thông tin bài học thành công!"} 
+                onOpen={handleCloseDeleteDone}
+                isClosed={isClosedDeleteDone}
+                className="popup-done"
+                // timeCount={5}
+            >
+                {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
+            </PopUp>
         </div>
     );
 }

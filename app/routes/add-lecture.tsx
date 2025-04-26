@@ -7,6 +7,7 @@ import Button from "~/components/Button";
 
 
 import "../styles/Admin/add-lecture.css";
+import PopUp from "~/components/PopUp";
 
 
 
@@ -153,8 +154,8 @@ export default function AddLecture() {
       })
       if (res.ok) {
         handleResetForm();
-        handleOpenModel();
-        setTimeout(() => handleCloseDelSuccessModel(), 2300);
+        handleOpenAddDone();
+        setTimeout(() => handleCloseAddDone(), 2300);
       } else {
         console.error("Lỗi tạo khóa học:", await res.text());
       }
@@ -163,14 +164,10 @@ export default function AddLecture() {
     }
   }
 
-  const [isModelOpen, setIsModelOpen] = useState(false);
-  const handleOpenModel = () => {
-    setIsModelOpen(true);
-  }
-
-  const handleCloseDelSuccessModel = () => {
-    setIsModelOpen(false);
-  }
+  // Ẩn hiện PopUp
+  const [isClosedAddDone, setIsClosedAddDone] = useState(true);
+  const handleOpenAddDone = () => { setIsClosedAddDone(false)};
+  const handleCloseAddDone = () => { setIsClosedAddDone(true)};
 
   return (
     <div className="add-lecture__wrapper">
@@ -260,17 +257,18 @@ export default function AddLecture() {
           </form>
         </div>
 
-        {isModelOpen && (
-          <ModelOverlay
-            className="model-image_third"
-            icon="Successful.svg"
-            secondOption=""
-            title="Thêm bài học"
-            desc="Thêm bài học thành công!"
-            onClose={handleCloseDelSuccessModel}
-            children="">
-          </ModelOverlay>
-        )}
+        <PopUp 
+          icon={"Successful.svg"} 
+          // secondOption={"Hủy bỏ"} 
+          title={"Thêm bài học"} 
+          desc={"Thêm bài học thành công!"} 
+          onOpen={handleCloseAddDone}
+          isClosed={isClosedAddDone}
+          className="popup-done"
+          // timeCount={5}
+        >
+        {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
+      </PopUp>
     </div>
   );
 }
