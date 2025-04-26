@@ -74,7 +74,7 @@ export default function Home() {
         <div 
           className="slide-show__inner"
           ref={slideRef}
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }} // Dịch chuyển slide
+          style={{ transform: `translateX(-${currentIndex * 100}%)` }} 
         >
           <div className="slide-show__item">
             <img className="slide-show__image" src="./public/images/HTML_CSS.png" alt="HTML & CSS" />
@@ -220,10 +220,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       
-      
-
       <Footer></Footer>
     </div>
   );

@@ -247,7 +247,7 @@ export default function AdminCourseDetails() {
 
   return (
     <div className="update-course__wrapper">
-      <Header title="Thông tin khóa học" />
+      <Header className="header-admin" title="Thông tin khóa học" />
       <AdminNav />
       {/* Inner */}
       <div className="update-course__inner">
@@ -343,6 +343,8 @@ export default function AdminCourseDetails() {
         <Button type="button" className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button>
         <Button className="btn-cancel button-third button" onClick={handleOpenDeleteModel}>Xóa khóa học</Button>
       </div>
+
+      
 
       
 

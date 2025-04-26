@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import {  Link, useParams, useNavigate } from "react-router-dom";
 import Navbar from "~/components/Navbar";
@@ -9,53 +8,11 @@ import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/course-details.css";
 import "../styles/Responsive/course-details.css";
-// import { userInfo } from "os";
-
 
 interface UserInfo {
     maNguoiDung: string;
     email: string;
 };
-
-const chuongHocListFake = [
-    {
-      maChuongHoc: 1,
-      tenChuongHoc: "Giới thiệu về JavaScript",
-      danhSachBaiHoc: [
-        { maBaiHoc: 1, tenBaiHoc: "Lời khuyên trước khóa học" },
-        { maBaiHoc: 2, tenBaiHoc: "Cài đặt môi trường" },
-        { maBaiHoc: 3, tenBaiHoc: "Giới thiệu về JavaScript" }
-      ]
-    },
-    {
-      maChuongHoc: 2,
-      tenChuongHoc: "Biến và kiểu dữ liệu",
-      danhSachBaiHoc: [
-        { maBaiHoc: 4, tenBaiHoc: "Sử dụng biến trong JavaScript" },
-        { maBaiHoc: 5, tenBaiHoc: "Các kiểu dữ liệu cơ bản" },
-        { maBaiHoc: 6, tenBaiHoc: "Kiểu dữ liệu Object" }
-      ]
-    },
-    {
-      maChuongHoc: 3,
-      tenChuongHoc: "Câu lệnh điều kiện và vòng lặp",
-      danhSachBaiHoc: [
-        { maBaiHoc: 7, tenBaiHoc: "Câu lệnh if-else" },
-        { maBaiHoc: 8, tenBaiHoc: "Toán tử logic" },
-        { maBaiHoc: 9, tenBaiHoc: "Vòng lặp for và while" }
-      ]
-    },
-    {
-      maChuongHoc: 4,
-      tenChuongHoc: "Functions trong JavaScript",
-      danhSachBaiHoc: [
-        { maBaiHoc: 10, tenBaiHoc: "Hàm là gì?" },
-        { maBaiHoc: 11, tenBaiHoc: "Định nghĩa hàm" },
-        { maBaiHoc: 12, tenBaiHoc: "Hàm bậc cao" }
-      ]
-    }
-  ];
-
 
 export default function CourseDetails() {
     const navigate = useNavigate();
@@ -86,7 +43,6 @@ export default function CourseDetails() {
     const [chuongHocList, setChuongHocList] = useState<
         { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
     >([]);
-
 
     const [listLecture, setListLecture] = useState<string[]>([]);
 
@@ -131,8 +87,6 @@ export default function CourseDetails() {
         fetchLessons();
     }, [maKhoaHoc]); 
 
-
-
     // Accordion
     const [openIndexes, setOpenIndexes] = useState<number[]>([]);
 
@@ -145,8 +99,8 @@ export default function CourseDetails() {
         );
     };
 
+    // Đăng ký khóa học
     const handleRegisterCourse = async () => {
-        // Lấy thông tin người dùng từ localStorage
         const userInfoStr = localStorage.getItem("userInfo");
         if (!userInfoStr) {
             console.log("Không tìm thấy thông tin người dùng trong localStorage.");
@@ -155,7 +109,6 @@ export default function CourseDetails() {
         const userInfo = JSON.parse(userInfoStr);
         const maNguoiDung = userInfo.maNguoiDung;
     
-        // Kiểm tra khóa học miễn phí
         if (parseFloat(giaBan) === 0) {
             console.log("Đăng ký khóa học thành công (Miễn phí)!");
             await registerCourse(maNguoiDung, parseFloat(giaBan));
@@ -181,11 +134,9 @@ export default function CourseDetails() {
             if (soDu < parseFloat(giaBan)) {
                 handleClose();
                 handleNoBalanceOpen();
-                // setTimeout(handleNoBalanceClose, 3000)
                 return;
             }
     
-            // Tiến hành đăng ký khóa học
             await registerCourse(maNguoiDung, parseFloat(giaBan));
             navigate(`/learning/${maKhoaHoc}`);
     
@@ -242,20 +193,15 @@ export default function CourseDetails() {
             const result = await res.json();
             console.log("Thêm tiến độ học thành công:", result);
 
-            // console.log(maNguoiDung);
-            // console.log(listLecture);
         } catch (error) {
             console.error("Lỗi khi gọi insertTienDo:", error);
         }
     };
     
-    
-
     // Ẩn hiện model
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleOpen = () => {
-        // Lấy thông tin người dùng từ localStorage
         const userInfoStr = localStorage.getItem("userInfo");
         if (!userInfoStr) {
             navigate("/login");

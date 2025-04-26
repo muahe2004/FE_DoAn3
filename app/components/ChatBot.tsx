@@ -3,12 +3,12 @@ import Button from "~/components/Button";
 import "../styles/chat-bot.css";
 import "../styles/Responsive/Components/chat-bot.css";
 
-import { use, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type ChatBotProps = {
     isOpen: boolean;
     onClose: () => void;
-    className?: string; // Tuỳ chọn thêm className nếu cần
+    className?: string; 
 };
   
 export default function ChatBot({ isOpen, onClose, className }: ChatBotProps) {
@@ -16,6 +16,8 @@ export default function ChatBot({ isOpen, onClose, className }: ChatBotProps) {
     // Chỉnh size input
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
     const formRef = useRef<HTMLFormElement | null>(null);
+
+    // Chỉnh chiều cao của input
     const handleInput = () => {
         const textarea = textareaRef.current;
         const form = formRef.current;
@@ -23,7 +25,7 @@ export default function ChatBot({ isOpen, onClose, className }: ChatBotProps) {
         if (textarea && form) {
             textarea.style.height = "auto";
     
-            if (textarea.scrollHeight > 96) { // khoảng 3 dòng x 24px/dòng
+            if (textarea.scrollHeight > 96) { 
                 textarea.style.height = "230px";
                 form.style.height = "250px";
             } else {
@@ -32,12 +34,13 @@ export default function ChatBot({ isOpen, onClose, className }: ChatBotProps) {
         }
     };
 
+    // Gửi tin nhắn hỏi
     const handleSendMess = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         sendMessage();
     };
     
-    // Call api chat
+    // API chat
     const sendMessage = async () => {
         const form = formRef.current;
         const input = form?.querySelector<HTMLTextAreaElement>('textarea[name="chat-input"]');
@@ -139,15 +142,15 @@ export default function ChatBot({ isOpen, onClose, className }: ChatBotProps) {
 
 
     //   Trượt xuống sau khi có res
-      const containerRef = useRef<HTMLDivElement | null>(null);
-      const scrollToBottom = () => {
-        if (containerRef.current) {
-          containerRef.current.scrollTo({
-            top: containerRef.current.scrollHeight,
-            behavior: "smooth"
-          });
-        }
-      };
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const scrollToBottom = () => {
+    if (containerRef.current) {
+        containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth"
+        });
+    }
+    };
 
   return (
     <div ref={wrapperRef} className={`chatbot-wrapper ${isOpen ? "open" : "closed"} ${className}`}>

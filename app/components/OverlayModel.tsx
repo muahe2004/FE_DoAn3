@@ -31,7 +31,7 @@ const ModelOverlay: React.FC<ModelOverlayProps> = ({ children, secondOption, tit
 
     return (
         <div id="overlay-model" className={`overlay-model ${isClosing ? "fade-out" : ""}`} onClick={handleClose}>
-            <div className="model-inner" onClick={(e) => e.stopPropagation()}>
+            <div className={`model-inner ${isClosing ? "" : "open"}`} onClick={(e) => e.stopPropagation()}>
                 <div className={`model-image ${className || ""}`}>
                     <img src={`/icons/${icon}`} alt="" className="model-icon" />
                 </div>

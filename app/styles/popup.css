@@ -1,4 +1,4 @@
-.overlay-model {
+.popup {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
@@ -8,79 +8,76 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
     z-index: 10;
+
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.5s ease; 
+    pointer-events: auto;
 }
 
-.overlay-model.fade-out {
+.popup.isClosed {
     opacity: 0;
-    visibility: hidden;
+    pointer-events: none; /* ngăn người dùng click được khi ẩn */
 }
 
-.model-inner {
+.popup-inner {
     width: 28%;
     background: #fff;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 30px 10px 12px 10px;
     text-align: center;
-    opacity: 0;
-    transform: scale(0.8);
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, visibility 0.3s ease-in-out;
-}
 
-.overlay-model.fade-out .model-inner {
-    transform: scale(0.8);
-    opacity: 0;
-}
-
-.model-inner.open {
-    visibility: visible;
     transform: scale(1);
     opacity: 1;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.model-image {
+.popup.isClosed .popup-inner {
+    transform: scale(0.8);
+    opacity: 0;
+}
+
+
+.popup-image {
     background: red;
     border-radius: 50%;
     display: inline-block;
     padding: 10px;
 }
 
-.model-image_second {
+.popup-image_second {
     background: linear-gradient(45deg, #21a2ff, #8951ff);
 }
 
-.model-image_third {
+.popup-image_third {
     background: #2ecc71  ;
 }
 
-.model-icon {
+.popup-icon {
     width: 20px;
     height: 20px;
 }
 
-.model-title {
+.popup-title {
     font-size: 20px;
     font-weight: 700;
     margin-top: 10px;
 }
 
-.model-desc {
+.popup-desc {
     margin-top: 10px;
     font-size: 16px;
 }
 
-.model-action {
+.popup-action {
     margin-top: 20px;
     display: flex;
     justify-content: space-around;
 }
 
-.model-button {
+.popup-button {
     width: 150px;
     background: #ccc;
     padding: 8px 10px;
@@ -90,11 +87,21 @@
     transition: 0.25s;
 }
 
-.model-button:hover {
+.popup-count {
+    width: 160px;
+    height: 43px;
+    border: 1px solid #ccc;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: 0.25s;
+}
+
+.popup-button:hover {
     opacity: 0.9;
 }
 
-.model-button:empty {
+.popup-button:empty {
     display: none;
 }
 

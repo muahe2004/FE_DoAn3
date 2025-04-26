@@ -254,7 +254,7 @@ export default function AdminLectureDetails() {
     
     return (
         <div className="update-lecture__wrapper">
-            <Header title="Thông tin bài học"></Header>
+            <Header className="header-admin" title="Thông tin bài học"></Header>
             <AdminNav></AdminNav>
 
             <div className="update-lecture__inner">

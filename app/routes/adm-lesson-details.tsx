@@ -170,7 +170,7 @@ export default function AdminLessonDetails() {
     
     return (
         <div className="update-lesson__wrapper">
-            <Header title="Thông tin chương"></Header>
+            <Header className="header-admin" title="Thông tin chương"></Header>
             <AdminNav></AdminNav>
 
             <div className="update-lesson__inner">

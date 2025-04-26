@@ -212,7 +212,7 @@ export default function Analytics() {
       
   return (
     <div className="analytics-wrapper">
-      <Header title="Thống kê" />
+      <Header className="header-admin" title="Thống kê" />
       <AdminNav />
 
       <div className="analytics-inner">

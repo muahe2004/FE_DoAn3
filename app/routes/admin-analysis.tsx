@@ -1,22 +1,29 @@
-
-
-import { useEffect, useState } from "react";
-import Header from "~/components/Header";
-import AdminNav from "~/components/Admin/AdminNav";
-import AdminCourse from "~/components/Admin/Course";
-
-import "../styles/Admin/admin.css";
-
-import { Link } from "react-router-dom";
-
+import { useState } from "react";
+import Button from "~/components/Button";
+import PopUp from "~/components/PopUp";
 
 export default function AdminAnanlysis() {
+
+
+  const [isClosed, setIsClosed] = useState(true);
+  const handleOpen = () => { setIsClosed(false)};
+  const handleClose = () => { setIsClosed(true)};
+
   return (
     <div>
-        <Header title="Thống kê"></Header>
-        <AdminNav></AdminNav>
-      
+
+      <PopUp 
+        icon={"/Exclamation.svg"} 
+        secondOption={"Hủy"} 
+        title={"Xóa nhé ?"} 
+        desc={"Có chắc muốn xóa không ?"} 
+        onOpen={handleClose}
+        isClosed={isClosed}
+      >
+        <Button children="Xóa" />
+      </PopUp>
+
+      <Button children="Mở" onClick={handleOpen} />
     </div>
-    
   );
 }

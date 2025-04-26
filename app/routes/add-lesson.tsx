@@ -119,7 +119,7 @@ export default function AddLesson() {
   
   return (
     <div className="add-lesson__wrapper">
-      <Header title="Thêm chương học"></Header>
+      <Header className="header-admin" title="Thêm chương học"></Header>
       <AdminNav></AdminNav>
 
       <div className="add-lesson__inner">

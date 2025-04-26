@@ -174,7 +174,7 @@ export default function AddLecture() {
 
   return (
     <div className="add-lecture__wrapper">
-        <Header title="Thêm bài học"></Header>
+        <Header className="header-admin" title="Thêm bài học"></Header>
         <AdminNav></AdminNav>
       
         <div className="add-lecture__inner">

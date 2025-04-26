@@ -4,7 +4,6 @@ import LearningHeader from "~/components/Learning-header";
 import Button from "~/components/Button";
 import ChatBot from "~/components/ChatBot";
 
-
 import "../styles/learning.css";
 import "../styles/Responsive/learning.css";
 
@@ -14,8 +13,6 @@ export default function Learning() {
     const [chuongHocList, setChuongHocList] = useState<
         { maChuongHoc: string; tenChuongHoc: string; danhSachBaiHoc: any[] }[]
     >([]);
-
-    
 
     const [isChatOpen, setIsChatOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -169,7 +166,6 @@ export default function Learning() {
         }
     }, [chuongHocList]);
     
-    
     // Load dữ liệu câu hỏi của bài học
     type AnswerMap = { [maCauHoi: string]: string;};
     const fetchQuestion = async () => {
@@ -239,8 +235,7 @@ export default function Learning() {
         return () => clearTimeout(timer);
     })
 
-
-    // Xóa dữ liệu khi thoát khỏi trang learning
+    // Xóa local khi thoát khỏi trang learning
     const location = useLocation();
     useEffect(() => {
         const handleLocationChange = () => {
@@ -252,8 +247,6 @@ export default function Learning() {
     
     }, [location]); 
         
-
-
     return (
         <div className="learning-wrapper">
             <LearningHeader title="Học bài" className="learning-header"></LearningHeader>
@@ -261,6 +254,7 @@ export default function Learning() {
             {/* Nội dung bài học */}
             <div className="learning-inner">
                 <div className="learning-container">
+                    {/* Video */}
                     {baiHoc && (
                         <>
                             <iframe
@@ -277,6 +271,7 @@ export default function Learning() {
                         </>
                     )}
 
+                    {/* Câu hỏi ôn tập */}
                     <div className="learning-listQuesion">
                         <h2 className="learning-title">Câu hỏi ôn tập</h2>
                         { isLoadingQuestions ? (
@@ -316,7 +311,7 @@ export default function Learning() {
                                                         type="radio"
                                                         name={`cauHoi-${index}`}
                                                         id={dapAn.maDapAn}
-                                                        disabled={!!selectedAnswers[cauHoi.maCauHoi]} // khóa chọn lại sau khi chọn
+                                                        disabled={!!selectedAnswers[cauHoi.maCauHoi]} 
                                                         onChange={() =>
                                                         setSelectedAnswers((prev) => ({
                                                             ...prev,
@@ -341,7 +336,6 @@ export default function Learning() {
                 </div>
 
 
-                {/*  */}
                 {/* Side bar */}
                 <div className="learning-sidebar ">
                     <div className="learning-accordion">

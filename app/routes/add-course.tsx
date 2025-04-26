@@ -8,8 +8,6 @@ import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/Admin/add-course.css";
 
-
-
 export default function AddCourse() {
   const navigate = useNavigate();
 
@@ -30,7 +28,7 @@ export default function AddCourse() {
     }
   };
 
-  // Blur
+  // Xử lý blur
   const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const input = event.target;
     const formText = input.parentElement?.querySelector(".form-text") as HTMLElement | null;
@@ -75,7 +73,8 @@ export default function AddCourse() {
       return;
     }
   
-    let imageUrl = "http://localhost:1000/uploads/COURSE.png"; // Ảnh mặc định
+    let imageUrl = "http://localhost:1000/uploads/COURSE.png"; 
+
     if (fileInput?.files?.length) {
       const formData = new FormData();
       formData.append("file", fileInput.files[0]);
@@ -121,8 +120,6 @@ export default function AddCourse() {
     }
   };
   
-  
-  
   const [isModelOpen, setIsModelOpen] = useState(false);
   const handleOpenModel = () => {
     setIsModelOpen(true);
@@ -132,6 +129,7 @@ export default function AddCourse() {
     setIsModelOpen(false);
   }
 
+  // Làm mới
   const handleResetForm = () => {
     const form = document.querySelector<HTMLFormElement>(".course__form");
     if (form) {
@@ -146,10 +144,9 @@ export default function AddCourse() {
     }
   };
   
-
   return (
     <div className="add-course__wrapper">
-      <Header title="Thêm khóa học" />
+      <Header className="header-admin" title="Thêm khóa học" />
       <AdminNav />
       
       <div className="add-course__inner">

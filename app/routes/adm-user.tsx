@@ -1,10 +1,7 @@
-import { data, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import type { TooltipProps } from 'recharts';
 
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
-
 
 import "../styles/Admin/adm-user.css";
 
@@ -36,10 +33,6 @@ export default function Analytics() {
     <div className="adm-user__wrapper">
         <Header title="Quản lý người dùng" />
         <AdminNav />
-
-        
-
-        
 
         <div className="adm-user__inner">
             {/* Thanh tìm kiếm */}
