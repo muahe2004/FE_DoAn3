@@ -4,7 +4,6 @@ import Navbar from "~/components/Navbar";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import Button from "~/components/Button";
-import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/course-details.css";
 import "../styles/Responsive/course-details.css";
@@ -271,8 +270,6 @@ export default function CourseDetails() {
                         {Number(giaBan) === 0 ? "Miễn phí" : `${Number(giaBan).toLocaleString("vi-VN")} VNĐ`}
                     </h3>
 
-
-
                     <Button className="thumb-btn" children="Đăng ký ngay" type="button" onClick={handleOpenPay}></Button>
 
                     <ul className="thumb-list">
@@ -285,11 +282,6 @@ export default function CourseDetails() {
                             <img src="/icons/Article.svg" alt="" className="thumb-icon" />
                             <span>Tổng số 100 bài học</span>
                         </li>
-
-                        {/* <li className="thumb-item">
-                            <img src="/icons/Code.svg" alt="" className="thumb-icon" />
-                            <span>Trình độ cơ bản</span>
-                        </li> */}
 
                         <li className="thumb-item">
                             <img src="/icons/Clock.svg" alt="" className="thumb-icon" />

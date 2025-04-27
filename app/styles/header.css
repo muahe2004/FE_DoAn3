@@ -2,10 +2,7 @@
     background: #fff;
     height: 80px;
     width: 100%;
-
     padding: 10px 20px;
-
-    /* display: flex; */
     align-items: center;
     position: fixed;
     top: 0;
@@ -40,7 +37,6 @@
     font-weight: 600;
     color: #000;
 }
-
 
 /* TÌM KIẾM ==================================================== */
 .header-search {
@@ -79,7 +75,6 @@
 
 .search-result {
     position: absolute;
-    /* height: 300px; */
     width: 100%;
     background: #fff;
     top: 90%;
@@ -106,7 +101,6 @@
 }
 
 .search-result__inner--title {
-    /* background: yellowgreen; */
     display: block;
     color: #8d8b8b;
     padding-right: 10px;
@@ -117,7 +111,6 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    /* background: yellowgreen; */
     margin-bottom: 5px;
     transition: .25s;
     border-radius: 999px 4px 4px 999px;
@@ -140,13 +133,11 @@
     color: #888;
 }
 
-
 /* ========================================== */
 .header-container {
     display: flex;
     align-items: center;
 }
-
 
 .header-button {
     color: #000;
@@ -154,7 +145,6 @@
     font-weight: 600;
     padding: 10px 0;
     cursor: pointer;
-    /* background: #ccc; */
 }
 
 .header-notify {
@@ -174,7 +164,6 @@
 .header-container__logout {
     display: flex;
     justify-content: space-between;
-    /* background: yellowgreen; */
     width: 230px;
 }
 
@@ -182,8 +171,6 @@
     font-size: 16px;
     width: 110px;
 }
-
-
 
 /* My course */
 .my-course {
@@ -201,6 +188,7 @@
     transition: opacity 0.5s ease, visibility 0s ease 0.5s; 
     opacity: 0; 
     visibility: hidden; 
+    border: 1px solid #21a2ff;
 }
 
 .my-course.visible {
@@ -211,14 +199,11 @@
 .my-course__content {
     width: 100%;
     height: 100%;
-    /* background: yellowgreen; */
     overflow-y: auto;
     padding-top: 25px;
 }
 
 .my-course__more {
-    /* background: yellowgreen; */
-    /* margin-bottom: 5px; */
     background: #fff;
     border-radius: 12px 12px 0 0;
     border-bottom: 1px solid #ccc;
@@ -264,7 +249,7 @@
 
 /* Actions */
 .header-action {
-    padding: 10px 15px;
+    padding: 10px 0px 0px 0;
     width: 250px;
     background: #fff;
     border-radius: 8px;
@@ -273,6 +258,8 @@
     right: 5px;
     z-index: 10;
     box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+    border: 1px solid #21a2ff;
 }
 
 .header-action__info {
@@ -281,6 +268,7 @@
     align-items: center;
     border-bottom: 1px solid #cecdcd;
     padding-bottom: 20px;
+    padding-left: 10px;
 }
 
 .header-action__avatar {
@@ -294,9 +282,11 @@
 }
 
 .header-action__name {
+    font-size: 14px;
     font-weight: 600;
     width: 100%;
     display: block;
+    padding-right: 5px;
 }
 
 .header-action__mail {
@@ -329,12 +319,16 @@
     font-size: 14px;    
 }
 
-.header-action__item:first-child {
-    margin-top: 10px;
-}
-
 .header-action__link {
     display: block;
-    height: 30px;
     width: 100%;
+    cursor: pointer;
+    text-align: left;
+    padding: 8px 0 8px 10px;
+    transition: .25s;
+}
+
+.header-action__link:hover {
+    background: #f5f5f5;
+    font-weight: 600;
 }

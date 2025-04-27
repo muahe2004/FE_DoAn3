@@ -269,7 +269,6 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         };
     }, []);
       
-
     return (
         <header className={`header ${className || ""}`}>
             <div className="header-wrapper">
@@ -384,7 +383,10 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
                         <div className="header-action__row">
                             <span className="header-action__item">
-                                <Link className="header-action__link" to={role ? (role === "Admin" ? "/admin" : "/user") : "/login"}>Trang cá nhân</Link>
+                                <Link className="header-action__link" to={role ? (role === "Admin" ? "/admin" : "/user") : "/login"}>
+                                    {role === "Admin" ? "Trang quản trị" : "Trang cá nhân"}
+
+                                </Link>
                             </span>
                         </div>
 
@@ -417,7 +419,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                                 <Link className="header-action__link" to="">Cài đặt</Link>
                             </span>
                             <span className="header-action__item">
-                                <button onClick={handleLogout}>Đăng xuất</button>
+                                <button className="header-action__link" onClick={handleLogout}>Đăng xuất</button>
                             </span>
                         </div>
                     </div>

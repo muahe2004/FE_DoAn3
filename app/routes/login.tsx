@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import {  Link, useParams, useNavigate } from "react-router-dom";
-import CryptoJS from "crypto-js";
+// import CryptoJS from "crypto-js";
 
 import Button from "~/components/Button";
 

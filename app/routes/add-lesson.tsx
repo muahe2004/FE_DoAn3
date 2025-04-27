@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 import Button from "~/components/Button";
-import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/Admin/admin.css";
 import "../styles/Admin/add-lesson.css";

@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 import Button from "~/components/Button";
-import ModelOverlay from "~/components/OverlayModel";
 
 import "../styles/Admin/add-course.css";
 import PopUp from "~/components/PopUp";
