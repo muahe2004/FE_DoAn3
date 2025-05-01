@@ -35,13 +35,12 @@ export default function AdminNav() {
                         </Link>
                     </li>
 
-                    {/* <li className="navbar-item">
+                    <li className="navbar-item">
                         <Link to="/question" className="navbar-link">
-                            <img src="/icons/circle-question.svg" alt="Bài viết" className="navbar-icon" />
+                            <img src="/icons/circle-question.svg" alt="Câu hỏi" className="navbar-icon" />
                             <span>Câu hỏi</span>
                         </Link>
-                    </li> */}
-
+                    </li>
 
                     <li className="navbar-item">
                         <Link to="/admin-user" className="navbar-link">

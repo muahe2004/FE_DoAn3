@@ -209,7 +209,6 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     const [searchResult, setSearchResult] = useState<RegisteredCourse []>([]);
 
     useEffect(() => {
-        // Không gọi API nếu rỗng hoặc toàn khoảng trắng
         if (!inputValue.trim()) return;
 
         fetch(`http://localhost:1000/api/courses/search/${inputValue}`)
@@ -231,10 +230,8 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         if (myCourses) {
           const listCourses = JSON.parse(myCourses);
     
-          // Kiểm tra xem maKhoaHoc có trong listCourses hay không
           const courseExists = listCourses.some((course: { maKhoaHoc: string }) => course.maKhoaHoc === maKhoaHoc);
     
-          // Nếu có, chuyển hướng đến trang /learning/:maKhoaHoc, nếu không, đến /course-details/:maKhoaHoc
           if (courseExists) {
             navigate(`/learning/${maKhoaHoc}`);
           } else {
@@ -385,7 +382,6 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
                             <span className="header-action__item">
                                 <Link className="header-action__link" to={role ? (role === "Admin" ? "/admin" : "/user") : "/login"}>
                                     {role === "Admin" ? "Trang quản trị" : "Trang cá nhân"}
-
                                 </Link>
                             </span>
                         </div>

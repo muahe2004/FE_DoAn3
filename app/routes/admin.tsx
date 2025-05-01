@@ -60,7 +60,6 @@ export default function Admin() {
   }, []);
 
   // Tìm kiếm
-  // Tìm kiếm
   const [inputValue, setInputValue] = useState("");
   const [searchResult, setSearchResult] = useState<CourseProps []>([]);
 
@@ -82,27 +81,27 @@ export default function Admin() {
   }, [inputValue]);
 
   // Click ngoài thì phải đóng tìm kiếm
-      const inputRef = useRef<HTMLInputElement>(null);
-      const resultRef = useRef<HTMLDivElement>(null);
-      const [showResult, setShowResult] = useState(false);
-  
-      useEffect(() => {
-          const handleClickOutside = (event: MouseEvent) => {
-            if (
-              resultRef.current &&
-              !resultRef.current.contains(event.target as Node) &&
-              inputRef.current &&
-              !inputRef.current.contains(event.target as Node)
-            ) {
-              setShowResult(false);
-            }
-          };
-        
-          document.addEventListener("mousedown", handleClickOutside);
-          return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-          };
-      }, []);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+  const [showResult, setShowResult] = useState(false);
+
+  useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          resultRef.current &&
+          !resultRef.current.contains(event.target as Node) &&
+          inputRef.current &&
+          !inputRef.current.contains(event.target as Node)
+        ) {
+          setShowResult(false);
+        }
+      };
+    
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+  }, []);
   
   return (
     <div className="admin-wrapper">
@@ -115,13 +114,13 @@ export default function Admin() {
         <div className="list-course__search">
           <img className="list-course-icon" src="/icons/Search.svg" alt="" />
           <input 
-              className="list-course-input" 
-              // ref={inputRef}
-              type="text"
-              placeholder="Tìm khóa học..."
-              // value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onFocus={() => setShowResult(true)}
+            className="list-course-input" 
+            ref={inputRef}
+            type="text"
+            placeholder="Tìm khóa học..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onFocus={() => setShowResult(true)}
           />
 
           {/* Ô tìm kiếm */}
@@ -152,7 +151,7 @@ export default function Admin() {
                     )
                 )}
             </div>
-        </section>
+          </section>
         </div>
 
         {/* Phần head */}

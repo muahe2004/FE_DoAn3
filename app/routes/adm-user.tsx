@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 
 import "../styles/Admin/adm-user.css";
+import { Link } from "react-router";
 
 interface Users {
     maNguoiDung: string;
@@ -27,11 +28,55 @@ export default function Analytics() {
             .then((data) => setUsers(data))
             .catch((error) => console.error("Lỗi khi lấy người dùng: ", error));
     }, [])
+
+    // Tìm kiếm
+    const [inputValue, setInputValue] = useState("");
+    const [searchResult, setSearchResult] = useState<Users []>([]);
+
+    useEffect(() => {
+        // Không gọi API nếu rỗng hoặc toàn khoảng trắng
+        if (!inputValue.trim()) return;
+
+        fetch(`http://localhost:1000/api/courses/search/${inputValue}`)
+            .then((res) => {
+                if (!res.ok) {
+                    console.log("Lỗi khi tìm kiếm");
+                }
+                return res.json();
+            })
+            .then((data) => {
+                setSearchResult(data);
+                console.log("Kết quả:", searchResult);
+            });
+    }, [inputValue]);
+
+    // Click ngoài thì phải đóng tìm kiếm
+    const inputRef = useRef<HTMLInputElement>(null);
+    const resultRef = useRef<HTMLDivElement>(null);
+    const [showResult, setShowResult] = useState(false);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+        if (
+            resultRef.current &&
+            !resultRef.current.contains(event.target as Node) &&
+            inputRef.current &&
+            !inputRef.current.contains(event.target as Node)
+        ) {
+            setShowResult(false);
+        }
+        };
+    
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
   
       
   return (
     <div className="adm-user__wrapper">
-        <Header title="Quản lý người dùng" />
+        <Header className="header-admin" title="Quản lý người dùng" />
         <AdminNav />
 
         <div className="adm-user__inner">
@@ -40,15 +85,44 @@ export default function Analytics() {
                 <img className="adm-user__icon" src="/icons/Search.svg" alt="" />
                 <input 
                     className="adm-user__input" 
-                    // ref={inputRef}
+                    ref={inputRef}
                     type="text"
-                    placeholder="Tìm khóa học..."
-                    // value={inputValue}
-                    //   onChange={(e) => setInputValue(e.target.value)}
-                    //   onFocus={() => setShowResult(true)}
+                    placeholder="Tìm kiếm người dùng..."
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onFocus={() => setShowResult(true)}
                 />
 
-                
+                {/* Ô tìm kiếm */}
+                <section ref={resultRef} className={`search-result__admin ${showResult && inputValue.trim() ? "show" : ""}`}>
+                    <div className="search-result__inner">
+                        <div className="search-result__head">
+                            <span className="search-result__inner--title">Kết quả cho: "{inputValue}"</span>
+                            <span onClick={() => setShowResult(false)} className="search-result__inner--close">
+                                <img className="search-result__icon" src="/icons/Close.svg" alt="" />
+                            </span>
+                        </div>
+                        {
+                            searchResult.length === 0 ? (
+                                <p className="no-res">Không tìm thấy kết quả cho: "{inputValue}"</p>
+                            ) : (
+                                searchResult.map((item) => (
+                                    <Link to={``}
+                                        // key={item.maKhoaHoc}
+                                        className="search-result__item">
+                                        <div className="search-result__thumb">
+                                            {/* <img src={item.hinhAnh} alt="" className="search-result__image" /> */}
+                                        </div>
+                                        <div>
+                                            {/* <span className="search-result__name">{item.tenKhoaHoc}</span> */}
+                                        </div>
+                                    </Link>
+                                )
+                            )
+                        )}
+                    </div>
+                </section>
+        
             </div>
 
             {/* head */}
