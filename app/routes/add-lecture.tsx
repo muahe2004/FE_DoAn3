@@ -54,14 +54,26 @@ export default function AddLecture() {
   }, [selectedCourse]); 
   
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+  const handleBlur = (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const input = event.target;
-    const formErr = input.parentElement?.querySelector(".lecture-form__text") as HTMLElement | null;
-
-    if (formErr) {
-      formErr.style.display = input.value.trim() ?  "none" : "block";
+    const formText = input.parentElement?.querySelector(".lecture-form__text") as HTMLElement | null;
+  
+    if (input.value.trim()) {
+      // Nếu hợp lệ: ẩn thông báo và reset border
+      if (formText) {
+        formText.style.display = "none";
+      }
+      input.style.borderColor = "#ccc"; // hoặc "initial"
+    } else {
+      // Nếu không hợp lệ: hiển thị thông báo và border đỏ
+      if (formText) {
+        formText.style.display = "block";
+      }
+      input.style.borderColor = "red";
     }
-  }
+  };
 
   const handleResetForm= () => {
     const form = document.querySelector<HTMLFormElement>(".add-lecture__form")
@@ -109,6 +121,7 @@ export default function AddLecture() {
           formText.innerText = message;
           formText.style.display = "block";
         }
+        input.style.borderColor = "red";
         input.focus();
       }
     };

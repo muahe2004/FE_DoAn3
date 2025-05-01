@@ -14,6 +14,20 @@
     justify-content: space-between;
 }
 
+/* .question-form__info {
+    width: 100%;
+} */
+
+/* .form-group {
+    width: 70%;
+} */
+
+.question-form__group {
+    position: relative;
+    /* background: palevioletred; */
+}
+
+
 .question-form__action {
     border-top: 1px solid #ccc;
     /* height: 80px; */
@@ -27,4 +41,45 @@
 
 .btn-mQuestion {
     margin-right: 10px;
+}
+
+.question-form__text {
+    margin-top: 5px;
+    font-size: 14px;
+    width: 80%;
+    float: right;
+    color: red;
+    display: none;
+}
+
+.correct-answer-label {
+    position: absolute;
+    right: -160px;
+    top: 0;
+    /* background: yellow; */
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 150px;
+}
+
+.form-radio {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.correct-answer-label {
+    transition: .25s;
+
+}
+
+.correct-answer-label:hover {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.answer-input {
+    border:  1px solid #ccc;
 }

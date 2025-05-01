@@ -172,7 +172,7 @@ export default function Learning() {
         setIsLoadingQuestions(true);
         const maBaiHoc  = localStorage.getItem("lastSelectedLecture");
         try {
-            const res = await fetch(`http://localhost:1000/get-cau-hoi/${maBaiHoc}`);
+            const res = await fetch(`http://localhost:1000/api/questions/${maBaiHoc}`);
 
             if (!res.ok) {
                 console.log("Lỗi khi lấy câu hỏi!");
@@ -183,7 +183,7 @@ export default function Learning() {
 
             const questionsInfo = await Promise.all(
                 questions.map(async (question) => {
-                    const resAnswer = await fetch(`http://localhost:1000/get-dap-an/${question.maCauHoi}`);
+                    const resAnswer = await fetch(`http://localhost:1000/api/answers/${question.maCauHoi}`);
                     let listAnswer = [];
                     
                     if (resAnswer.ok) {

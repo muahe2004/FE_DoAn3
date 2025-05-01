@@ -29,14 +29,27 @@ export default function AddCourse() {
   };
 
   // Xử lý blur
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleBlur = (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const input = event.target;
     const formText = input.parentElement?.querySelector(".form-text") as HTMLElement | null;
   
-    if (formText) {
-      formText.style.display = input.value.trim() ? "none" : "block";
+    if (input.value.trim()) {
+      // Nếu hợp lệ: ẩn thông báo và reset border
+      if (formText) {
+        formText.style.display = "none";
+      }
+      input.style.borderColor = "#ccc"; // hoặc "initial"
+    } else {
+      // Nếu không hợp lệ: hiển thị thông báo và border đỏ
+      if (formText) {
+        formText.style.display = "block";
+      }
+      input.style.borderColor = "red";
     }
   };
+  
   
   // Add khóa học
   const handleAddCourse = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -56,6 +69,7 @@ export default function AddCourse() {
           formText.innerText = message;
           formText.style.display = "block";
         }
+        input.style.borderColor = "red";
         input.focus();
       }
     };

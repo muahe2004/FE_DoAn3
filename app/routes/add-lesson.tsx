@@ -45,12 +45,13 @@ export default function AddLesson() {
           formErr.innerText = message;
           formErr.style.display = "block";
         }
+        input.style.borderColor = "red";
         input.focus();
       }
     }
 
     if(!course?.value.trim()) {
-      showError(nameInput, "Vui lòng chọn khóa học!");
+      showError(course, "Vui lòng chọn khóa học!");
       return;
     }
 
@@ -84,14 +85,26 @@ export default function AddLesson() {
     }
   }
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleBlur = (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const input = event.target;
-    const formErr = input.parentElement?.querySelector(".lesson-form__text") as HTMLElement | null;
-
-    if (formErr) {
-      formErr.style.display = input.value.trim() ?  "none" : "block";
+    const formText = input.parentElement?.querySelector(".lesson-form__text") as HTMLElement | null;
+  
+    if (input.value.trim()) {
+      // Nếu hợp lệ: ẩn thông báo và reset border
+      if (formText) {
+        formText.style.display = "none";
+      }
+      input.style.borderColor = "#ccc"; // hoặc "initial"
+    } else {
+      // Nếu không hợp lệ: hiển thị thông báo và border đỏ
+      if (formText) {
+        formText.style.display = "block";
+      }
+      input.style.borderColor = "red";
     }
-  }
+  };
 
   const handleResetForm= () => {
     const form = document.querySelector<HTMLFormElement>(".lesson-form")
@@ -131,6 +144,7 @@ export default function AddLesson() {
                   </option>
                 ))}
               </select>
+              <span className="lesson-form__text">Vui lòng chọn khóa học</span>
             </div>
                   
             <div className="lesson-form__group">
