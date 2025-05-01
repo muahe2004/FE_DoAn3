@@ -81,6 +81,7 @@
 
 .form-input:focus {
     background: #e6edf7;
+    border-color: #21a2ff;
 }
 
 .form-area {

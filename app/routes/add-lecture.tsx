@@ -34,7 +34,7 @@ export default function AddLecture() {
     fetchCourses();
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     const fetchLessons = async () => {
       if (!selectedCourse) return; 
 

@@ -187,7 +187,7 @@ export default function AdminCourseDetails() {
           
           const lessonInfo = await Promise.all(
             lessons.map(async (lesson) => {
-              const resLecture = await fetch(`http://localhost:1000/listBaiHoc/${lesson.maChuongHoc}`);
+              const resLecture = await fetch(`http://localhost:1000/api/lectures/${lesson.maChuongHoc}`);
               let danhSachBaiHoc = [];
 
               if (resLecture.ok) {
