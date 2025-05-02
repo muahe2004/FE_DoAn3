@@ -47,12 +47,34 @@ export default function QuestionDetails() {
             })
             .catch(err => console.error(err));
     }, [maCauHoi]);
+
+    const [answers, setAnswers] = useState([
+        { maDapAn: "", noiDungDapAn: '', laDapAnDung: 0 }, // answer 1
+        { maDapAn: "", noiDungDapAn: '', laDapAnDung: 0 }, // answer 2
+        { maDapAn: "", noiDungDapAn: '', laDapAnDung: 0 }, // answer 3
+    ]);
     
+    const [correctAnswers, setCorrectAnswers] = useState({
+        answer1: 0,
+        answer2: 0,
+        answer3: 0,
+    });
+    
+    const handleCorrectAnswerChange = (selected: string) => {
+        setCorrectAnswers({
+            answer1: selected === "answer1" ? 1 : 0,
+            answer2: selected === "answer2" ? 1 : 0,
+            answer3: selected === "answer3" ? 1 : 0,
+        });
+    };
+    
+    // Lấy các đáp án
     useEffect(() => {
         fetch(`http://localhost:1000/api/answers/${maCauHoi}`)
           .then((res) => res.json())
           .then((data) => {
-            // Giả sử API trả về dữ liệu có trường `laDapAnDung` là kiểu Buffer
+
+            // console.log(data);
             setAnswers(data);
       
             // Kiểm tra đáp án đúng dựa trên trường `data` trong `laDapAnDung`
@@ -67,10 +89,7 @@ export default function QuestionDetails() {
             }
           })
           .catch((err) => console.error(err));
-      }, [maCauHoi]);
-      
-      
-      
+    }, [maCauHoi]);
 
     // Lấy các khóa học
     useEffect(() => {
@@ -149,9 +168,7 @@ export default function QuestionDetails() {
         }
     };
 
-    const handleResetForm = () => {
-
-    }
+    const handleResetForm = () => {};
 
     // Xóa validator
     const clearError = (target: EventTarget & HTMLSelectElement) => {
@@ -164,8 +181,8 @@ export default function QuestionDetails() {
     };
   
 
-    // Hàm thêm câu hỏi
-    const handleAddQuestion = async (event: React.FormEvent<HTMLFormElement>) => {
+    // Hàm sửa câu hỏi
+    const handleUpdateQuestion = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = event.currentTarget;
 
@@ -232,63 +249,61 @@ export default function QuestionDetails() {
         }
 
         const bodyQues = {
-        maBaiHoc: lecture?.value,
-        noiDung: question?.value
+            maBaiHoc: lecture?.value,
+            noiDung: question?.value
         }
 
         try {
-        // Thêm câu hỏi
-        const resQues = await fetch(``, {
-            method: "POST",
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(bodyQues)
-        });
-    
-        const data = await resQues.json();
-
-        // Thêm các đáp án
-        if (data.maCauHoi && data.noiDung && data.maBaiHoc) { 
-            const listAnswers = [
-            { noiDungDapAn: answer_first?.value.trim(), laDapAnDung: correctAnswers.answer1, maCauHoi: data.maCauHoi },
-            { noiDungDapAn: answer_second?.value.trim(), laDapAnDung: correctAnswers.answer2, maCauHoi: data.maCauHoi },
-            { noiDungDapAn: answer_third?.value.trim(), laDapAnDung: correctAnswers.answer3, maCauHoi: data.maCauHoi },
-            ];
-        
-            for (let i=0; i<listAnswers.length; i++) {
-            const currentAnswer = listAnswers[i];
-
-            const bodyAnswer = {
-                noiDungDapAn: currentAnswer.noiDungDapAn,
-                laDapAnDung: currentAnswer.laDapAnDung,
-                maCauHoi: currentAnswer.maCauHoi,
-            };
-
-            try {
-                const res = await fetch(``, {
-                method: "POST",
+            console.log(bodyQues);
+            // Sửa câu hỏi
+            await fetch(`http://localhost:1000/api/questions/${maCauHoi}`, {
+                method: "PUT",
                 headers: {
-                    'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(bodyAnswer),
-                });
+                body: JSON.stringify(bodyQues)
+            });
+        
+            // const data = await resQues.json();
 
-                const result = await res.json();
-                console.log(`Dữ liệu phản hồi từ API cho đáp án ${i + 1}:`, result);
-            } catch (error) {
-                console.error(`Có lỗi khi gửi dữ liệu cho đáp án ${i + 1}:`, error);
+            // Sửa các đáp án
+            const listAnswers = [
+                { maDapAn: answer_first.dataset.madapan, noiDungDapAn: answer_first?.value.trim(), laDapAnDung: correctAnswers.answer1, maCauHoi: maCauHoi },
+                { maDapAn: answer_second.dataset.madapan, noiDungDapAn: answer_second?.value.trim(), laDapAnDung: correctAnswers.answer2, maCauHoi: maCauHoi },
+                { maDapAn: answer_third.dataset.madapan, noiDungDapAn: answer_third?.value.trim(), laDapAnDung: correctAnswers.answer3, maCauHoi: maCauHoi },
+            ];
+            
+            for (let i=0; i<listAnswers.length; i++) {
+                const currentAnswer = listAnswers[i];
+
+                const bodyAnswer = {
+                    noiDungDapAn: currentAnswer.noiDungDapAn,
+                    laDapAnDung: currentAnswer.laDapAnDung,
+                    maCauHoi: currentAnswer.maCauHoi,
+                };
+
+                try {
+                    const res = await fetch(`http://localhost:1000/api/answers/${currentAnswer.maDapAn}`, {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bodyAnswer),
+                    });
+
+                    const result = await res.json();
+                    console.log(`Dữ liệu phản hồi từ API cho đáp án ${i + 1}:`, result);
+                } catch (error) {
+                    console.error(`Có lỗi khi gửi dữ liệu cho đáp án ${i + 1}:`, error);
+                }
             }
-            }
-            // Mở popup thêm thành công
-            handleOpenAddDone();
-            setTimeout(handleCloseAddDone, 5000);
-        } else {
-            console.error('Dữ liệu không đầy đủ trong phản hồi API:', data);
-        }
+
+            // Mở popup sửa thành công
+            handleOpenUpdateDone();
+            setTimeout(handleCloseUpdateDone, 5000);
     
         } catch (error) {
-        console.error('Có lỗi khi gửi dữ liệu:', error);
+            console.error('Có lỗi khi gửi dữ liệu:', error);
         }
     }
 
@@ -304,31 +319,51 @@ export default function QuestionDetails() {
         return true;
         }
     };
+
+    // Hàm xóa câu hỏi
+    const deleteQues = async () => {
+        try {
+            // Xoá tất cả đáp án trước
+            for (let i = 0; i < answers.length; i++) {
+                const responseAnswer = await fetch(`http://localhost:1000/api/answers/${answers[i].maDapAn}`, {
+                    method: "DELETE",
+                });
     
-    const [answers, setAnswers] = useState([
-        { noiDungDapAn: '', laDapAnDung: 0 }, // answer 1
-        { noiDungDapAn: '', laDapAnDung: 0 }, // answer 2
-        { noiDungDapAn: '', laDapAnDung: 0 }, // answer 3
-    ]);
+                if (responseAnswer.ok) {
+                    console.log("Đã xoá đáp án:", answers[i].maDapAn);
+                } else {
+                    console.warn("Xoá đáp án thất bại:", answers[i].maDapAn);
+                }
+            }
     
-    const [correctAnswers, setCorrectAnswers] = useState({
-        answer1: 0,
-        answer2: 0,
-        answer3: 0,
-    });
+            // Sau khi xoá hết đáp án, xoá câu hỏi
+            const response = await fetch(`http://localhost:1000/api/questions/${maCauHoi}`, {
+                method: "DELETE",
+            });
     
-    const handleCorrectAnswerChange = (selected: string) => {
-        setCorrectAnswers({
-            answer1: selected === "answer1" ? 1 : 0,
-            answer2: selected === "answer2" ? 1 : 0,
-            answer3: selected === "answer3" ? 1 : 0,
-        });
+            if (response.ok) {
+                console.log("Xoá câu hỏi thành công:", maCauHoi);
+                handleCloseDelete();
+                handleOpenDeletedone();
+                setTimeout(() => navigate(`/admin-lecture-details/${selectedLecture}`), 2300);
+            } else {
+                console.error("Xoá câu hỏi thất bại:", maCauHoi);
+            }
+    
+        } catch (error) {
+            console.log("Lỗi khi xoá câu hỏi hoặc đáp án:", error);
+        }
     };
     
+    
     // Ẩn hiện PopUp
-    const [isClosedAddDone, setIsClosedAddDone] = useState(true);
-    const handleOpenAddDone = () => { setIsClosedAddDone(false)};
-    const handleCloseAddDone = () => { setIsClosedAddDone(true)};
+    const [isClosedUpdateDone, setIsClosedUpdateDone] = useState(true);
+    const handleOpenUpdateDone = () => { setIsClosedUpdateDone(false)};
+    const handleCloseUpdateDone = () => { setIsClosedUpdateDone(true)};
+
+    const [isClosedDeletedone, setIsClosedDeletedone] = useState(true);
+    const handleOpenDeletedone = () => { setIsClosedDeletedone(false)};
+    const handleCloseDeletedone = () => { setIsClosedDeletedone(true)};
 
     const [isClosedUpdate, setIsClosedUpdate] = useState(true);
     const handleOpenUpdate = () => { setIsClosedUpdate(false)};
@@ -346,7 +381,7 @@ export default function QuestionDetails() {
         <AdminNav />
         
         <div className="question-inner">
-        <form onSubmit={handleAddQuestion} className="course__form">
+        <form onSubmit={handleUpdateQuestion} className="course__form">
             <div className="form-inner">
                 
                 <div className="form-info">
@@ -423,6 +458,7 @@ export default function QuestionDetails() {
                     <div className="answer-group">
                         <label className="form-label">Đáp án 1</label>
                         <input
+                        data-madapan={answers[0]?.maDapAn || ''}
                         name="answer-1"
                         type="text"
                         className="form-input answer-input"
@@ -453,6 +489,7 @@ export default function QuestionDetails() {
                     <div className="answer-group">
                         <label className="form-label">Đáp án 2</label>
                         <input
+                        data-madapan={answers[1]?.maDapAn || ''}
                         name="answer-2"
                         type="text"
                         className="form-input answer-input"
@@ -483,6 +520,7 @@ export default function QuestionDetails() {
                         <div className="answer-group">
                             <label className="form-label">Đáp án 3</label>
                             <input
+                            data-madapan={answers[2]?.maDapAn || ''}
                             name="answer-3"
                             type="text"
                             className="form-input answer-input"
@@ -522,14 +560,13 @@ export default function QuestionDetails() {
                 className="popup-update"
                 timeCount={3}
             >
-                <Button type="submit">Sửa</Button>
+                <Button type="submit" onClick={handleCloseUpdate}>Sửa</Button>
             </PopUp>
 
             <div className="question-form__action"> 
                 <Button type="button" onClick={handleOpenUpdate} className="btn-add">Lưu lại</Button>
                 {/* <Button className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button> */}
                 <Button onClick={handleOpenDelete} className="btn-cancle button-third button">Xóa câu hỏi</Button>
-                
             </div>
 
             </form>
@@ -541,8 +578,8 @@ export default function QuestionDetails() {
             // secondOption={"Hủy bỏ"} 
             title={"Sửa câu hỏi"} 
             desc={"Sửa câu hỏi thành công!"} 
-            onOpen={handleCloseAddDone}
-            isClosed={isClosedAddDone}
+            onOpen={handleCloseUpdateDone}
+            isClosed={isClosedUpdateDone}
             className="popup-done"
             // timeCount={5}
         >
@@ -560,7 +597,7 @@ export default function QuestionDetails() {
             timeCount={3}
         >
             {/* // thêm onClick  để thực hiện xóa*/}
-            <Button type="submit" className="popup-delete_btn" >Xóa</Button>  
+            <Button onClick={deleteQues} type="button" className="popup-delete_btn" >Xóa</Button>  
         </PopUp>
 
         {/* xóa thành công */}
@@ -569,8 +606,8 @@ export default function QuestionDetails() {
             // secondOption={"Hủy bỏ"} 
             title={"Xóa câu hỏi"} 
             desc={"Xóa câu hỏi thành công!"} 
-            onOpen={handleCloseAddDone}
-            isClosed={isClosedAddDone}
+            onOpen={handleCloseDeletedone}
+            isClosed={isClosedDeletedone}
             className="popup-done"
             // timeCount={5}
         >
