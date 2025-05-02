@@ -7,6 +7,7 @@ import Button from "~/components/Button";
 
 import "../styles/Admin/question.css";
 import "../styles/Admin/add-course.css";
+import PopUp from "~/components/PopUp";
 
 
 
@@ -230,6 +231,9 @@ export default function Question() {
             console.error(`Có lỗi khi gửi dữ liệu cho đáp án ${i + 1}:`, error);
           }
         }
+        // Mở popup thêm thành công
+        handleOpenAddDone();
+        setTimeout(handleCloseAddDone, 5000);
       } else {
         console.error('Dữ liệu không đầy đủ trong phản hồi API:', data);
       }
@@ -237,9 +241,6 @@ export default function Question() {
     } catch (error) {
       console.error('Có lỗi khi gửi dữ liệu:', error);
     }
-
-    
-
   }
 
   const validateCorrectAnswer = () => {
@@ -248,7 +249,7 @@ export default function Question() {
   
     if (!hasCorrect) {
       console.error("Phải chọn ít nhất một đáp án đúng!");
-      // hoặc hiển thị lỗi UI tùy logic bạn đang dùng
+      handleOpenCorrect();
       return false;
     } else {
       return true;
@@ -269,10 +270,18 @@ export default function Question() {
     }));
   };
   
+  // Ẩn hiện PopUp
+  const [isClosedAddDone, setIsClosedAddDone] = useState(true);
+  const handleOpenAddDone = () => { setIsClosedAddDone(false)};
+  const handleCloseAddDone = () => { setIsClosedAddDone(true)};
+
+  const [isClosedCorrect, setIsClosedCorrect] = useState(true);
+  const handleOpenCorrect = () => { setIsClosedCorrect(false)};
+  const handleCloseCorrect = () => { setIsClosedCorrect(true)};
 
   return (
     <div className="question__wrapper">
-      <Header title="Quản lý câu hỏi" />
+      <Header className="header-admin" title="Quản lý câu hỏi" />
       <AdminNav />
       
       <div className="question-inner">
@@ -416,6 +425,34 @@ export default function Question() {
 
         </form>
       </div>
+
+      {/* thêm thành công */}
+      <PopUp 
+        icon={"Successful.svg"} 
+        // secondOption={"Hủy bỏ"} 
+        title={"Thêm câu hỏi"} 
+        desc={"Thêm câu hỏi thành công!"} 
+        onOpen={handleCloseAddDone}
+        isClosed={isClosedAddDone}
+        className="popup-done"
+        // timeCount={5}
+      >
+        {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
+      </PopUp>
+
+      {/* chưa chọn đáp án đúng */}
+      <PopUp 
+        icon={"Exclamation.svg"} 
+        // secondOption={"Hủy bỏ"} 
+        title={"Thêm câu hỏi"} 
+        desc={"Bạn chưa chọn đáp án đúng!"} 
+        onOpen={handleCloseCorrect}
+        isClosed={isClosedCorrect}
+        className=""
+        // timeCount={5}
+      >
+        {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
+      </PopUp>
     </div>
   );
 }
