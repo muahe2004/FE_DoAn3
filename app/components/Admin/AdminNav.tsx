@@ -36,7 +36,7 @@ export default function AdminNav() {
                     </li>
 
                     <li className="navbar-item">
-                        <Link to="/question" className="navbar-link">
+                        <Link to="/add-question" className="navbar-link">
                             <img src="/icons/circle-question.svg" alt="Câu hỏi" className="navbar-icon" />
                             <span>Câu hỏi</span>
                         </Link>

@@ -25,8 +25,10 @@ export default [
     route("add-lesson", "routes/add-lesson.tsx"),
     route("admin-lesson-details/:maChuongHoc", "routes/adm-lesson-details.tsx"),
     route("add-lecture", "routes/add-lecture.tsx"),
-    route("question", "routes/question.tsx"),
+    route("add-question", "routes/add-question.tsx"),
     route("admin-question-details/:maCauHoi", "routes/adm-ques-details.tsx"),
+    route("adm-management-question", "routes/adm-management-question.tsx"),
     route("admin-lecture-details/:maBaiHoc", "routes/adm-lecture-details.tsx"),
     route("admin-user", "routes/adm-user.tsx"),
 ] satisfies RouteConfig;
+// adm-management-question.tsx

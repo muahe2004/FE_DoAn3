@@ -419,7 +419,7 @@ export default function Question() {
             <Button type="submit" className="btn-add">Thêm câu hỏi</Button>
             <Button className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button>
             <Button className="btn-cancle button-third button">Hủy bỏ</Button>
-            <Button className="btn-mQuestion">Quản lý câu hỏi</Button>
+            <Button className="btn-mQuestion" to="/adm-management-question">Quản lý câu hỏi</Button>
             
           </div>
 

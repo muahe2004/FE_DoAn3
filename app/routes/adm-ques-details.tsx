@@ -4,28 +4,24 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 import Button from "~/components/Button";
+import PopUp from "~/components/PopUp";
+
 
 import "../styles/Admin/question.css";
 import "../styles/Admin/add-course.css";
-import PopUp from "~/components/PopUp";
 
 interface Answer {
     maDapAn: string;
     maCauHoi: string;
     noiDungDapAn: string;
     laDapAnDung: any;
-  }
+}
   
-
-
 export default function QuestionDetails() {
     const navigate = useNavigate();
 
     const {maCauHoi} = useParams();
     const [noiDung, setNoiDung] = useState("");
-    // const [maBaiHoc, setMaBaiHoc] = useState("");
-    // const [maChuongHoc, setMaChuongHoc] = useState("");
-    // const [maKhoaHoc, setMaKhoaHoc] = useState("");
 
     const [courses, setCourses] = useState<{ maKhoaHoc: string; tenKhoaHoc: string } []>([]);
     const [lessons, setLessons] = useState<{maChuongHoc: string; tenChuongHoc: string} []>([]);
@@ -74,7 +70,6 @@ export default function QuestionDetails() {
           .then((res) => res.json())
           .then((data) => {
 
-            // console.log(data);
             setAnswers(data);
       
             // Kiểm tra đáp án đúng dựa trên trường `data` trong `laDapAnDung`
@@ -149,6 +144,7 @@ export default function QuestionDetails() {
         fetchLectures();
     }, [selectedLesson])
 
+    // Blur
     const handleBlur = (
         event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
@@ -168,19 +164,19 @@ export default function QuestionDetails() {
         }
     };
 
+    // Reset form
     const handleResetForm = () => {};
 
     // Xóa validator
     const clearError = (target: EventTarget & HTMLSelectElement) => {
         const formText = target.parentElement?.querySelector<HTMLElement>(".question-form__text");
         if (formText) {
-        formText.innerText = "";
-        formText.style.display = "none";
+            formText.innerText = "";
+            formText.style.display = "none";
         }
         target.style.borderColor = "#ccc";
     };
   
-
     // Hàm sửa câu hỏi
     const handleUpdateQuestion = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -197,55 +193,50 @@ export default function QuestionDetails() {
         const answer_third = form.querySelector<HTMLInputElement>('input[name="answer-3"]');
 
         const showError = (input: HTMLInputElement | HTMLSelectElement | null, message: string) => {
-        if (input) {
-            const formText = input.parentElement?.querySelector<HTMLElement>(".question-form__text");
-            if (formText) {
-            formText.innerText = message;
-            formText.style.display = "block";
+            if (input) {
+                const formText = input.parentElement?.querySelector<HTMLElement>(".question-form__text");
+                if (formText) {
+                    formText.innerText = message;
+                    formText.style.display = "block";
+                }
+                input.style.borderColor = "red";
+                input.focus();
             }
-            input.style.borderColor = "red";
-            input.focus();
-        }
         };
 
         if (!course?.value.trim()) {
-        showError(course, "Vui lòng chọn khóa học!");
-        return;
+            showError(course, "Vui lòng chọn khóa học!");
+            return;
         }
 
         if (!lesson?.value.trim()) {
-        showError(lesson, "Vui lòng chọn chương học!");
-        return;
+            showError(lesson, "Vui lòng chọn chương học!");
+            return;
         }
 
         if (!lecture?.value.trim()) {
-        showError(lecture, "Vui lòng chọn bài học!");
-        return;
+            showError(lecture, "Vui lòng chọn bài học!");
+            return;
         }
 
         if (!question?.value.trim()) {
-        showError(question, "Vui lòng nhập nội dung câu hỏi!");
-        return;
+            showError(question, "Vui lòng nhập nội dung câu hỏi!");
+            return;
         }
 
         if (!answer_first?.value.trim()) {
-        showError(answer_first, "Vui lòng nhập đáp án!");
-        return;
+            showError(answer_first, "Vui lòng nhập đáp án!");
+            return;
         }
 
         if (!answer_second?.value.trim()) {
-        showError(answer_second, "Vui lòng nhập đáp án!");
-        return;
+            showError(answer_second, "Vui lòng nhập đáp án!");
+            return;
         }
 
         if (!answer_third?.value.trim()) {
-        showError(answer_third, "Vui lòng nhập đáp án!");
-        return;
-        }
-
-        // Xem đã chọn đáp án đúng chưa
-        if (!validateCorrectAnswer()) {
-        return;
+            showError(answer_third, "Vui lòng nhập đáp án!");
+            return;
         }
 
         const bodyQues = {
@@ -264,8 +255,6 @@ export default function QuestionDetails() {
                 body: JSON.stringify(bodyQues)
             });
         
-            // const data = await resQues.json();
-
             // Sửa các đáp án
             const listAnswers = [
                 { maDapAn: answer_first.dataset.madapan, noiDungDapAn: answer_first?.value.trim(), laDapAnDung: correctAnswers.answer1, maCauHoi: maCauHoi },
@@ -307,23 +296,10 @@ export default function QuestionDetails() {
         }
     }
 
-    const validateCorrectAnswer = () => {
-        const values = Object.values(correctAnswers); 
-        const hasCorrect = values.includes(1); 
-    
-        if (!hasCorrect) {
-        console.error("Phải chọn ít nhất một đáp án đúng!");
-        // handleOpenCorrect();
-        return false;
-        } else {
-        return true;
-        }
-    };
-
     // Hàm xóa câu hỏi
     const deleteQues = async () => {
         try {
-            // Xoá tất cả đáp án trước
+            // Xoá đáp án trước
             for (let i = 0; i < answers.length; i++) {
                 const responseAnswer = await fetch(`http://localhost:1000/api/answers/${answers[i].maDapAn}`, {
                     method: "DELETE",
@@ -336,7 +312,7 @@ export default function QuestionDetails() {
                 }
             }
     
-            // Sau khi xoá hết đáp án, xoá câu hỏi
+            // Xóa câu hỏi 
             const response = await fetch(`http://localhost:1000/api/questions/${maCauHoi}`, {
                 method: "DELETE",
             });
@@ -355,7 +331,6 @@ export default function QuestionDetails() {
         }
     };
     
-    
     // Ẩn hiện PopUp
     const [isClosedUpdateDone, setIsClosedUpdateDone] = useState(true);
     const handleOpenUpdateDone = () => { setIsClosedUpdateDone(false)};
@@ -372,8 +347,6 @@ export default function QuestionDetails() {
     const [isClosedDelete, setIsClosedDelete] = useState(true);
     const handleOpenDelete = () => { setIsClosedDelete(false)};
     const handleCloseDelete = () => { setIsClosedDelete(true)};
-
-    
 
     return (
         <div className="question__wrapper">
@@ -613,7 +586,6 @@ export default function QuestionDetails() {
         >
             {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
         </PopUp>
-        
         </div>
     );
 }
