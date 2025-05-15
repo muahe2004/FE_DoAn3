@@ -20,7 +20,7 @@ export default function Analytics() {
     const [users, setUsers] = useState<Users []>([]);
 
     useEffect(() => {
-        fetch(`http://localhost:1000/api/users`, {
+        fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
             method: "GET",
             credentials: 'include'
         })
@@ -37,7 +37,7 @@ export default function Analytics() {
         // Không gọi API nếu rỗng hoặc toàn khoảng trắng
         if (!inputValue.trim()) return;
 
-        fetch(`http://localhost:1000/api/courses/search/${inputValue}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/courses/${inputValue}`)
             .then((res) => {
                 if (!res.ok) {
                     console.log("Lỗi khi tìm kiếm");

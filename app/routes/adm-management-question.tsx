@@ -28,7 +28,7 @@ export default function QuestionDetails() {
     useEffect(() => {
         const fetchCourses = async () => {
         try {
-            const response = await fetch("http://localhost:1000/selection-khoahoc"); 
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-courses`); 
             if (response.ok) {
             const data = await response.json();
             setCourses(data); 
@@ -48,7 +48,7 @@ export default function QuestionDetails() {
         if (!selectedCourse) return; 
 
         try {
-            const res = await fetch(`http://localhost:1000/selection-chuong-hoc/${selectedCourse}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-lessons/${selectedCourse}`);
             if (res.ok) {
             const data = await res.json();
             setLessons(data);
@@ -68,7 +68,7 @@ export default function QuestionDetails() {
         if (!selectedLesson) return;
 
         try {
-            const res = await fetch(`http://localhost:1000/api/lectures/${selectedLesson}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${selectedLesson}`);
             if (res.ok) {
             const data = await res.json();
             setLectures(data);
@@ -84,7 +84,7 @@ export default function QuestionDetails() {
 
     // Lấy các câu hỏi
     useEffect(() => {
-        fetch(`http://localhost:1000/api/questions/${selectedLecture}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/questions/${selectedLecture}`)
             .then(res => res.json())
             .then(data => {
                 setQuestions(data);

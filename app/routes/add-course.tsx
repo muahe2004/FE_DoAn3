@@ -87,14 +87,14 @@ export default function AddCourse() {
       return;
     }
   
-    let imageUrl = "http://localhost:1000/uploads/COURSE.png"; 
+    let imageUrl = `${import.meta.env.VITE_API_URL}/uploads/COURSE.png`; 
 
     if (fileInput?.files?.length) {
       const formData = new FormData();
       formData.append("file", fileInput.files[0]);
   
       try {
-        const uploadResponse = await fetch("http://localhost:1000/upload", {
+        const uploadResponse = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
           method: "POST",
           body: formData,
         });
@@ -117,7 +117,7 @@ export default function AddCourse() {
     };
   
     try {
-      const courseResponse = await fetch("http://localhost:1000/create-khoahoc", {
+      const courseResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/courses`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

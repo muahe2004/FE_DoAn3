@@ -27,7 +27,7 @@ export default function Admin() {
   useEffect(() => {
     const getRole = async () => {
       try {
-        const res = await fetch("http://localhost:1000/role", {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/role`, {
           method: "GET",
           credentials: "include", 
         });
@@ -53,7 +53,12 @@ export default function Admin() {
 
   // Toàn bộ khóa học
   useEffect(() => {
-    fetch("http://localhost:1000/api/courses") 
+    fetch(`${import.meta.env.VITE_API_URL}/api/courses`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       .then((res) => res.json())
       .then((data) => setCourses(data))
       .catch((error) => console.error("Lỗi khi lấy khóa học:", error));
@@ -67,7 +72,7 @@ export default function Admin() {
       // Không gọi API nếu rỗng hoặc toàn khoảng trắng
       if (!inputValue.trim()) return;
 
-      fetch(`http://localhost:1000/api/courses/search/${inputValue}`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/courses/${inputValue}`)
           .then((res) => {
               if (!res.ok) {
                   console.log("Lỗi khi tìm kiếm");

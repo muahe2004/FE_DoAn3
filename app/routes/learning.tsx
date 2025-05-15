@@ -33,7 +33,7 @@ export default function Learning() {
     useEffect(() => {
         const fetchLessons = async () => {
             try {
-                const res = await fetch(`http://localhost:1000/selection-chuong-hoc/${maKhoaHoc}`);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/selection-lessons/${maKhoaHoc}`);
                 if (!res.ok) throw new Error("Lỗi khi lấy chương học!");
     
                 const lessons: { maChuongHoc: string; tenChuongHoc: string }[] = await res.json();
@@ -47,7 +47,7 @@ export default function Learning() {
                             maChuongHoc: lesson.maChuongHoc
                         };
     
-                        const resLecture = await fetch(`http://localhost:1000/api/lecture/get-learning-lecture`, {
+                        const resLecture = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/get-learning-lecture`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -121,7 +121,7 @@ export default function Learning() {
     // Lấy dữ liệu bài học khi chọn bài
     const handleClickBaiHoc = async (maBaiHoc: string) => {
         try {
-            const res = await fetch(`http://localhost:1000/search-bai-hoc/${maBaiHoc}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${maBaiHoc}`);
             if (!res.ok) throw new Error("Lỗi khi lấy dữ liệu bài học!");
     
             const baiHoc = await res.json();
@@ -140,7 +140,7 @@ export default function Learning() {
             const lastLectureID = localStorage.getItem("lastSelectedLecture");
     
             if (lastLectureID) {
-                const res = await fetch(`http://localhost:1000/search-bai-hoc/${lastLectureID}`);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${lastLectureID}`);
                 if (res.ok) {
                     const lecture = await res.json();
                     setBaiHoc(lecture);
@@ -172,7 +172,7 @@ export default function Learning() {
         setIsLoadingQuestions(true);
         const maBaiHoc  = localStorage.getItem("lastSelectedLecture");
         try {
-            const res = await fetch(`http://localhost:1000/api/questions/${maBaiHoc}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/questions/${maBaiHoc}`);
 
             if (!res.ok) {
                 console.log("Lỗi khi lấy câu hỏi!");
@@ -183,7 +183,7 @@ export default function Learning() {
 
             const questionsInfo = await Promise.all(
                 questions.map(async (question) => {
-                    const resAnswer = await fetch(`http://localhost:1000/api/answers/${question.maCauHoi}`);
+                    const resAnswer = await fetch(`${import.meta.env.VITE_API_URL}/api/answers/${question.maCauHoi}`);
                     let listAnswer = [];
                     
                     if (resAnswer.ok) {
@@ -215,9 +215,12 @@ export default function Learning() {
 
     // Cập nhật đã học sau 30s =))
     useEffect(() => {
+        const [minutes, seconds] = timeVideo.split(':').map(Number);
+        const totalTimeInMs = (minutes * 60 + seconds) * 1000;
+
         const timer = setTimeout(() => {
             const user = JSON.parse(localStorage.getItem("userInfo") || "{}");
-            fetch('http://localhost:1000/api/lecture/set-learned', {
+            fetch(`${import.meta.env.VITE_API_URL}/api/lectures/set-learned`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -230,7 +233,9 @@ export default function Learning() {
             .then(res => res.json())
             .then(data => console.log('Đã cập nhật hoàn thành bài học:', data))
             .catch(err => console.error('Lỗi cập nhật:', err));
-        }, 3000)
+
+            console.log(totalTimeInMs);
+        }, totalTimeInMs)
 
         return () => clearTimeout(timer);
     })
@@ -246,6 +251,48 @@ export default function Learning() {
         handleLocationChange();
     
     }, [location]); 
+
+    // Lấy thời lượng Video
+    useEffect(() => {
+        if (baiHoc?.video) {
+            // Tách mã video từ URL
+            const videoId = extractVideoId(baiHoc.video);
+
+            if (!videoId) {
+                console.log("Chưa có mã Video bài học.");
+                return;
+            }
+
+            fetch(`${import.meta.env.VITE_API_URL}/api/youtube/duration/${videoId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(res => {
+                return res.json();  
+            })
+            .then(data => {
+                console.log('Dữ liệu video trả về:', data.duration);  
+                setTimeVideo(data.duration);
+            })
+            .catch(err => {
+                console.error('Lỗi cập nhật:', err);  
+            });
+        }
+    }, [baiHoc]);
+
+    const [timeVideo, setTimeVideo] = useState("");
+
+    // Hàm tách mã video từ URL
+    function extractVideoId(url: string) {
+        const regex = /\/embed\/([a-zA-Z0-9_-]+)/;
+        const match = url.match(regex);
+        if (match && match[1]) {
+            return match[1];  // Trả về mã video (videoId)
+        }
+        return null;  // Trả về null nếu không tìm thấy
+    }
         
     return (
         <div className="learning-wrapper">
@@ -438,7 +485,7 @@ export default function Learning() {
                 </div>
 
                 <div className="learning-action__lesson">
-                    <span className="">Giới thiệu về khóa học</span>
+                    <span className="">{timeVideo}</span>
                 </div>
             </div>
 

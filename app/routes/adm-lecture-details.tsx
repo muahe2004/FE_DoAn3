@@ -28,7 +28,7 @@ export default function AdminLectureDetails() {
     useEffect(() => {
         const fetchLecture = async () => {
             try {
-                const res = await fetch(`http://localhost:1000/search-bai-hoc/${maBaiHoc}`);
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${maBaiHoc}`);
                 if (res.ok) {
                     const data = await res.json();
                     console.log(data);
@@ -53,7 +53,7 @@ export default function AdminLectureDetails() {
         const fetchLessons = async () => {
     
           try {
-            const res = await fetch(`http://localhost:1000/selection-chuong-hoc-byLecture/${maBaiHoc}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-lessons-byLecture/${maBaiHoc}`);
             if (res.ok) {
               const data = await res.json();
               setLessons(data);
@@ -142,7 +142,7 @@ export default function AdminLectureDetails() {
         console.log(body);
 
         try {
-            const res = await fetch(`http://localhost:1000/update-bai-hoc/${maBaiHoc}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${maBaiHoc}`, {
                 method: "PUT",
                 headers: {"Content-Type" : "application/json"},
                 body: JSON.stringify(body)
@@ -169,7 +169,7 @@ export default function AdminLectureDetails() {
         // console.log(maKhoaHoc);
 
         try {
-            const response = await fetch(`http://localhost:1000/delete-bai-hoc/${maBaiHoc}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${maBaiHoc}`, {
                 method: "DELETE",
             });
         

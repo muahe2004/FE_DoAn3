@@ -23,15 +23,21 @@ export default function AllCourses() {
 
     const [courses, setCourses] = useState<Courses []>([]);
     useEffect(() => {
-      fetch(`http://localhost:1000/api/courses`)
+      fetch(`${import.meta.env.VITE_API_URL}/api/courses`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
         .then((res) => res.json())
         .then((data) => {
           setCourses(data);
         })
         .catch((err) => {
           console.log("Lỗi: ", err);
-        })
+        });
     }, []);
+
 
   return (
     <div className="all-courses__wrapper">

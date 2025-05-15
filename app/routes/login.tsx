@@ -66,7 +66,7 @@ export default function Login() {
         }
 
         try {
-            const res = await fetch("http://localhost:1000/login", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
                 method: "POST",
                 credentials: "include", 
                 headers: { "Content-Type": "application/json" },
@@ -85,7 +85,7 @@ export default function Login() {
 
     const getUserInfo = async (email: string) => {
         try {
-            const response = await fetch(`http://localhost:1000/users/${encodeURIComponent(email)}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${encodeURIComponent(email)}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
@@ -101,7 +101,7 @@ export default function Login() {
     
     const getRole = async () => {
         try {
-            const res = await fetch("http://localhost:1000/role", { 
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/role`, { 
                 method: "GET",
                 credentials: "include",
             });
@@ -144,7 +144,7 @@ export default function Login() {
                 <Button className="login-btn" type="submit" to="">Đăng nhập</Button>
                 <Button
                     className="login-btn login-google"
-                    onClick={() => window.location.href = "http://localhost:1000/auth/google"}
+                    onClick={() => window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`}
                     >
                     <img className="login-icon" src="./icons/Google.svg" alt="" />
                     Đăng nhập bằng Google

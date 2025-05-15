@@ -21,7 +21,7 @@ export default function AdminLessonDetails() {
 
     // thông tin chương học
     useEffect(() => {
-        fetch(`http://localhost:1000/lesson-details/${maChuongHoc}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/lessons/${maChuongHoc}`)
             .then((res) => res.json())
             .then((data) => {
                 setTenChuongHoc(data.tenChuongHoc);
@@ -61,7 +61,7 @@ export default function AdminLessonDetails() {
         }
 
         try {
-            const res = await fetch(`http://localhost:1000/update-lesson/${maChuongHoc}`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/${maChuongHoc}`, {
                 method: "PUT",
                 headers: {"Content-Type" : "application/json"},
                 body: JSON.stringify(body)
@@ -87,7 +87,7 @@ export default function AdminLessonDetails() {
         console.log("Xóa chương");
 
         try {
-            const response = await fetch(`http://localhost:1000/delete-lesson/${maChuongHoc}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/${maChuongHoc}`, {
                 method: "DELETE",
             });
         

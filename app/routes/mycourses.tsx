@@ -8,54 +8,12 @@ import { useEffect, useState } from "react";
 import "../styles/my-courses.css";
 import "../styles/Responsive/my-courses.css";
 
-
-const fakeMyCourses = [
-  {
-    "maKhoaHoc": "KH101",
-    "tenKhoaHoc": "Khóa học AI cơ bản",
-    "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-    "trangThai": "Đã hoàn thành"
-  },
-  {
-    "maKhoaHoc": "KH102",
-    "tenKhoaHoc": "Thiết kế UI/UX cho người mới",
-    "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-    "trangThai": "Đang học"
-  },
-  {
-    "maKhoaHoc": "KH103",
-    "tenKhoaHoc": "Lập trình Python nâng cao",
-    "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-    "trangThai": "Chưa học"
-  },
-  {
-    "maKhoaHoc": "KH104",
-    "tenKhoaHoc": "Tạo ứng dụng mobile với Flutter",
-    "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-    "trangThai": "Đang học"
-  },
-  {
-    "maKhoaHoc": "KH103",
-    "tenKhoaHoc": "Lập trình Python nâng cao",
-    "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-    "trangThai": "Chưa học"
-  },
-  {
-    "maKhoaHoc": "KH104",
-    "tenKhoaHoc": "Tạo ứng dụng mobile với Flutter",
-    "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-    "trangThai": "Đang học"
-  }
-]
-
 interface RegisteredCourse {
   maKhoaHoc: string;
   tenKhoaHoc: string;
   hinhAnh: string;
   trangThai: string;
 }
-
-
 
 export default function MyCourses() {
 

@@ -40,7 +40,7 @@ export default function Home() {
   const [listFeeCourse, setListFeeCourse] = useState<KhoaHoc[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:1000/api/courses/get-home-fee-courses`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-fee-courses`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -53,7 +53,7 @@ export default function Home() {
   const [listFreeCourses, setListFreeCourse] = useState<KhoaHoc[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:1000/api/courses/get-home-no-fee-courses`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-no-fee-courses`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

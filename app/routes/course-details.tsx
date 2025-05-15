@@ -27,7 +27,7 @@ export default function CourseDetails() {
 
     // API load thông tin khóa học 
     useEffect(() => {
-        fetch(`http://localhost:1000/getByID/${maKhoaHoc}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/courses/${maKhoaHoc}`)
           .then((res) => res.json())
           .then((data) => {
             setTenKhoaHoc(data.tenKhoaHoc);
@@ -50,7 +50,7 @@ export default function CourseDetails() {
     useEffect(() => {
         const fetchLessons = async () => {
         try {
-            const res = await fetch(`http://localhost:1000/selection-chuong-hoc/${maKhoaHoc}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/selection-lessons/${maKhoaHoc}`);
             if (!res.ok) throw new Error("Lỗi khi lấy chương học!");
 
             const lessons: { maChuongHoc: string; tenChuongHoc: string }[] = await res.json();
@@ -58,7 +58,7 @@ export default function CourseDetails() {
             
             const lessonInfo = await Promise.all(
                 lessons.map(async (lesson) => {
-                    const resLecture = await fetch(`http://localhost:1000/listBaiHoc/${lesson.maChuongHoc}`);
+                    const resLecture = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${lesson.maChuongHoc}`);
                     let danhSachBaiHoc = [];
 
                     if (resLecture.ok) {
@@ -118,7 +118,7 @@ export default function CourseDetails() {
     
         // Kiểm tra số dư tài khoản
         try {
-            const res = await fetch("http://localhost:1000/balance", { 
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/balance`, { 
                 method: "GET",
                 credentials: "include",
             });
@@ -155,7 +155,7 @@ export default function CourseDetails() {
         };
     
         try {
-            const registerRes = await fetch("http://localhost:1000/courses/resgister", {
+            const registerRes = await fetch(`${import.meta.env.VITE_API_URL}/api/courses/resgister`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
@@ -175,7 +175,7 @@ export default function CourseDetails() {
     // THêm tiến độ
     const insertTienDoHoc = async (maNguoiDung: string) => {
         try {
-            const res = await fetch("http://localhost:1000/api/lecture/insert-progress", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/insert-progress`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

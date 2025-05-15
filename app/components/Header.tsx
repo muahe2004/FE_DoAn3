@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     const [role, setRole] = useState<string | null>(null);
 
     useEffect(() => {
-        fetch("http://localhost:1000/role", { 
+        fetch(`${import.meta.env.VITE_API_URL}/role`, { 
             method: "GET",
             credentials: "include",
         })
@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     const [listRegisteredCourse, setListRegisteredCourse] = useState<RegisteredCourse []>([]);
     const [isClient, setIsClient] = useState(false); // Biến để xác định môi trường client
     const [userInfoReady, setUserInfoReady] = useState(false);
-    const [anhDaiDien, setAnhDaiDien] = useState("http://localhost:1000/uploads/defaultAvatar.png");
+    const [anhDaiDien, setAnhDaiDien] = useState(`${import.meta.env.VITE_API_URL}/uploads/defaultAvatar.png`);
     const [tenNguoiDung, setTenNguoiDung] = useState("Student");
     const [email, setEmail] = useState("Student@gmail.com");
 
@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     useEffect(() => {
         const fetchGoogleUserInfo = async () => {
             try {
-                const res = await fetch("http://localhost:1000/auth-google/get-user-info", {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/auth-google/get-user-info`, {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
                     credentials: "include",
@@ -92,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         setTenNguoiDung(userInfo.tenNguoiDung);
         setEmail(userInfo.email);
 
-        fetch(`http://localhost:1000/courses/registered/${maNguoiDung}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/courses/registered/${maNguoiDung}`)
             .then((res) => res.json())
             .then((data) => {
                 setListRegisteredCourse(data);
@@ -160,7 +160,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         console.log("Đăng xuất");
 
         try {
-            await axios.post('http://localhost:1000/logout', {}, {
+            await axios.post(`${import.meta.env.VITE_API_URL}/logout`, {}, {
                 withCredentials: true
             });
 
@@ -168,7 +168,6 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
             localStorage.removeItem("myCourses");
             localStorage.removeItem("lastSelectedLecture");
             localStorage.removeItem("chatHistory");
-
 
             navigate("/");
             setRole(null);
@@ -185,7 +184,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     const [soDu, setSoDu] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:1000/balance", { 
+        fetch(`${import.meta.env.VITE_API_URL}/balance`, { 
             method: "GET",
             credentials: "include",
         })
@@ -211,7 +210,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     useEffect(() => {
         if (!inputValue.trim()) return;
 
-        fetch(`http://localhost:1000/api/courses/search/${inputValue}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/courses/search/${inputValue}`)
             .then((res) => {
                 if (!res.ok) {
                     console.log("Lỗi khi tìm kiếm");
@@ -424,5 +423,6 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         </header>
     );
 };
+
 
 export default Header;

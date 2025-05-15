@@ -25,52 +25,6 @@ interface CourseProps {
     tongSoBaiHoc: number;
 }
 
-const fakeMyCourses = 
-[
-    {
-        "maKhoaHoc": "KH007",
-        "tenKhoaHoc": "Khóa học free 1",
-        "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-        "trangThai": "Đang học"
-    },
-    {
-        "maKhoaHoc": "KH002",
-        "tenKhoaHoc": "Lập trình Javascrips cơ bản",
-        "hinhAnh": "https://i.ytimg.com/vi/0SJE9dYdpps/hq720.jpg?sqp=-…RUAAIhCGAE=&rs=AOn4CLDraNz0ai0WgtO490tuckzG631flg",
-        "trangThai": "Đang học"
-    },
-    {
-        "maKhoaHoc": "KH007",
-        "tenKhoaHoc": "Khóa học free 1",
-        "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-        "trangThai": "Đang học"
-    },
-    {
-        "maKhoaHoc": "KH002",
-        "tenKhoaHoc": "Lập trình Javascrips cơ bản",
-        "hinhAnh": "https://i.ytimg.com/vi/0SJE9dYdpps/hq720.jpg?sqp=-…RUAAIhCGAE=&rs=AOn4CLDraNz0ai0WgtO490tuckzG631flg",
-        "trangThai": "Đang học"
-    },
-    {
-        "maKhoaHoc": "KH007",
-        "tenKhoaHoc": "Khóa học free 1",
-        "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-        "trangThai": "Đang học"
-    },
-    {
-        "maKhoaHoc": "KH002",
-        "tenKhoaHoc": "Lập trình Javascrips cơ bản",
-        "hinhAnh": "https://i.ytimg.com/vi/0SJE9dYdpps/hq720.jpg?sqp=-…RUAAIhCGAE=&rs=AOn4CLDraNz0ai0WgtO490tuckzG631flg",
-        "trangThai": "Đang học"
-    },
-    {
-        "maKhoaHoc": "KH007",
-        "tenKhoaHoc": "Khóa học free 1",
-        "hinhAnh": "http://localhost:1000/uploads/COURSE.png",
-        "trangThai": "Đang học"
-    }
-];
-
 
 export default function User() {
     const [myCourses, setMyCourses] = useState<RegisteredCourse []>([]);
@@ -89,7 +43,7 @@ export default function User() {
 
     const [tenNguoiDung, setTenNguoiDung] = useState("User name");
     const [email, setEmail] = useState("User email");
-    const [anhDaiDien, setAnhDaiDien] = useState("http://localhost:1000/uploads/defaultAvatar.png");
+    const [anhDaiDien, setAnhDaiDien] = useState(`${import.meta.env.VITE_API_URL}/uploads/defaultAvatar.png`);
 
     useEffect(() => {
         const myInfo = localStorage.getItem("userInfo");
@@ -107,7 +61,7 @@ export default function User() {
     const [soDu, setSoDu] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:1000/balance", { 
+        fetch(`${import.meta.env.VITE_API_URL}/balance`, { 
             method: "GET",
             credentials: "include",
         })
@@ -138,7 +92,7 @@ export default function User() {
         <div className="user-inner">
             <div className="user-inner__info">
                 <div className="inner-info__avatar">
-                    <img src="http://localhost:1000/uploads/defaultAvatar.png" alt="" className="inner-info__image" />
+                    <img src={`${import.meta.env.VITE_API_URL}/uploads/defaultAvatar.png`} alt="" className="inner-info__image" />
                 </div>
 
                 <div className="inner-info__box">

@@ -27,7 +27,7 @@ export default function Question() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:1000/selection-khoahoc"); 
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/selection-courses`); 
         if (response.ok) {
           const data = await response.json();
           setCourses(data); 
@@ -46,7 +46,7 @@ export default function Question() {
       if (!selectedCourse) return; 
 
       try {
-        const res = await fetch(`http://localhost:1000/selection-chuong-hoc/${selectedCourse}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/selection-lessons/${selectedCourse}`);
         if (res.ok) {
           const data = await res.json();
           setLessons(data);
@@ -65,7 +65,7 @@ export default function Question() {
       if (!selectedLesson) return;
 
       try {
-        const res = await fetch(`http://localhost:1000/api/lectures/${selectedLesson}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${selectedLesson}`);
         if (res.ok) {
           const data = await res.json();
           setLectures(data);
@@ -189,7 +189,7 @@ export default function Question() {
 
     try {
       // Thêm câu hỏi
-      const resQues = await fetch(`http://localhost:1000/api/questions`, {
+      const resQues = await fetch(`${import.meta.env.VITE_API_URL}/api/questions`, {
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
@@ -217,7 +217,7 @@ export default function Question() {
           };
 
           try {
-            const res = await fetch(`http://localhost:1000/api/answers`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/answers`, {
               method: "POST",
               headers: {
                 'Content-Type': 'application/json',

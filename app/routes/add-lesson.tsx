@@ -15,7 +15,7 @@ export default function AddLesson() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:1000/selection-khoahoc"); 
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-courses`); 
         if (response.ok) {
           const data = await response.json();
           setCourses(data); 
@@ -66,7 +66,7 @@ export default function AddLesson() {
     }
 
     try {
-      const lessonRes = await fetch("http://localhost:1000/create-chuong-hoc", {
+      const lessonRes = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons`, {
         method: "POST",
         headers: {"Content-Type" : "application/json"},
         body: JSON.stringify(body)

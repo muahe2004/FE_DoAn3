@@ -22,7 +22,12 @@ export default function AdminCourseDetails() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch(`http://localhost:1000/getByID/${maKhoaHoc}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/courses/${maKhoaHoc}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
       .then((res) => res.json())
       .then((data) => {
         setTenKhoaHoc(data.tenKhoaHoc);
@@ -64,7 +69,7 @@ export default function AdminCourseDetails() {
       formData.append("file", fileImg);
   
       try {
-        const imgRes = await fetch("http://localhost:1000/upload", {
+        const imgRes = await fetch(`${import.meta.env.VITE_API_URL}/upload`, {
           method: "POST",
           body: formData,
         });
@@ -96,7 +101,7 @@ export default function AdminCourseDetails() {
     };
   
     try {
-      const updateRes = await fetch(`http://localhost:1000/${maKhoaHoc}/update-khoahoc`, {
+      const updateRes = await fetch(`${import.meta.env.VITE_API_URL}/api/courses/${maKhoaHoc}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
@@ -122,7 +127,7 @@ export default function AdminCourseDetails() {
   // Handle thực hiện xóa khóa học
   const handleDeleteCourse = async () => {
     try {
-      const response = await fetch(`http://localhost:1000/${maKhoaHoc}/delete-khoahoc`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/courses/${maKhoaHoc}`, {
         method: "DELETE",
       });
   
@@ -180,14 +185,14 @@ export default function AdminCourseDetails() {
   useEffect(() => {
       const fetchLessons = async () => {
         try {
-          const res = await fetch(`http://localhost:1000/selection-chuong-hoc/${maKhoaHoc}`);
+          const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/selection-lessons/${maKhoaHoc}`);
           if (!res.ok) throw new Error("Lỗi khi lấy chương học!");
 
           const lessons: { maChuongHoc: string; tenChuongHoc: string }[] = await res.json();
           
           const lessonInfo = await Promise.all(
             lessons.map(async (lesson) => {
-              const resLecture = await fetch(`http://localhost:1000/api/lectures/${lesson.maChuongHoc}`);
+              const resLecture = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/by-lesson/${lesson.maChuongHoc}`);
               let danhSachBaiHoc = [];
 
               if (resLecture.ok) {

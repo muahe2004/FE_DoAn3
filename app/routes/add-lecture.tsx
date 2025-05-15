@@ -20,7 +20,7 @@ export default function AddLecture() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch("http://localhost:1000/selection-khoahoc"); 
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-courses`); 
         if (response.ok) {
           const data = await response.json();
           setCourses(data); 
@@ -39,7 +39,7 @@ export default function AddLecture() {
       if (!selectedCourse) return; 
 
       try {
-        const res = await fetch(`http://localhost:1000/selection-chuong-hoc/${selectedCourse}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-lessons/${selectedCourse}`);
         if (res.ok) {
           const data = await res.json();
           setLessons(data);
@@ -159,7 +159,7 @@ export default function AddLecture() {
     }
 
     try {
-      const res = await fetch("http://localhost:1000/create-bai-hoc", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
