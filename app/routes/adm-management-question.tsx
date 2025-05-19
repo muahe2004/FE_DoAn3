@@ -48,7 +48,7 @@ export default function QuestionDetails() {
         if (!selectedCourse) return; 
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-lessons/${selectedCourse}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/selection-lessons/${selectedCourse}`);
             if (res.ok) {
             const data = await res.json();
             setLessons(data);
@@ -68,7 +68,7 @@ export default function QuestionDetails() {
         if (!selectedLesson) return;
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${selectedLesson}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/by-lesson/${selectedLesson}`);
             if (res.ok) {
             const data = await res.json();
             setLectures(data);

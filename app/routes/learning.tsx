@@ -43,11 +43,13 @@ export default function Learning() {
                 const lessonInfo = await Promise.all(
                     lessons.map(async (lesson) => {
                         const bodyData = {
+                            maChuongHoc: lesson.maChuongHoc,
                             maNguoiDung: user.maNguoiDung,
-                            maChuongHoc: lesson.maChuongHoc
                         };
+
+                        // console.log(bodyData);
     
-                        const resLecture = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/get-learning-lecture`, {
+                        const resLecture = await fetch(`${import.meta.env.VITE_API_URL}/api/get-learning-lectures`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -58,6 +60,7 @@ export default function Learning() {
                         let danhSachBaiHoc = [];
                         if (resLecture.ok) {
                             danhSachBaiHoc = await resLecture.json();
+                            // console.log(danhSachBaiHoc);
                         }
     
                         return {
@@ -68,6 +71,7 @@ export default function Learning() {
                     })
                 );
     
+                // console.log(lessonInfo);
                 setChuongHocList(lessonInfo);
             } catch (error) {
                 console.error("Lỗi:", error);
@@ -124,8 +128,9 @@ export default function Learning() {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${maBaiHoc}`);
             if (!res.ok) throw new Error("Lỗi khi lấy dữ liệu bài học!");
     
-            const baiHoc = await res.json();
-            setBaiHoc(baiHoc);
+            const bai = await res.json();
+            // console.log(bai);
+            setBaiHoc(bai);
     
             localStorage.setItem("lastSelectedLecture", maBaiHoc);
             fetchQuestion();
@@ -138,72 +143,136 @@ export default function Learning() {
     useEffect(() => {
         const loadLastLecture = async () => {
             const lastLectureID = localStorage.getItem("lastSelectedLecture");
-    
+
             if (lastLectureID) {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${lastLectureID}`);
-                if (res.ok) {
-                    const lecture = await res.json();
-                    setBaiHoc(lecture);
-                    return;
+                try {
+                    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${lastLectureID}`);
+                    if (res.ok) {
+                        const lecture = await res.json();
+                        setBaiHoc(lecture);
+                        return;
+                    }
+                } catch (error) {
+                    console.error("Lỗi khi fetch bài học từ localStorage:", error);
                 }
             }
-    
-            // Nếu không có trong local thì chọn bài học hoàn thành gần nhất
+
             const allBaiHoc = chuongHocList.flatMap(ch => ch.danhSachBaiHoc || []);
             const baiHocDaHoc = [...allBaiHoc].reverse().find(bai => bai.daHoanThanh?.data?.[0] === 1);
-    
+
             if (baiHocDaHoc) {
                 setBaiHoc(baiHocDaHoc);
                 localStorage.setItem("lastSelectedLecture", baiHocDaHoc.maBaiHoc);
-            } else if (allBaiHoc.length > 0) {
+                return;
+            }
+
+            if (allBaiHoc.length > 0) {
                 setBaiHoc(allBaiHoc[0]);
                 localStorage.setItem("lastSelectedLecture", allBaiHoc[0].maBaiHoc);
+                return;
             }
-        }
-    
-        if (chuongHocList.length > 0) {
+
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/get-first-lecture/${maKhoaHoc}`);
+                if (res.ok) {
+                    const lecture = await res.json();
+                    setBaiHoc(lecture);
+                    localStorage.setItem("lastSelectedLecture", lecture.maBaiHoc);
+                } else {
+                    console.warn("Không tìm thấy bài học đầu tiên từ API.");
+                }
+            } catch (error) {
+                console.error("Lỗi khi gọi API get-first-lecture:", error);
+            }
+        };
+
+        if (chuongHocList.length >= 0 && maKhoaHoc) {
             loadLastLecture();
         }
-    }, [chuongHocList]);
+    }, [chuongHocList, maKhoaHoc]);
+
     
     // Load dữ liệu câu hỏi của bài học
     type AnswerMap = { [maCauHoi: string]: string;};
     const fetchQuestion = async () => {
         setIsLoadingQuestions(true);
         const maBaiHoc  = localStorage.getItem("lastSelectedLecture");
-        try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/questions/${maBaiHoc}`);
+        if (maBaiHoc) {
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/questions/${maBaiHoc}`);
 
-            if (!res.ok) {
-                console.log("Lỗi khi lấy câu hỏi!");
+                if (!res.ok) {
+                    console.log("Lỗi khi lấy câu hỏi!");
+                    setIsLoadingQuestions(false);
+                }
+
+                const questions: { maCauHoi: string; noiDung: string; }[] = await res.json(); 
+
+                const questionsInfo = await Promise.all(
+                    questions.map(async (question) => {
+                        const resAnswer = await fetch(`${import.meta.env.VITE_API_URL}/api/answers/${question.maCauHoi}`);
+                        let listAnswer = [];
+                        
+                        if (resAnswer.ok) {
+                            listAnswer = await resAnswer.json();
+                        }
+
+                        return {
+                            maCauHoi: question.maCauHoi,
+                            noiDung: question.noiDung,
+                            danhSachDapAn: listAnswer,
+                        };
+                    })
+                );
+                setListCauHoi(questionsInfo);
                 setIsLoadingQuestions(false);
+                
+            } catch (error) {
+                console.error("Lỗi:", error);
             }
+        } else {
+            // const lectureID = baiHoc.maBaiHoc;
+            try {
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/questions/${baiHoc.maBaiHoc}`);
 
-            const questions: { maCauHoi: string; noiDung: string; }[] = await res.json(); 
+                if (!res.ok) {
+                    console.log("Lỗi khi lấy câu hỏi!");
+                    setIsLoadingQuestions(false);
+                }
 
-            const questionsInfo = await Promise.all(
-                questions.map(async (question) => {
-                    const resAnswer = await fetch(`${import.meta.env.VITE_API_URL}/api/answers/${question.maCauHoi}`);
-                    let listAnswer = [];
-                    
-                    if (resAnswer.ok) {
-                        listAnswer = await resAnswer.json();
-                    }
+                const questions: { maCauHoi: string; noiDung: string; }[] = await res.json(); 
 
-                    return {
-                        maCauHoi: question.maCauHoi,
-                        noiDung: question.noiDung,
-                        danhSachDapAn: listAnswer,
-                    };
-                })
-            );
-            setListCauHoi(questionsInfo);
-            setIsLoadingQuestions(false);
-            
-        } catch (error) {
-            console.error("Lỗi:", error);
+                const questionsInfo = await Promise.all(
+                    questions.map(async (question) => {
+                        const resAnswer = await fetch(`${import.meta.env.VITE_API_URL}/api/answers/${question.maCauHoi}`);
+                        let listAnswer = [];
+                        
+                        if (resAnswer.ok) {
+                            listAnswer = await resAnswer.json();
+                        }
+
+                        return {
+                            maCauHoi: question.maCauHoi,
+                            noiDung: question.noiDung,
+                            danhSachDapAn: listAnswer,
+                        };
+                    })
+                );
+                setListCauHoi(questionsInfo);
+                setIsLoadingQuestions(false);
+                
+            } catch (error) {
+                console.error("Lỗi:", error);
+            }
         }
+        
     }
+
+    useEffect(() => {
+        if (baiHoc && baiHoc.maBaiHoc) {
+            fetchQuestion();
+        }
+    }, [baiHoc]);
 
     // Đóng mở chat AI
     const handleOpenChat = () => setIsChatOpen(true);
@@ -220,7 +289,7 @@ export default function Learning() {
 
         const timer = setTimeout(() => {
             const user = JSON.parse(localStorage.getItem("userInfo") || "{}");
-            fetch(`${import.meta.env.VITE_API_URL}/api/lectures/set-learned`, {
+            fetch(`${import.meta.env.VITE_API_URL}/api/set-learned`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -231,11 +300,11 @@ export default function Learning() {
                 }),
             })
             .then(res => res.json())
-            .then(data => console.log('Đã cập nhật hoàn thành bài học:', data))
+            // .then(data => console.log('Đã cập nhật hoàn thành bài học:', data))
             .catch(err => console.error('Lỗi cập nhật:', err));
 
-            console.log(totalTimeInMs);
-        }, totalTimeInMs)
+            // console.log(totalTimeInMs);
+        }, 3000)
 
         return () => clearTimeout(timer);
     })
@@ -259,7 +328,7 @@ export default function Learning() {
             const videoId = extractVideoId(baiHoc.video);
 
             if (!videoId) {
-                console.log("Chưa có mã Video bài học.");
+                // console.log("Chưa có mã Video bài học.");
                 return;
             }
 
@@ -273,7 +342,7 @@ export default function Learning() {
                 return res.json();  
             })
             .then(data => {
-                console.log('Dữ liệu video trả về:', data.duration);  
+                // console.log('Dữ liệu video trả về:', data.duration);  
                 setTimeVideo(data.duration);
             })
             .catch(err => {

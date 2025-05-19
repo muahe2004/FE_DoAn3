@@ -39,7 +39,7 @@ export default function AddLecture() {
       if (!selectedCourse) return; 
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-lessons/${selectedCourse}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/selection-lessons/${selectedCourse}`);
         if (res.ok) {
           const data = await res.json();
           setLessons(data);

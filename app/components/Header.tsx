@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         .then((res) => res.json())
         .then((data) => {
             setRole(data.role);  
-            console.log(role);
+            // console.log(role);
         })
         .catch((err) => console.error("Lỗi:", err));
     }, []);
@@ -63,7 +63,6 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
                 const data = await res.json();
                 localStorage.setItem("userInfo", JSON.stringify(data));
-                console.log("Lưu thành công userInfo từ Google:", data);
 
                 // Báo hiệu đã có user info
                 setUserInfoReady(true);
@@ -184,7 +183,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
     const [soDu, setSoDu] = useState(0);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/balance`, { 
+        fetch(`${import.meta.env.VITE_API_URL}/api/balance`, { 
             method: "GET",
             credentials: "include",
         })

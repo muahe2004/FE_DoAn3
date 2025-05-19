@@ -140,7 +140,7 @@ export default function Analytics() {
   // doanh thu 12 tháng
   const [benefit, setBenefit] = useState([])
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/courses/benefit/12`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/analysis-courses/benefit/12`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -151,7 +151,7 @@ export default function Analytics() {
   // 5 khóa nhiều học viên nhất
   const [most, setMost] = useState([]);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/courses/most-courses`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/analysis-courses/most-courses`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -160,36 +160,36 @@ export default function Analytics() {
   }, [])
 
   // số học viên
-  const [students, setStudent] = useState(0);
+  const [students, setStudents] = useState(0);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/courses/count-student`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/analysis-courses/sum-student`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
-        setStudent(data);
+        console.log("Tổng số học viên: ",data);
+        setStudents(data);
       })
   }, [])
 
   // số khóa vip
   const [vipCourses, setVipCourses] = useState(0);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/courses/count-vip`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/count-courses/count-vip`)
       .then((res) => res.json())
-      .then((data) => {console.log(data); setVipCourses(data);});
+      .then((data) => {console.log("Số khóa học vip:", data); setVipCourses(data);});
   }, [])
 
   // số khóa free
   const [freeCourses, setFreeCourses] = useState(0);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/courses/count-free`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/count-courses/count-free`)
       .then((res) => res.json())
-      .then((data) => {console.log(data); setFreeCourses(data);});
+      .then((data) => {console.log("Số khóa học thường:", data); setFreeCourses(data);});
   }, [])
 
   // tổng doanh thu
   const [sumBenefit, setSumBenefit] = useState(0);
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/courses/sum-benefit`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/analysis-courses/sum-benefit`)
       .then((res) => res.json())
       .then((data) => {console.log(data); setSumBenefit(data);})
   }, [])
@@ -219,22 +219,23 @@ export default function Analytics() {
         <div className="analytics-containers">
             <div className="analytics-containers__item">
               <span className="analytics-containers__title">Khóa học free</span>
-              <span className="analytics-containers__value">0</span>
+              <span className="analytics-containers__value">{freeCourses}</span>
             </div>
 
             <div className="analytics-containers__item analytics-containers__item--second"> 
               <span className="analytics-containers__title">Khóa học vip</span>
-              <span className="analytics-containers__value">0</span>
+              <span className="analytics-containers__value">{vipCourses}</span>
             </div>
 
             <div className="analytics-containers__item analytics-containers__item--third">
               <span className="analytics-containers__title">Học viên</span>
-              <span className="analytics-containers__value">0</span>
+              <span className="analytics-containers__value">{students}</span>
             </div>
 
             <div className="analytics-containers__item analytics-containers__item--fourth">
               <span className="analytics-containers__title analytics-containers__title--fourth">Doanh thu</span>
-              <span className="analytics-containers__value analytics-containers__value--fourth">0</span>
+              <span className="analytics-containers__value analytics-containers__value--fourth">{formattedMoney}</span>
+
             </div>
         </div>
 

@@ -26,7 +26,7 @@ const PopUp: React.FC<ModelOverlayProps> = ({ children, secondOption, title, des
             intervalId = setInterval(() => {
                 setVarCount(prev => {
                     if (prev === 1) {
-                        clearInterval(intervalId); // Clear khi còn 1 (vì sau đó về 0)
+                        clearInterval(intervalId);
                         return 0;
                     }
                     return prev - 1;

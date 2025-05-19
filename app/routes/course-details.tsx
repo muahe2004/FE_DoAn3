@@ -58,7 +58,7 @@ export default function CourseDetails() {
             
             const lessonInfo = await Promise.all(
                 lessons.map(async (lesson) => {
-                    const resLecture = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${lesson.maChuongHoc}`);
+                    const resLecture = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/by-lesson/${lesson.maChuongHoc}`);
                     let danhSachBaiHoc = [];
 
                     if (resLecture.ok) {
@@ -155,7 +155,7 @@ export default function CourseDetails() {
         };
     
         try {
-            const registerRes = await fetch(`${import.meta.env.VITE_API_URL}/api/courses/resgister`, {
+            const registerRes = await fetch(`${import.meta.env.VITE_API_URL}/api/register-courses`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
@@ -175,7 +175,7 @@ export default function CourseDetails() {
     // THêm tiến độ
     const insertTienDoHoc = async (maNguoiDung: string) => {
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/insert-progress`, {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/insert-progress`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -33,9 +33,13 @@ export default function QuestionDetails() {
 
     // Lấy dữ liệu của câu hỏi
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/api/questions/${maCauHoi}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/questions/by-id/${maCauHoi}`, {
+            method: "GET"
+        })
             .then(res => res.json())
             .then(data => {
+                console.log("Nội dung câu hỏi: ",data);
+                console.log("Nội dung câu hỏi: ",data.noiDung);
                 setNoiDung(data.noiDung);
                 setSelectedLecture(data.maBaiHoc);
                 setSelectedLesson(data.maChuongHoc);
@@ -110,7 +114,7 @@ export default function QuestionDetails() {
         if (!selectedCourse) return; 
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-lessons/${selectedCourse}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/selection-lessons/${selectedCourse}`);
             if (res.ok) {
             const data = await res.json();
             setLessons(data);
@@ -130,7 +134,7 @@ export default function QuestionDetails() {
         if (!selectedLesson) return;
 
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${selectedLesson}`);
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/by-lesson/${selectedLesson}`);
             if (res.ok) {
             const data = await res.json();
             setLectures(data);

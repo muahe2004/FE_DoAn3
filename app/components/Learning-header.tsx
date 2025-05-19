@@ -22,7 +22,7 @@ const LearningHeader: React.FC<LearningHeaderProps> = () => {
 
     const [role, setRole] = useState<string | null>(null);
 
-    const [anhDaiDien, setAnhDaiDien] = useState("http://localhost:1000/uploads/defaultAvatar.png");
+    const [anhDaiDien, setAnhDaiDien] = useState(`${import.meta.env.VITE_API_URL}/uploads/defaultAvatar.png`);
     const [tenNguoiDung, setTenNguoiDung] = useState("Student");
     const [email, setEmail] = useState("Student@gmail.com");
     const [isClient, setIsClient] = useState(false); 
@@ -96,7 +96,7 @@ const LearningHeader: React.FC<LearningHeaderProps> = () => {
     const [soDu, setSoDu] = useState(0);
 
     useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/balance`, { 
+        fetch(`${import.meta.env.VITE_API_URL}/api/balance`, { 
             method: "GET",
             credentials: "include",
         })

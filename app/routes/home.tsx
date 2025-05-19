@@ -43,7 +43,7 @@ export default function Home() {
     fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-fee-courses`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setListFeeCourse(data);
       })
       .catch((err) => console.error(err));
@@ -56,7 +56,7 @@ export default function Home() {
     fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-no-fee-courses`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setListFreeCourse(data);
       })
       .catch((err) => {
