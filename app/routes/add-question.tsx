@@ -27,7 +27,7 @@ export default function Question() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/selection-courses`); 
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/courses`); 
         if (response.ok) {
           const data = await response.json();
           setCourses(data); 
@@ -46,7 +46,7 @@ export default function Question() {
       if (!selectedCourse) return; 
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/selection-lessons/${selectedCourse}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lessons/selection-lessons/${selectedCourse}`);
         if (res.ok) {
           const data = await res.json();
           setLessons(data);
@@ -65,7 +65,7 @@ export default function Question() {
       if (!selectedLesson) return;
 
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${selectedLesson}`);
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/by-lesson/${selectedLesson}`);
         if (res.ok) {
           const data = await res.json();
           setLectures(data);

@@ -208,7 +208,7 @@ export default function AdminCourseDetails() {
           );
 
           setChuongHocList(lessonInfo); 
-          console.log(lessonInfo);
+          // console.log(lessonInfo);
         } catch (error) {
           console.error("Lỗi:", error);
         }

@@ -8,6 +8,8 @@ import Button from "~/components/Button";
 
 import "../styles/user.css";
 
+import type { userInfo } from '../types/userInfo';
+
 interface RegisteredCourse {
     maKhoaHoc: string;
     tenKhoaHoc: string;
@@ -15,20 +17,12 @@ interface RegisteredCourse {
     trangThai: string;
 }
 
-interface CourseProps {
-    maKhoaHoc: string; 
-    tenKhoaHoc: string;
-    giaBan: string;
-    children: React.ReactNode; 
-    hinhAnh: string;
-    doKho: string;
-    tongSoBaiHoc: number;
-}
-
-
 export default function User() {
     const [myCourses, setMyCourses] = useState<RegisteredCourse []>([]);
+    const [userInfo, setUserInfo] = useState<userInfo | any>(null);
+    const [soDu, setSoDu] = useState(0);
 
+    // Lấy ra khóa học đã đăng ký
     useEffect(() => {
         const myCourse = localStorage.getItem("myCourses");
         if (myCourse) {
@@ -41,51 +35,19 @@ export default function User() {
         }
     }, []);
 
-    const [tenNguoiDung, setTenNguoiDung] = useState("User name");
-    const [email, setEmail] = useState("User email");
-    const [anhDaiDien, setAnhDaiDien] = useState(`${import.meta.env.VITE_API_URL}/uploads/defaultAvatar.png`);
+    // Lấy thông tin người dùng 
+    const handleDataFromChild = (data: userInfo) => { setUserInfo(data); };
 
-    useEffect(() => {
-        const myInfo = localStorage.getItem("userInfo");
-        if (!myInfo) {
-            console.log("Không tìm thấy thông tin người dùng trong localStorage.");
-            return;
-        } 
+    // Lấy số dư của người dùng
+    const handleBalanceFromChild = (balance: number) => { setSoDu(balance); };
 
-        const userInfo = JSON.parse(myInfo);
-        setAnhDaiDien(userInfo.anhDaiDien);
-        setTenNguoiDung(userInfo.tenNguoiDung);
-        setEmail(userInfo.email);
-    }, []);
-
-    const [soDu, setSoDu] = useState(0);
-
-    useEffect(() => {
-        fetch(`${import.meta.env.VITE_API_URL}/balance`, { 
-            method: "GET",
-            credentials: "include",
-        })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error("Lỗi khi lấy số dư: " + res.statusText);
-            }
-            return res.json();
-        })
-        .then((data) => {
-            const soDuMoi = parseFloat(data.soDu);
-            setSoDu(soDuMoi);
-        })
-        .catch((error) => {
-            console.error("Lỗi khi gọi API:", error);
-        });
-    }, []);
-    
-
-    
     return (
         
         <div className="user-wrapper">
-        <Header title="Trang cá nhân"></Header>
+        <Header 
+            sendDataToParent={handleDataFromChild} 
+            sendBalanceToParent={handleBalanceFromChild} 
+            title="Trang cá nhân"></Header>
         <Navbar></Navbar>
 
 
@@ -96,8 +58,8 @@ export default function User() {
                 </div>
 
                 <div className="inner-info__box">
-                    <span className="inner-info__name">{tenNguoiDung}</span>
-                    <span className="inner-info__email" title="lyvanminh280504@gmail.com">{email}</span>
+                    <span className="inner-info__name">{userInfo?.tenNguoiDung}</span>
+                    <span className="inner-info__email" title="lyvanminh280504@gmail.com">{userInfo?.email}</span>
 
                     <div className="inner-info__group">
                         <img src="./icons/Money-check.svg" alt="" className="inner-info__icon" />
@@ -109,8 +71,25 @@ export default function User() {
                     <div className="inner-info__group">
                         <img src="./icons/Github.svg" alt="" className="inner-info__icon" />
                         <span className="inner-info__title">
-                            <a href="https://github.com/muahe2004" target="_blank" rel="noopener noreferrer">
-                                muahe2004
+                            <a
+                                href={userInfo?.github ? `https://github.com/${userInfo?.github}` : "https://github.com"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                >
+                                {userInfo?.github || "https://github.com"}
+                            </a>
+                        </span>
+                    </div>
+
+                    <div className="inner-info__group">
+                        <img src="./icons/Phone.svg" alt="" className="inner-info__icon" />
+                        <span className="inner-info__title">
+                            <a
+                                href={userInfo?.soDienThoai ? `https://zalo.me/${userInfo?.soDienThoai}` : "https://zalo.me"}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                >
+                                {userInfo?.soDienThoai || "+84"}
                             </a>
                         </span>
                     </div>
@@ -124,7 +103,7 @@ export default function User() {
                 </div>
                 <div className="user-inner__courses">
                     {myCourses.map((course) => (
-                        <div className="inner-courses__item">
+                        <div className="inner-courses__item"  key={course.maKhoaHoc}>
                             <div className="inner-courses__thumb">
                                 <img src={course.hinhAnh} alt="" className="inner-courses__image" />
                             </div>

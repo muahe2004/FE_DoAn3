@@ -99,6 +99,11 @@ export default function CourseDetails() {
         );
     };
 
+    const [soDu, setSoDu] = useState(0);
+
+    // Lấy số dư của người dùng
+    const handleBalanceFromChild = (balance: number) => { setSoDu(balance); };
+
     // Đăng ký khóa học
     const handleRegisterCourse = async () => {
         const userInfoStr = localStorage.getItem("userInfo");
@@ -118,25 +123,12 @@ export default function CourseDetails() {
     
         // Kiểm tra số dư tài khoản
         try {
-            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/balance`, { 
-                method: "GET",
-                credentials: "include",
-            });
-    
-            if (!res.ok) {
-                console.error("Lỗi khi lấy số dư: ", res.statusText);
-                return;
-            }
-    
-            const data = await res.json();
-            const soDu = parseFloat(data.soDu);
-    
             if (soDu < parseFloat(giaBan)) {
                 handleClosePay();
                 handleOpenNoBalance();
                 return;
             }
-    
+            
             await registerCourse(maNguoiDung, parseFloat(giaBan));
             navigate(`/learning/${maKhoaHoc}`);
     
@@ -144,6 +136,8 @@ export default function CourseDetails() {
             console.error("Lỗi khi gọi API:", error);
         }
     };
+
+    
     
     // Hàm đăng ký khóa học
     const registerCourse = async (maNguoiDung: string, giaBan: number) => {
@@ -214,10 +208,14 @@ export default function CourseDetails() {
     const handleOpenNoBalance = () => { setIsClosedNoBalance(false)};
     const handleCloseNoBalance = () => { setIsClosedNoBalance(true)};
 
+    
+
   return (
     <div className="course-details__wrapper">
         <Navbar></Navbar>
-        <Header title="Thông tin khóa học"></Header>
+        <Header
+            sendBalanceToParent={handleBalanceFromChild}
+            title="Thông tin khóa học"></Header>
     
         <div className="course-details__inner">
             <div className="course-container">

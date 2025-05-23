@@ -5,9 +5,13 @@ import axios from "axios";
 import "../styles/header.css";
 import "../styles/Responsive/Components/header.css";
 
+import type { userInfo } from '../types/userInfo';
+
 interface HeaderProps {
     title: string;
     className?: string; 
+    sendDataToParent?: (data: userInfo) => void;
+    sendBalanceToParent?: (balance: number) => void;
 }
 
 interface RegisteredCourse {
@@ -17,7 +21,7 @@ interface RegisteredCourse {
     trangThai: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ title, className }) => {
+const Header: React.FC<HeaderProps> = ({ title, className, sendDataToParent, sendBalanceToParent }) => {
     const navigate = useNavigate();
 
     const [role, setRole] = useState<string | null>(null);
@@ -37,8 +41,9 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
     // Khóa học của tôi
     const [listRegisteredCourse, setListRegisteredCourse] = useState<RegisteredCourse []>([]);
-    const [isClient, setIsClient] = useState(false); // Biến để xác định môi trường client
+    const [isClient, setIsClient] = useState(false); 
     const [userInfoReady, setUserInfoReady] = useState(false);
+
     const [anhDaiDien, setAnhDaiDien] = useState(`${import.meta.env.VITE_API_URL}/uploads/defaultAvatar.png`);
     const [tenNguoiDung, setTenNguoiDung] = useState("Student");
     const [email, setEmail] = useState("Student@gmail.com");
@@ -85,6 +90,9 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
 
         const userInfo = JSON.parse(userInfoStr);
         const maNguoiDung = userInfo.maNguoiDung;
+
+        // console.log(userInfo);
+        sendDataToParent?.(userInfo);
 
         setIsLogin(true);
         setAnhDaiDien(userInfo.anhDaiDien);
@@ -196,6 +204,7 @@ const Header: React.FC<HeaderProps> = ({ title, className }) => {
         .then((data) => {
             const soDuMoi = parseFloat(data.soDu);
             setSoDu(soDuMoi);
+            sendBalanceToParent?.(soDuMoi); 
         })
         .catch((error) => {
             console.error("Lỗi khi gọi API:", error);

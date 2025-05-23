@@ -31,7 +31,7 @@ export default function AdminLectureDetails() {
                 const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${maBaiHoc}`);
                 if (res.ok) {
                     const data = await res.json();
-                    console.log(data);
+                    // console.log(data);
                     setTenBaiHoc(data.tenBaiHoc);
                     setMoTaBaiHoc(data.moTaBaiHoc);
                     setVideo(data.video);
@@ -139,7 +139,7 @@ export default function AdminLectureDetails() {
             video: video?.value.trim(),
         }
         
-        console.log(body);
+        // console.log(body);
 
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/${maBaiHoc}`, {
