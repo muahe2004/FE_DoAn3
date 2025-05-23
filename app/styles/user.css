@@ -95,6 +95,14 @@
     margin-left: 10px;
 }
 
+.inner-info__history {
+    font-size: 14px;
+    /* width: 70px; */
+    padding: 5px;
+    font-weight: 600;
+    /* margin-left: 10px; */
+}
+
 /* Features =============================== */
 .user-inner__features {
     width: 75%;

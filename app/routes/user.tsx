@@ -93,6 +93,11 @@ export default function User() {
                             </a>
                         </span>
                     </div>
+
+                    <div className="inner-info__group">
+                        <img src="./icons/History.svg" alt="" className="inner-info__icon" />
+                        <Button to="/invoices" className="inner-info__history">Lịch sử nạp tiền</Button>
+                    </div>
                 </div>
             </div>
 

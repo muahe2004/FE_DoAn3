@@ -30,5 +30,7 @@ export default [
     route("adm-management-question", "routes/adm-management-question.tsx"),
     route("admin-lecture-details/:maBaiHoc", "routes/adm-lecture-details.tsx"),
     route("admin-user", "routes/adm-user.tsx"),
+
+    route("invoices", "routes/invoices.tsx"),
 ] satisfies RouteConfig;
 // adm-management-question.tsx

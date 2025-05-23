@@ -1,0 +1,73 @@
+.invoices {
+    width: 100%;
+    height: 80px;
+    /* background: black; */
+    display: flex;
+    border: 1px solid #ccc;
+    align-items: center;
+    /* padding: 10px; */
+    border-radius: 4px;
+    transition: .25s;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.invoices:hover {
+    border-color: #21a2ff;
+    /* background: #ccc; */
+}
+
+.invoices-id {
+    /* color: #fff; */
+    /* font-weight: 600; */
+    /* background: #9bd4fc; */
+
+    /* background: #21a2ff; */
+    width: 20%;
+    padding-left: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.invoices-amount {
+    /* background: yellow; */
+    /* background: #9bd4fc; */
+    width: 20%;
+    padding-left: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    /* text-align: right; */
+}
+
+.invoices-date {
+    /* background: green; */
+    width: 20%;
+    padding-left: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}
+
+.invoices-status {
+    /* background: palegreen; */
+    width: 20%;
+    padding-left: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}
+
+.invoices-type {
+    /* background: #ccc; */
+    width: 20%;
+    padding-left: 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+}
