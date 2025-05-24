@@ -8,13 +8,17 @@ import "../styles/Admin/admin.css"
 
 import Invoice from "~/components/Invoice";
 import { useEffect, useRef, useState } from "react";
+import { useGetInvoicesByUserIdQuery } from "~/services/apiInvoices";
+
+
+import type { invoices } from "../types/invoices";
 
 
 export default function Invoices() {
 
   // Tìm kiếm
     const [inputValue, setInputValue] = useState("");
-    const [searchResult, setSearchResult] = useState<CourseProps []>([]);
+    const [searchResult, setSearchResult] = useState<any []>([]);
   
     useEffect(() => {
         // Không gọi API nếu rỗng hoặc toàn khoảng trắng
@@ -55,6 +59,28 @@ export default function Invoices() {
           document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
+  // Call api = redux
+  const getUserId = () => {
+    try {
+      const userInfo = JSON.parse(localStorage.getItem("userInfo") || "null");
+      return userInfo?.maNguoiDung || null;
+    } catch {
+      return null;
+    }
+  };
+
+  const userId = typeof window !== "undefined" ? getUserId() : null;
+
+  const { data, error, isLoading } = useGetInvoicesByUserIdQuery(userId ?? "", {
+    skip: !userId,
+  });
+
+  // useEffect(() => {
+  //   console.log("Invoices data:", data);
+  // }, [data])
+
+
   return (
     <div>
       <Header className="header-admin" title="Hóa đơn nạp"></Header>
@@ -130,21 +156,16 @@ export default function Invoices() {
         </div>
         
         <div className="invoices-page__inner">
+          {data && data.map((invoice: invoices) => (
             <Invoice
-              maHoaDon="HD0001"
-              maNguoiDung="ND0001"
-              soTien="1000"
-              phuongThucNap="Momo"
-              trangThai="Done"
+              maHoaDon={invoice.maHoaDon}
+              maNguoiDung={invoice.maNguoiDung}
+              soTien={invoice.soTien}
+              phuongThucNap={invoice.phuongThucNap}
+              trangThai={invoice.trangThai}
+              createdAt={invoice.createdAt}
             ></Invoice>
-
-            <Invoice
-              maHoaDon="HD0001"
-              maNguoiDung="ND0001"
-              soTien="1000"
-              phuongThucNap="Momo"
-              trangThai="Done"
-            ></Invoice>
+          ))}
         </div>
         
       </div> 
