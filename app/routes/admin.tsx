@@ -4,22 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 import AdminCourse from "~/components/Admin/Course";
+import SearchEngine from "~/components/Search-engine";
+
+import type {courses} from "../types/courses";
+
 
 import "../styles/Admin/admin.css";
 import "../styles/Admin/admin_course.css";
 
-
-interface CourseProps {
-  maKhoaHoc: string;
-  tenKhoaHoc: string;
-  doKho: string;
-  hinhAnh: string;
-  giaBan: string;
-  moTaKhoaHoc: string;
-}
-
 export default function Admin() {
-  const [courses, setCourses] = useState<CourseProps[]>([]);
+  const [courses, setCourses] = useState<courses[]>([]);
 
   const navigate = useNavigate();
 
@@ -65,104 +59,62 @@ export default function Admin() {
   }, []);
 
   // Tìm kiếm
-  const [inputValue, setInputValue] = useState("");
-  const [searchResult, setSearchResult] = useState<CourseProps []>([]);
+  const [searchResult, setSearchResult] = useState<courses[]>([]);
 
-  useEffect(() => {
-      // Không gọi API nếu rỗng hoặc toàn khoảng trắng
-      if (!inputValue.trim()) return;
-
-      fetch(`${import.meta.env.VITE_API_URL}/api/courses/${inputValue}`)
-          .then((res) => {
-              if (!res.ok) {
-                  console.log("Lỗi khi tìm kiếm");
-              }
-              return res.json();
-          })
-          .then((data) => {
-              setSearchResult(data);
-              console.log("Kết quả:", searchResult);
-          });
-  }, [inputValue]);
-
-  // Click ngoài thì phải đóng tìm kiếm
-  const inputRef = useRef<HTMLInputElement>(null);
-  const resultRef = useRef<HTMLDivElement>(null);
-  const [showResult, setShowResult] = useState(false);
-
-  useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          resultRef.current &&
-          !resultRef.current.contains(event.target as Node) &&
-          inputRef.current &&
-          !inputRef.current.contains(event.target as Node)
-        ) {
-          setShowResult(false);
+  const handleSearch = (query: string) => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/courses/search/${query}`)
+      .then((res) => {
+        if (!res.ok) { throw new Error("Lỗi khi gọi API tìm kiếm"); }
+        return res.json();
+      })
+      .then((resData: courses[]) => {
+        if (Array.isArray(resData)) {
+          setSearchResult(resData);
+        } else {
+          setSearchResult([]);
         }
-      };
-    
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-  }, []);
+      })
+      .catch((err) => {
+        console.error("Lỗi:", err);
+        setSearchResult([]);
+      });
+  };
+
+  const goToItem = (item: any) => { navigate(`/admin-course-details/${item.maKhoaHoc}`); };
   
   return (
     <div className="admin-wrapper">
       <Header className="header-admin" title="Trang quản trị"></Header>
       <AdminNav></AdminNav>
+      <SearchEngine
+        placeholder="Tìm kiếm khóa học..."
+        getData={handleSearch}
+        data={searchResult}
+        renderItem={(item) => (
+          <div
+            className="search-engine__item"
+            key={item.maKhoaHoc}
+            onClick={() => goToItem(item)}
+          >
+            <div className="search-engine__thumb">
+              <img
+                src={item.hinhAnh || "/images/COURSE.png"}
+                alt={item.tenKhoaHoc}
+                className="search-engine__image"
+              />
+            </div>
+            <div>
+              <span className="search-engine__name">{item.tenKhoaHoc}</span>
+            </div>
+          </div>
+        )}
+      />
 
       {/* Danh sách khóa học */}
       <div className="list-course">
 
-        <div className="list-course__search">
-          <img className="list-course-icon" src="/icons/Search.svg" alt="" />
-          <input 
-            className="list-course-input" 
-            ref={inputRef}
-            type="text"
-            placeholder="Tìm khóa học..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onFocus={() => setShowResult(true)}
-          />
-
-          {/* Ô tìm kiếm */}
-          <section ref={resultRef} className={`search-result__admin ${showResult && inputValue.trim() ? "show" : ""}`}>
-            <div className="search-result__inner">
-                <div className="search-result__head">
-                    <span className="search-result__inner--title">Kết quả cho: "{inputValue}"</span>
-                    <span onClick={() => setShowResult(false)} className="search-result__inner--close">
-                        <img className="search-result__icon" src="/icons/Close.svg" alt="" />
-                    </span>
-                </div>
-                {
-                    searchResult.length === 0 ? (
-                        <p className="no-res">Không tìm thấy kết quả cho: "{inputValue}"</p>
-                    ) : (
-                        searchResult.map((item) => (
-                            <Link to={`/admin-course-details/${item.maKhoaHoc}`}
-                                key={item.maKhoaHoc}
-                                className="search-result__item">
-                                <div className="search-result__thumb">
-                                    <img src={item.hinhAnh} alt="" className="search-result__image" />
-                                </div>
-                                <div>
-                                    <span className="search-result__name">{item.tenKhoaHoc}</span>
-                                </div>
-                            </Link>
-                        )
-                    )
-                )}
-            </div>
-          </section>
-        </div>
-
         {/* Phần head */}
         <div className="list-course__head">
-          
-
           {/* Mã khóa học */}
           <div className="course-id course-id_head">
               <span>ID</span>
@@ -187,19 +139,12 @@ export default function Admin() {
           <div className="course-price course-price_head">
               <span>GIÁ (VNĐ)</span>
           </div>
-
-          {/* Sửa */}
-          {/* <div className="course-update"></div> */}
-
-          {/* Xóa */}
-          {/* <div className="course-delete"></div> */}
         </div>
-
-        
 
         {/* Phần hiển thị các khóa học */}
         <div className="list-course__inner">
-          {courses.map((course) => (
+          {
+            courses.map((course) => (
               <AdminCourse 
                 key={course.maKhoaHoc}
                 maKhoaHoc={course.maKhoaHoc} 
@@ -209,9 +154,8 @@ export default function Admin() {
                 giaBan={course.giaBan} 
                 moTaKhoaHoc={course.moTaKhoaHoc || "Không có mô tả"} 
               />
-            ))}
-
-
+            ))
+          }
         </div>
       </div>
     </div>
