@@ -31,7 +31,7 @@ export default function AllCourses() {
       })
         .then((res) => res.json())
         .then((data) => {
-          setCourses(data);
+          setCourses(data.data);
         })
         .catch((err) => {
           console.log("Lỗi: ", err);

@@ -53,7 +53,7 @@
     cursor: pointer;
     width: 100%;
     font-size: 13px;
-    transition: .25s;
+    transition: .5s;
     border-radius: 999px;
 }
 
@@ -68,7 +68,6 @@
     justify-content: space-around;
     color: #727272;
     font-weight: 600;
-    transition: .25s;
 }
 
 .pagination-button__steps:hover {
@@ -77,12 +76,12 @@
 }
 
 .pagination-button__focus {
-    background: linear-gradient(45deg, #21a2ff, #8951ff);
+    background: #21a2ff;
     color: #fff;
     border-radius: 999px;
 }
 
 .pagination-button__focus:hover {
-    background: linear-gradient(45deg, #21a2ff, #8951ff);
+    background: #21a2ff;
     color: #fff;
 }

@@ -10,8 +10,6 @@ export default function About() {
       <Header title="Về MLearning"></Header>
       <Navbar></Navbar>
       <Footer></Footer>
-      
     </div>
-    
   );
 }

@@ -20,9 +20,21 @@ interface Users {
     github: string;
 }
 
+interface ApiUsersResponse {
+  usersData: Users[];
+  pagination?: {
+    totalItems?: number;
+    totalPages?: number;
+    currentPage?: number;
+    pageSize?: number;
+  };
+}
+
 export default function Analytics() {
 
     const [users, setUsers] = useState<Users []>([]);
+    const [firstCall, setFirstCall] = useState(true);
+  const [totalPages, setTotalPages] = useState(1);;
 
     useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/users`, {
@@ -45,19 +57,53 @@ export default function Analytics() {
         });
 }, []);
 
-
+    // Lấy người dùng
+      const fetchUsers = ( page: number, firstCall: boolean, setFirstCall: React.Dispatch<React.SetStateAction<boolean>> ) => {
+        const url = new URL(`${import.meta.env.VITE_API_URL}/api/users`);
+        url.searchParams.append('page', page.toString());
+        url.searchParams.append('pageSize', '7');
+    
+        if (firstCall) {
+          url.searchParams.append('count', 'true');
+        }
+    
+        fetch(url.toString(), {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(res => res.json())
+          .then((data: ApiUsersResponse) => {
+            setUsers(data.usersData || []);
+            
+            if (firstCall && data.pagination?.totalPages) {
+              setTotalPages(data.pagination.totalPages);
+              setFirstCall(false);
+            }
+          })
+          .catch((error) => console.error('Lỗi khi lấy khóa học:', error));
+      };
+    
+      useEffect(() => {
+        fetchUsers(1, firstCall, setFirstCall);
+      }, []);
+    
+      const onPageChange = (page: number) => {
+        fetchUsers(page, firstCall, setFirstCall);
+      };
     
 
     // Tìm kiếm
-      const [searchResult, setSearchResult] = useState<courses[]>([]);
+      const [searchResult, setSearchResult] = useState<Users[]>([]);
     
       const handleSearch = (query: string) => {
-        fetch(`${import.meta.env.VITE_API_URL}/api/courses/search/${query}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/users/search-nguoi-dung/${query}`)
           .then((res) => {
             if (!res.ok) { throw new Error("Lỗi khi gọi API tìm kiếm"); }
             return res.json();
           })
-          .then((resData: courses[]) => {
+          .then((resData: Users[]) => {
             if (Array.isArray(resData)) {
               setSearchResult(resData);
             } else {
@@ -84,23 +130,23 @@ export default function Analytics() {
             renderItem={(item) => (
             <div
                 className="search-engine__item"
-                key={item.maKhoaHoc}
+                key={item.maNguoiDung}
                 onClick={() => goToItem(item)}
             >
                 <div className="search-engine__thumb">
                 <img
-                    src={item.hinhAnh || "/images/COURSE.png"}
-                    alt={item.tenKhoaHoc}
+                    src={item.anhDaiDien || "/images/COURSE.png"}
+                    alt={item.tenNguoiDung}
                     className="search-engine__image"
                 />
                 </div>
                 <div>
-                <span className="search-engine__name">{item.tenKhoaHoc}</span>
+                <span className="search-engine__name">{item.tenNguoiDung}</span>
                 </div>
             </div>
             )}
         />
-        <Pagination></Pagination>
+        <Pagination totalPages={totalPages} onPageChange={(page) => onPageChange(page)} />
 
         <div className="adm-user__inner">
             
