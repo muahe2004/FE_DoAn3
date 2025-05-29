@@ -71,29 +71,31 @@
 }
 
 .status-done {
-  background-color: #beefc0; /* xanh lá đậm hơn */
-  color: green;
-  border-color: green;
-  /* padding: 4px 8px;
-  border-radius: 4px; */
+    background-color: #beefc0; /* xanh lá đậm hơn */
+    color: green;
+    border-color: green;
+    /* padding: 4px 8px;
+    border-radius: 4px; */
 }
 
 .status-in-process {
-  background-color: #cce5ff; /* xanh biển nhạt */
-color: #004085;     
-  border-color: #004085;
-  /* color: #856404; */
-  /* padding: 4px 8px; */
-  /* border-radius: 4px; */
+    background-color: #cce5ff; /* xanh biển nhạt */
+    color: #004085;     
+    border-color: #004085;
+    /* color: #856404; */
+    /* padding: 4px 8px; */
+    /* border-radius: 4px; */
 }
 
 .status-error {
-  background-color: #ffd8d8; /* đỏ nhạt đậm */
-  color: red;
-  border-color: red;
-  /* color: #721c24;
-  padding: 4px 8px;
-  border-radius: 4px; */
+    text-align: center;
+    /* min-width: 50px; */
+    background-color: #ffd8d8; /* đỏ nhạt đậm */
+    color: red;
+    border-color: red;
+    /* color: #721c24;
+    padding: 4px 8px;
+    border-radius: 4px; */
 }
 
 .invoices-type {

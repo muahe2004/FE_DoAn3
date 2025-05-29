@@ -27,13 +27,15 @@
         position: fixed;
         left: 10px;
         background: transparent;
+        /* background: #fff; */
     }
 
     .navbar-list {
         display: none;
     }
     
-    .navbar-news {
+    
+    .navbar-chat {
         position: absolute;
         bottom: 10px;
         width: 50px;
