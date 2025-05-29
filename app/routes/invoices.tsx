@@ -25,8 +25,15 @@ export default function Invoices() {
   const [firstCall, setFirstCall] = useState(true);
   const [totalPages, setTotalPages] = useState(1);;
 
+  const [page, setPage] = useState(1);
+  const pageSize = 5;
+
+  const inputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+  const [showResult, setShowResult] = useState(false);
+
+  // call api tìm kiếm
   useEffect(() => {
-    // Không gọi API nếu rỗng hoặc toàn khoảng trắng
     if (!inputValue.trim()) return;
 
     fetch(`${import.meta.env.VITE_API_URL}/api/courses/${inputValue}`)
@@ -43,10 +50,6 @@ export default function Invoices() {
   }, [inputValue]);
 
   // Click ngoài thì phải đóng tìm kiếm
-  const inputRef = useRef<HTMLInputElement>(null);
-  const resultRef = useRef<HTMLDivElement>(null);
-  const [showResult, setShowResult] = useState(false);
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -75,13 +78,28 @@ export default function Invoices() {
     }
   };
 
-  const userId = typeof window !== "undefined" ? getUserId() : null;
+  const maNguoiNap = typeof window !== "undefined" ? getUserId() : null;
 
-  const { data, error, isLoading } = useGetInvoicesByUserIdQuery(userId ?? "", {
-    skip: !userId,
+  const { data, isLoading, error } = useGetInvoicesByUserIdQuery({
+    maNguoiNap,
+    page,
+    pageSize,
+    count: firstCall,
   });
 
+  // Sau lần gọi đầu, tắt count
+  useEffect(() => {
+    if (firstCall && data?.pagination?.totalPages) {
+      setFirstCall(false);
+      console.log(data);
+      setTotalPages(data.pagination.totalPages);
+    }
+  }, [data, firstCall]);
 
+  const handlePageChange = (newPage: number) => { setPage(newPage); };
+  // const goToItem = (item: any) => { navigate(`/admin-course-details/${item.maKhoaHoc}`); }; // Sửa thành sang trang chi tiết người dùng
+
+  // Tìm kiếm hóa đơn (chưa hoàn thiện)
   const handleSearch = (query: string) => {
     fetch(`${import.meta.env.VITE_API_URL}/api/users/search-nguoi-dung/${query}`)
       .then((res) => {
@@ -99,11 +117,6 @@ export default function Invoices() {
         console.error("Lỗi:", err);
         setSearchResult([]);
       });
-  };
-
-  // const goToItem = (item: any) => { navigate(`/admin-course-details/${item.maKhoaHoc}`); }; // Sửa thành sang trang chi tiết người dùng
-  const onPageChange = (page: number) => {
-    // fetchUsers(page, firstCall, setFirstCall);
   };
 
   return (
@@ -134,7 +147,7 @@ export default function Invoices() {
         )}
       />
 
-      <Pagination totalPages={totalPages} onPageChange={(page) => onPageChange(page)} />
+      <Pagination totalPages={totalPages} onPageChange={(page) => handlePageChange(page)} />
 
       <div className="invoices-page">
 
@@ -165,7 +178,7 @@ export default function Invoices() {
         </div>
         
         <div className="invoices-page__inner">
-          {data && data.map((invoice: invoices) => (
+          {data && data.invoicesData.map((invoice: invoices) => (
             <Invoice
               maHoaDon={invoice.maHoaDon}
               maNguoiDung={invoice.maNguoiDung}
@@ -176,12 +189,7 @@ export default function Invoices() {
             ></Invoice>
           ))}
         </div>
-        
-      </div> 
-
-      <Footer></Footer>
-      
+      </div>       
     </div>
-    
   );
 }
