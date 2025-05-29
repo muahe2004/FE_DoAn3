@@ -24,6 +24,8 @@ export default function CourseDetails() {
     const [giaBan, setGiaBan] = useState("");
     const [hinhAnh, setHinhAnh] = useState("");
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [soDu, setSoDu] = useState(0);
+
 
     // API load thông tin khóa học 
     useEffect(() => {
@@ -99,8 +101,6 @@ export default function CourseDetails() {
         );
     };
 
-    const [soDu, setSoDu] = useState(0);
-
     // Lấy số dư của người dùng
     const handleBalanceFromChild = (balance: number) => { setSoDu(balance); };
 
@@ -130,6 +130,8 @@ export default function CourseDetails() {
             }
             
             await registerCourse(maNguoiDung, parseFloat(giaBan));
+            // sẽ gọi hàm thêm hóa đơn thanh toán vào đây
+
             navigate(`/learning/${maKhoaHoc}`);
     
         } catch (error) {
@@ -137,8 +139,6 @@ export default function CourseDetails() {
         }
     };
 
-    
-    
     // Hàm đăng ký khóa học
     const registerCourse = async (maNguoiDung: string, giaBan: number) => {
         const body = {
@@ -166,7 +166,7 @@ export default function CourseDetails() {
         }
     };
 
-    // THêm tiến độ
+    // Thêm tiến độ
     const insertTienDoHoc = async (maNguoiDung: string) => {
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/insert-progress`, {
@@ -192,6 +192,9 @@ export default function CourseDetails() {
         }
     };
 
+    // Thêm hóa đơn thanh toán sau khi thanh toán
+    const insertBill = () => { };
+
     // Ẩn hiện popup
     const [isClosedPay, setIsClosedPay] = useState(true);
     const handleOpenPay = () => { 
@@ -208,114 +211,112 @@ export default function CourseDetails() {
     const handleOpenNoBalance = () => { setIsClosedNoBalance(false)};
     const handleCloseNoBalance = () => { setIsClosedNoBalance(true)};
 
-    
+    return (
+        <div className="course-details__wrapper">
+            <Navbar></Navbar>
+            <Header
+                sendBalanceToParent={handleBalanceFromChild}
+                title="Thông tin khóa học"></Header>
+        
+            <div className="course-details__inner">
+                <div className="course-container">
+                    <div className="course-info">
+                        <h1 className="course-info__name">{tenKhoaHoc || "Javascriot cơ bản"}</h1>
+                        <p className="course-info__desc">
+                            {moTaKhoaHoc || "Khóa học giúp người dùng thành thạo Javascript căn bản"} 
+                        </p>
+                        
+                        {/* Danh sách chương. bài học */}
+                        <div className="course-accordion">
+                            <h2 className="course-accordion__title">Nội dung khóa học</h2>
+                            <div className="course-accordion__inner">
+                            {chuongHocList.map((chuong, index) => (
+                                <div className="course-accordion__item" key={chuong.maChuongHoc}>
+                                    <div className="course-accordion__head">
+                                        <button type="button" className="course-accordion__lesson" onClick={() => toggleAccordion(index)}>
+                                            {chuong.tenChuongHoc} 
+                                        </button>
+                                    </div>
 
-  return (
-    <div className="course-details__wrapper">
-        <Navbar></Navbar>
-        <Header
-            sendBalanceToParent={handleBalanceFromChild}
-            title="Thông tin khóa học"></Header>
-    
-        <div className="course-details__inner">
-            <div className="course-container">
-                <div className="course-info">
-                    <h1 className="course-info__name">{tenKhoaHoc || "Javascriot cơ bản"}</h1>
-                    <p className="course-info__desc">
-                        {moTaKhoaHoc || "Khóa học giúp người dùng thành thạo Javascript căn bản"} 
-                    </p>
-                    
-                    {/* Danh sách chương. bài học */}
-                    <div className="course-accordion">
-                        <h2 className="course-accordion__title">Nội dung khóa học</h2>
-                        <div className="course-accordion__inner">
-                        {chuongHocList.map((chuong, index) => (
-                            <div className="course-accordion__item" key={chuong.maChuongHoc}>
-                                <div className="course-accordion__head">
-                                    <button type="button" className="course-accordion__lesson" onClick={() => toggleAccordion(index)}>
-                                        {chuong.tenChuongHoc} 
-                                    </button>
+                                    <div className={`course-accordion__content ${openIndexes.includes(index) ? "open" : ""}`}>
+                                        <ul className="course-accordion__list">
+                                            {chuong.danhSachBaiHoc.map((baiHoc) => (
+                                                <li key={baiHoc.maBaiHoc} className="course-accordion__list--item">
+                                                    <Link to="" className="course-accordion__list--link">
+                                                        {baiHoc.tenBaiHoc}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
                                 </div>
-
-                                <div className={`course-accordion__content ${openIndexes.includes(index) ? "open" : ""}`}>
-                                    <ul className="course-accordion__list">
-                                        {chuong.danhSachBaiHoc.map((baiHoc) => (
-                                            <li key={baiHoc.maBaiHoc} className="course-accordion__list--item">
-                                                <Link to="" className="course-accordion__list--link">
-                                                    {baiHoc.tenBaiHoc}
-                                                </Link>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                            ))}
                             </div>
-                        ))}
                         </div>
                     </div>
-                </div>
 
-                <div className="course-video__thumb">
-                    <iframe
-                        className="course-video__iframe"
-                        src="https://www.youtube.com/embed/o_VDcEy029M"
-                        title="YouTube Video"
-                        allow="autoplay; encrypted-media"
-                        allowFullScreen
-                    >
-                    </iframe>
+                    <div className="course-video__thumb">
+                        <iframe
+                            className="course-video__iframe"
+                            src="https://www.youtube.com/embed/o_VDcEy029M"
+                            title="YouTube Video"
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen
+                        >
+                        </iframe>
 
-                    <h3 className="course-details__cost">
-                        {Number(giaBan) === 0 ? "Miễn phí" : `${Number(giaBan).toLocaleString("vi-VN")} VNĐ`}
-                    </h3>
+                        <h3 className="course-details__cost">
+                            {Number(giaBan) === 0 ? "Miễn phí" : `${Number(giaBan).toLocaleString("vi-VN")} VNĐ`}
+                        </h3>
 
-                    <Button className="thumb-btn" children="Đăng ký ngay" type="button" onClick={handleOpenPay}></Button>
+                        <Button className="thumb-btn" children="Đăng ký ngay" type="button" onClick={handleOpenPay}></Button>
 
-                    <ul className="thumb-list">
-                        <li className="thumb-item">
-                            <img src="/icons/Code.svg" alt="" className="thumb-icon" />
-                            <span>Độ khó: {doKho}</span>
-                        </li>
+                        <ul className="thumb-list">
+                            <li className="thumb-item">
+                                <img src="/icons/Code.svg" alt="" className="thumb-icon" />
+                                <span>Độ khó: {doKho}</span>
+                            </li>
 
-                        <li className="thumb-item">
-                            <img src="/icons/Article.svg" alt="" className="thumb-icon" />
-                            <span>Tổng số 100 bài học</span>
-                        </li>
+                            <li className="thumb-item">
+                                <img src="/icons/Article.svg" alt="" className="thumb-icon" />
+                                <span>Tổng số 100 bài học</span>
+                            </li>
 
-                        <li className="thumb-item">
-                            <img src="/icons/Clock.svg" alt="" className="thumb-icon" />
-                            <span>Học mọi lúc mọi nơi</span>
-                        </li>
-                    </ul>
+                            <li className="thumb-item">
+                                <img src="/icons/Clock.svg" alt="" className="thumb-icon" />
+                                <span>Học mọi lúc mọi nơi</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+
+            <PopUp 
+                icon={"Question.svg"} 
+                secondOption={"Hủy bỏ"} 
+                title={"Thanh toán"} 
+                desc={"Xác nhận thanh toán ?"} 
+                onOpen={handleClosePay}
+                isClosed={isClosedPay}
+                className="popup-update"
+                // timeCount={3}
+            >
+                <Button type="button" onClick={handleRegisterCourse}>Thanh toán</Button>
+            </PopUp>
+
+            <PopUp 
+                icon={"Question.svg"} 
+                secondOption={"Hủy bỏ"} 
+                title={"Thanh toán"} 
+                desc={"Số dư không đủ, nạp tiền ?"} 
+                onOpen={handleCloseNoBalance}
+                isClosed={isClosedNoBalance}
+                className="popup-update"
+                // timeCount={3}
+            >
+                <Button type="button" to="/payment">Nạp tiền</Button>
+            </PopUp>
+            <Footer></Footer>
         </div>
-
-        <PopUp 
-            icon={"Question.svg"} 
-            secondOption={"Hủy bỏ"} 
-            title={"Thanh toán"} 
-            desc={"Xác nhận thanh toán ?"} 
-            onOpen={handleClosePay}
-            isClosed={isClosedPay}
-            className="popup-update"
-            // timeCount={3}
-        >
-            <Button type="button" onClick={handleRegisterCourse}>Thanh toán</Button>
-        </PopUp>
-
-        <PopUp 
-            icon={"Question.svg"} 
-            secondOption={"Hủy bỏ"} 
-            title={"Thanh toán"} 
-            desc={"Số dư không đủ, nạp tiền ?"} 
-            onOpen={handleCloseNoBalance}
-            isClosed={isClosedNoBalance}
-            className="popup-update"
-            // timeCount={3}
-        >
-            <Button type="button" to="/payment">Nạp tiền</Button>
-        </PopUp>
-        <Footer></Footer>
-    </div>
-  );
+    );
 }
