@@ -4,14 +4,18 @@ import { configureStore } from "@reduxjs/toolkit"
 
 // Import API slice
 import { apiInvoices } from "~/services/apiInvoices"
+import { apiBills } from "~/services/apiBills";
 
 const store = configureStore({
   reducer: {
     [apiInvoices.reducerPath]: apiInvoices.reducer,
+    [apiBills.reducerPath]: apiBills.reducer,
   },
-  // middleware mặc định để có thể chạy
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiInvoices.middleware), 
-})
+    getDefaultMiddleware()
+      .concat(apiInvoices.middleware)
+      .concat(apiBills.middleware),
+});
+
 
 export default store;

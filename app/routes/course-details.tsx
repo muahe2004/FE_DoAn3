@@ -8,6 +8,9 @@ import Button from "~/components/Button";
 import "../styles/course-details.css";
 import "../styles/Responsive/course-details.css";
 import PopUp from "~/components/PopUp";
+import { useCreateBillsMutation } from "~/services/apiBills";
+
+import type { bills } from "~/types/bills";
 
 interface UserInfo {
     maNguoiDung: string;
@@ -131,7 +134,7 @@ export default function CourseDetails() {
             
             await registerCourse(maNguoiDung, parseFloat(giaBan));
             // sẽ gọi hàm thêm hóa đơn thanh toán vào đây
-
+            insertBill();
             navigate(`/learning/${maKhoaHoc}`);
     
         } catch (error) {
@@ -192,8 +195,22 @@ export default function CourseDetails() {
         }
     };
 
+    const [createBill] = useCreateBillsMutation();
     // Thêm hóa đơn thanh toán sau khi thanh toán
-    const insertBill = () => { };
+    const insertBill = async () => { 
+        const newBill: bills = {
+            maNguoiDung: "ND008",
+            loaiThanhToan: "Thanh toán khóa học",
+            soTien: 1000,
+            trangThai: "Thành công"
+        }
+
+        try {
+            await createBill(newBill);
+        } catch (err) {
+            console.error("Lỗi khi tạo hóa đơn thanh toán.", err);
+        }
+    };
 
     // Ẩn hiện popup
     const [isClosedPay, setIsClosedPay] = useState(true);
