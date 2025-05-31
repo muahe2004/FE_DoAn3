@@ -175,9 +175,14 @@ export default function Learning() {
             try {
                 const res = await fetch(`${import.meta.env.VITE_API_URL}/api/lectures/get-first-lecture/${maKhoaHoc}`);
                 if (res.ok) {
-                    const lecture = await res.json();
-                    setBaiHoc(lecture);
-                    localStorage.setItem("lastSelectedLecture", lecture.maBaiHoc);
+                    const text = await res.text(); // đọc nội dung thô
+                    if (text) {
+                        const lecture = await res.json();
+                        setBaiHoc(lecture);
+                        localStorage.setItem("lastSelectedLecture", lecture.maBaiHoc);
+                    } else {
+                        console.log("Khoá học chưa có bài học nào cả.");
+                    }
                 } else {
                     console.warn("Không tìm thấy bài học đầu tiên từ API.");
                 }
@@ -289,6 +294,10 @@ export default function Learning() {
 
         const timer = setTimeout(() => {
             const user = JSON.parse(localStorage.getItem("userInfo") || "{}");
+            if (!baiHoc) {
+                console.log("Khoá học chưa có bài học nào.");
+                return;
+            }
             fetch(`${import.meta.env.VITE_API_URL}/api/set-learned`, {
                 method: 'PUT',
                 headers: {
