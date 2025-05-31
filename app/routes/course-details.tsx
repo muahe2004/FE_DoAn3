@@ -172,6 +172,12 @@ export default function CourseDetails() {
     // Thêm tiến độ
     const insertTienDoHoc = async (maNguoiDung: string) => {
         try {
+
+            if (!listLecture || listLecture.length === 0) {
+                console.log("Khoá học này chưa có bài học nào!");
+                return;
+            }
+
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/insert-progress`, {
                 method: "POST",
                 headers: {
@@ -198,10 +204,18 @@ export default function CourseDetails() {
     const [createBill] = useCreateBillsMutation();
     // Thêm hóa đơn thanh toán sau khi thanh toán
     const insertBill = async () => { 
+        const userInfoStr = localStorage.getItem("userInfo");
+        if (!userInfoStr) {
+            console.log("Không tìm thấy thông tin người dùng trong localStorage.");
+            return;
+        }
+        const userInfo = JSON.parse(userInfoStr);
+        const maNguoiDung = userInfo.maNguoiDung;
+
         const newBill: bills = {
-            maNguoiDung: "ND008",
+            maNguoiDung: maNguoiDung,
             loaiThanhToan: "Thanh toán khóa học",
-            soTien: 1000,
+            soTien: Number(giaBan),
             trangThai: "Thành công"
         }
 

@@ -114,6 +114,7 @@ export default function AddCourse() {
       hinhAnh: imageUrl,
       doKho: levelInput?.value,
       giaBan: parseFloat(priceInput.value) || 0,
+      maGiangVien: 'ND001', // can update lai: lay ma nguoi dung tu local
     };
   
     try {

@@ -16,9 +16,9 @@ export default function Login() {
     const isEmailValid = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
-      };
+    };
       
-      const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
         const input = event.target;
         const formErr = input.parentElement?.querySelector(".login-text") as HTMLElement | null;
       
@@ -85,7 +85,7 @@ export default function Login() {
 
     const getUserInfo = async (email: string) => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/users/${encodeURIComponent(email)}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/${encodeURIComponent(email)}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });

@@ -5,4 +5,7 @@ export interface courses {
   hinhAnh: string;
   giaBan: string;
   moTaKhoaHoc: string;
+  maGiangvien?: string;
+  tenGiangVien?: string;
+  anhDaiDien?: string;
 }
