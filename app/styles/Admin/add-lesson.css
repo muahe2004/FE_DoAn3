@@ -6,14 +6,12 @@
 .add-lesson__inner {
     width: calc(100% - 100px);
     height: calc(100vh - 80px);
-    /* background: palegreen; */
     margin-left: 100px;
     padding: 10px;
     border-radius: 8px;
 }
 
 .lesson-form {
-    /* padding: 20px; */
     padding: 20px 10px 10px 10px;
     background: #fff;
     border-radius: 4px;
@@ -33,28 +31,22 @@
     margin-bottom: 40px;
 }
 
-
 .lesson-form__label {
     display: inline-block;
     width: calc(20% - 5px);
-    /* background: pink; */
     font-weight: 700;
     margin-right: 5px;
     font-size: 18px;
 }
 
 .lesson-form__input {
-    /* border-bottom: 1px solid #ccc; */
-    /* background: paleturquoise; */
     height: 40px;
     width: 80%;
     border-bottom: 1px solid #ccc;
-    /* border-radius: 8px; */
     padding-left: 10px;
     outline: none;
     transition: .5s;
     border-radius: 4px 4px 0 0;
-    /* background: #ccc; */
 }
 
 .lesson-form__input:focus {
@@ -64,7 +56,6 @@
 .lesson-form__text {
     margin-top: 5px;
     font-size: 14px;
-    /* background: #ccc; */
     width: 80%;
     float: right;
     color: red;

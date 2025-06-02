@@ -126,6 +126,18 @@ export default function AdminCourseDetails() {
 
   // Handle thực hiện xóa khóa học
   const handleDeleteCourse = async () => {
+    // Cần kiểm tra xem khoá học đang có học viên hay ko
+    // nếu ko có học viên thì mới cho xoá
+    const check = await handleCheckStudent(); 
+    if (check === true) {
+      handleCloseDelete();
+      handleOpenCheck();
+      setTimeout(() => {
+        handleCloseCheck();
+      }, 3000);
+      return;
+    }
+
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/courses/${maKhoaHoc}`, {
         method: "DELETE",
@@ -142,7 +154,22 @@ export default function AdminCourseDetails() {
       console.log("Lỗi khi xóa khóa học: ", error);
     }
   };
-  
+
+  const handleCheckStudent = async () => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/courses/check-student/${maKhoaHoc}`, {
+      method: "GET",
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.checked;
+      // console.log(data); 
+    } else {
+      // console.error("Lỗi khi kiểm tra học viên!", response.status);
+      return true;
+    }
+  }
+
   // Ẩn hiện PopUp
   const [isClosedUpdate, setIsClosedUpdate] = useState(true);
   const handleOpenUpdate = () => { setIsClosedUpdate(false)};
@@ -159,6 +186,10 @@ export default function AdminCourseDetails() {
   const [isClosedDeleteDone, setIsClosedDeleteDone] = useState(true);
   const handleOpenDeleteDone = () => { setIsClosedDeleteDone(false)};
   const handleCloseDeleteDone = () => { setIsClosedDeleteDone(true)};
+
+  const [isClosedCheck, setIsClosedCheck] = useState(true);
+  const handleOpenCheck = () => { setIsClosedCheck(false)};
+  const handleCloseCheck = () => { setIsClosedCheck(true)};
 
   const handleResetForm = () => {
     setTenKhoaHoc("");
@@ -363,6 +394,19 @@ export default function AdminCourseDetails() {
         onOpen={handleCloseDeleteDone}
         isClosed={isClosedDeleteDone}
         className="popup-done"
+        // timeCount={5}
+      >
+        {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
+      </PopUp>
+
+      <PopUp 
+        icon={"Exclamation.svg"} 
+        // secondOption={"Hủy bỏ"} 
+        title={"Xóa khóa học"} 
+        desc={"Khoá học đang có học viên!"} 
+        onOpen={handleCloseCheck}
+        isClosed={isClosedCheck}
+        className="popup-delete"
         // timeCount={5}
       >
         {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
