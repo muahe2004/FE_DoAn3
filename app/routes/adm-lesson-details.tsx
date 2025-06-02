@@ -5,8 +5,9 @@ import Header from "~/components/Header";
 import AdminNav from "~/components/Admin/AdminNav";
 import Button from "~/components/Button";
 
-import "../styles/Admin/adm-lesson-details.css";
 import "../styles/Admin/add-lesson.css";
+import "../styles/Admin/adm-lesson-details.css";
+
 import { useParams } from "react-router";
 import PopUp from "~/components/PopUp";
 
@@ -172,7 +173,7 @@ export default function AdminLessonDetails() {
                         </div>
                     </div>
 
-                    <div className="lesson-form__action"> 
+                    <div className="lesson-form__action lesson-details__form--action "> 
                         <Button type="button" className="btn-add" onClick={handleOpenUpdate}>Lưu lại</Button>
                         <Button type="button" className="btn-new button-secondary button" onClick={handleResetForm}>Làm mới</Button>
                         <Button type="button" className="btn-cancle button-third button" onClick={handleOpenDelete}>Xóa chương</Button>
