@@ -1,25 +1,18 @@
 .admin-course {
     display: flex;
     align-items: center;
-    height: 90px;
+    height: 108px;
     background: #fff;
     padding: 10px 20px 10px 5px;
     margin-bottom: 5px;
     border-radius: 8px;
     justify-content: space-between;
-    transition: .5s;
+    border: 1px solid #fff;
+    transition: .25s;
 }
 
-.course:hover {
-    background: #e6edf7;
-}
-
-.admin-course_check {
-    width: 20px;
-    /* background: red; */
-    display: flex;
-    /* align-items: center; */
-    /* justify-content: center; */
+.admin-course:hover {
+    border-color: #21a2ff;
 }
 
 .admin-course_check > input {
@@ -38,8 +31,6 @@
 
 .admin-course_name {
     width: 30%;
-    /* height: 100%; */
-    /* background: paleturquoise; */
     padding: 0 5px;
     font-size: 18px;
     overflow: hidden;
@@ -48,7 +39,6 @@
 .admin-course_image {
     width: 10%;
     height: 80px;
-    /* margin: 0 5px; */
 }
 
 .admin-course_image > img {
@@ -61,17 +51,14 @@
 
 .admin-course_level {
     width: 10%;
-    /* background: palegreen; */
     text-align: center;
     
 }
 
 .admin-course_price {
     width: 10%;
-    /* background: palegoldenrod; */
     font-size: 18px;
     color: orange;
-    /* text-align: center; */
     font-weight: 600;
     text-align: right;
 }
@@ -83,17 +70,5 @@
 
 .admin-course_update, .admin-course_delete {
     width: 5%;
-    /* background: paleturquoise; */
     display: flex;
-    /* margin-right: 5px; */
-}
-
-.update-link {
-    padding: 10px;
-    /* background: yellow; */
-}
-
-.btn-save {
-    width: 150px;
-    height: 45px;
 }

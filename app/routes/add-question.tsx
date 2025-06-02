@@ -27,9 +27,10 @@ export default function Question() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/courses`); 
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/selection-courses`); 
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           setCourses(data); 
         } else {
           console.error("Lỗi khi lấy danh sách khóa học");
@@ -299,7 +300,7 @@ export default function Question() {
                   value={selectedCourse}
                 >
                   <option value="">Chọn khóa học</option>
-                  {courses.map((course) => (
+                  {Array.isArray(courses) && courses.map((course) => (
                     <option key={course.maKhoaHoc} value={course.maKhoaHoc}>
                       {course.tenKhoaHoc}
                     </option>

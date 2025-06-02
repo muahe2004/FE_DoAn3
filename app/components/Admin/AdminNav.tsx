@@ -45,7 +45,7 @@ export default function AdminNav() {
                     <li className="navbar-item">
                         <Link to="/admin-user" className="navbar-link">
                             <img src="/icons/user.svg" alt="Bài viết" className="navbar-icon" />
-                            <span>Học viên</span>
+                            <span>Người dùng</span>
                         </Link>
                     </li>
 
