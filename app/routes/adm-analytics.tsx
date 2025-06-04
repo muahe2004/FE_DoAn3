@@ -16,6 +16,8 @@ import {
   PieChart,
   Pie,
   Cell,
+  LineChart,
+  Line,
 } from "recharts";
 
 import "../styles/Admin/adm-analytics.css";
@@ -110,6 +112,10 @@ const fakeMost = [
 const colors = ['#005fa3', '#4da674', '#f1ac20', '#e95354', '#21a2ff'];
 
 
+type BenefitItem = {
+  thang: string;
+  doanhThu: number;
+};
 
 // Tooltip custom 
 const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
@@ -137,16 +143,30 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
 
 
 export default function Analytics() {
+  const [activeTab, setActiveTab] = useState<string | null>("overView");
+
+
+
   // doanh thu 12 tháng
-  const [benefit, setBenefit] = useState([])
+  const [benefit, setBenefit] = useState<BenefitItem[]>([]);
+
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/analysis-courses/benefit/12`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/bills/benefit/6`)
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setBenefit(data)
-      })
+      .then((data: BenefitItem[]) => {
+        setBenefit(data);
+      });
   }, []);
+
+  const doanhThuList = benefit.map(item => item.doanhThu || 0);
+  const maxValue = Math.max(...doanhThuList);
+  const minValue = Math.min(...doanhThuList);
+
+  // Làm tròn "đẹp" cho trục Y
+  const paddedMax = Math.ceil(maxValue / 100000) * 100000 + 100000;
+  const paddedMin = Math.floor(minValue / 100000) * 100000 - 100000 > 0
+    ? Math.floor(minValue / 100000) * 100000 - 100000
+    : 0; // Không để min âm nếu không cần
 
   // 5 khóa nhiều học viên nhất
   const [most, setMost] = useState([]);
@@ -217,72 +237,107 @@ export default function Analytics() {
 
       <div className="analytics-inner">
         <div className="analytics-containers">
-            <div className="analytics-containers__item">
-              <span className="analytics-containers__title">Khóa học free</span>
-              <span className="analytics-containers__value">{freeCourses}</span>
-            </div>
-
-            <div className="analytics-containers__item analytics-containers__item--second"> 
-              <span className="analytics-containers__title">Khóa học vip</span>
-              <span className="analytics-containers__value">{vipCourses}</span>
-            </div>
-
-            <div className="analytics-containers__item analytics-containers__item--third">
-              <span className="analytics-containers__title">Học viên</span>
-              <span className="analytics-containers__value">{students}</span>
-            </div>
-
-            <div className="analytics-containers__item analytics-containers__item--fourth">
-              <span className="analytics-containers__title analytics-containers__title--fourth">Doanh thu</span>
-              <span className="analytics-containers__value analytics-containers__value--fourth">{formattedMoney}</span>
-
-            </div>
-        </div>
-
-        <div className="analytics-content">
-          {/* Cột */}
-          <div className="analytics-chart__column">
-            <ResponsiveContainer width="100%">
-              <BarChart data={benefit}  margin={{ top: 20, right: 0, left: 50, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="thang" />
-                <YAxis />
-                <Tooltip content={<CustomTooltip />} />
-                <Legend />
-                <Bar 
-                  dataKey="doanhThu" 
-                  fill="#a4d8fd" 
-                  barSize={30} 
-                  stroke="#21a2ff"          
-                  strokeWidth={2}        
-                />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="analytics-containers__item" onClick={() => setActiveTab("overView")}>
+            <span className="analytics-containers__title">Tổng quan</span>
+            <span className="analytics-containers__value">{freeCourses}</span>
           </div>
 
-          {/* Tròn */}
-          <div className="analytics-chart__wheel">
-            <h2 className="analytics-chart__title">Top 5 khóa học hot nhất</h2>
-            <ResponsiveContainer width="100%">
-              <PieChart>
-                <Pie
-                  data={most}
-                  dataKey="soHocVien"
-                  nameKey="tenKhoaHoc"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={150}
-                  label
-                >
-                  {most.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
+          <div className="analytics-containers__item" onClick={() => setActiveTab("freeCourses")}>
+            <span className="analytics-containers__title">Khóa học free</span>
+            <span className="analytics-containers__value">{freeCourses}</span>
+          </div>
+
+          <div className="analytics-containers__item analytics-containers__item--second" onClick={() => setActiveTab("vipCourses")}> 
+            <span className="analytics-containers__title">Khóa học vip</span>
+            <span className="analytics-containers__value">{vipCourses}</span>
+          </div>
+
+          <div className="analytics-containers__item analytics-containers__item--third" onClick={() => setActiveTab("student")}>
+            <span className="analytics-containers__title">Học viên</span>
+            <span className="analytics-containers__value">{students}</span>
+          </div>
+
+          <div className="analytics-containers__item analytics-containers__item--fourth" onClick={() => setActiveTab("benefit")}>
+            <span className="analytics-containers__title analytics-containers__title--fourth">Doanh thu</span>
+            <span className="analytics-containers__value analytics-containers__value--fourth">{formattedMoney}</span>
           </div>
         </div>
+
+        {
+          activeTab === "overView" && (
+            <div className="analytics-content">
+              {/* Đường */}
+              <div className="analytics-chart__column">
+                <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={benefit} margin={{ top: 20, right: 20, left: 20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="thang" />
+                      <YAxis domain={[paddedMin, paddedMax]} />
+
+                      <Tooltip />
+                      <Legend />
+                      <Line
+                        type="monotone"
+                        dataKey="doanhThu"
+                        stroke="#21a2ff"
+                        strokeWidth={2}
+                        activeDot={{ r: 8 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+              </div>
+
+              {/* Tròn */}
+              <div className="analytics-chart__wheel">
+                <h2 className="analytics-chart__title">Top 5 khóa học hot nhất</h2>
+                <ResponsiveContainer width="100%">
+                  <PieChart>
+                    <Pie
+                      data={most}
+                      dataKey="soHocVien"
+                      nameKey="tenKhoaHoc"
+                      cx="50%"
+                      cy="50%"
+                      outerRadius={150}
+                      label
+                    >
+                      {most.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+          )
+        }
+
+        {
+          activeTab === "freeCourses" && (
+            <p>Thống kê khoá học free</p>
+          )
+        }
+
+        {
+          activeTab === "vipCourses" && (
+            <p>Thống kê khoá học vip</p>
+          )
+        }
+
+        {
+          activeTab === "student" && (
+            <p>Thống kê học viên</p>
+          )
+        }
+
+        {
+          activeTab === "benefit" && (
+            <p>Thống kê doanh thu</p>
+          )
+        }
+
+        
       </div>
     </div>
   );
