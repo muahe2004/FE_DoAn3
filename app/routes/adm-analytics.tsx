@@ -117,6 +117,16 @@ type BenefitItem = {
   doanhThu: number;
 };
 
+type studentCourse = {
+  tenKhoaHoc: string;
+  soHocVien: number;
+}
+
+type coursesOfStudent = {
+  tenNguoiDung: string;
+  soKhoaHoc: number;
+}
+
 // Tooltip custom 
 const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
   if (active && payload && payload.length) {
@@ -144,19 +154,48 @@ const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>)
 
 export default function Analytics() {
   const [activeTab, setActiveTab] = useState<string | null>("overView");
+  const [benefit, setBenefit] = useState<BenefitItem[]>([]);
+  const [countFreeStudent, setCountFreeStudent] = useState<studentCourse[]>([]);
+  const [countFeeStudent, setCountFeeStudent] = useState<studentCourse[]>([]);
+  const [countCourseOfStudent, setCountCourseOfStudent] = useState<coursesOfStudent[]>([]);
+
 
 
 
   // doanh thu 12 tháng
-  const [benefit, setBenefit] = useState<BenefitItem[]>([]);
-
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/bills/benefit/6`)
-      .then((res) => res.json())
-      .then((data: BenefitItem[]) => {
-        setBenefit(data);
+    if (activeTab === "overView") {
+      fetch(`${import.meta.env.VITE_API_URL}/api/bills/benefit/6`)
+        .then(res => res.json())
+        .then((data: BenefitItem[]) => {
+          setBenefit(data);
       });
-  }, []);
+    } else if (activeTab === "freeCourses") {
+      fetch(`${import.meta.env.VITE_API_URL}/api/courses/count-student/free`)
+        .then(res => res.json())
+        .then((data: studentCourse[]) => {
+          setCountFreeStudent(data)
+      });
+    } else if (activeTab === "vipCourses") {
+      fetch(`${import.meta.env.VITE_API_URL}/api/courses/count-student/fee`)
+        .then(res => res.json())
+        .then((data: studentCourse[]) => {
+          setCountFeeStudent(data)
+      });
+    } else if (activeTab === "student") {
+      fetch(`${import.meta.env.VITE_API_URL}/api/count-courses-of-student`)
+        .then(res => res.json())
+        .then((data: coursesOfStudent[]) => {
+          setCountCourseOfStudent(data)
+      });
+    } else if (activeTab === "benefit") {
+      fetch(`${import.meta.env.VITE_API_URL}/api/bills/benefit/12`)
+        .then(res => res.json())
+        .then((data: BenefitItem[]) => {
+          setBenefit(data)
+      });
+    }
+  }, [activeTab]);
 
   const doanhThuList = benefit.map(item => item.doanhThu || 0);
   const maxValue = Math.max(...doanhThuList);
@@ -185,7 +224,6 @@ export default function Analytics() {
     fetch(`${import.meta.env.VITE_API_URL}/api/analysis-courses/sum-student`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Tổng số học viên: ",data);
         setStudents(data);
       })
   }, [])
@@ -315,25 +353,85 @@ export default function Analytics() {
 
         {
           activeTab === "freeCourses" && (
-            <p>Thống kê khoá học free</p>
+            <div className="analytics-content">
+              <ResponsiveContainer>
+                <BarChart
+                  data={countFreeStudent}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="tenKhoaHoc" angle={-15} textAnchor="end" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar maxBarSize={30} dataKey="soHocVien" fill="#21a2ff" name="Số học viên" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           )
         }
 
         {
           activeTab === "vipCourses" && (
-            <p>Thống kê khoá học vip</p>
+            <div className="analytics-content">
+              <ResponsiveContainer>
+                <BarChart
+                  data={countFeeStudent}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="tenKhoaHoc" angle={-15} textAnchor="end" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar maxBarSize={30} dataKey="soHocVien" fill="#21a2ff" name="Số học viên" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           )
         }
 
         {
           activeTab === "student" && (
-            <p>Thống kê học viên</p>
+            <div className="analytics-content">
+              <ResponsiveContainer>
+                <BarChart
+                  data={countCourseOfStudent}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="tenNguoiDung" angle={-15} textAnchor="end" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar maxBarSize={30} dataKey="soKhoaHoc" fill="#21a2ff" name="Số học viên" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           )
         }
 
         {
           activeTab === "benefit" && (
-            <p>Thống kê doanh thu</p>
+            <div className="analytics-content">
+              <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={benefit} margin={{ top: 20, right: 20, left: 20, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="thang" />
+                    <YAxis domain={[paddedMin, paddedMax]} />
+
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="doanhThu"
+                      stroke="#21a2ff"
+                      strokeWidth={2}
+                      activeDot={{ r: 8 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+            </div>
           )
         }
 
