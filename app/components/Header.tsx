@@ -407,7 +407,7 @@ const Header: React.FC<HeaderProps> = ({ title, className, sendDataToParent, sen
 
                         <div className="header-action__row">
                             <span className="header-action__item header-action__item--pd">
-                                <Link className="header-action__link" to="">Viết blog</Link>
+                                <Link className="header-action__link" to="/blog">Viết blog</Link>
                             </span>
                             <span className="header-action__item header-action__item--pd">
                                 <Link className="header-action__link" to="">Bài viết của tôi</Link>

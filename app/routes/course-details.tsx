@@ -160,7 +160,6 @@ export default function CourseDetails() {
     
             if (registerRes.ok) {
                 await insertTienDoHoc(maNguoiDung);
-                console.log("Đăng ký khóa học thành công!");
             } else {
                 console.error("Lỗi khi đăng ký khóa học:", await registerRes.text());
             }

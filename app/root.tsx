@@ -12,6 +12,7 @@ import "./app.css";
 import { Provider } from "react-redux";
 import store from "./stores";
 
+
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {

@@ -32,5 +32,7 @@ export default [
     route("admin-user", "routes/adm-user.tsx"),
 
     route("invoices", "routes/invoices.tsx"),
+    route("blog", "routes/blog.tsx"),
+
 ] satisfies RouteConfig;
 // adm-management-question.tsx
