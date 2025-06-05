@@ -260,27 +260,27 @@ export default function CourseDetails() {
                         <div className="course-accordion">
                             <h2 className="course-accordion__title">Nội dung khóa học</h2>
                             <div className="course-accordion__inner">
-                            {chuongHocList.map((chuong, index) => (
-                                <div className="course-accordion__item" key={chuong.maChuongHoc}>
-                                    <div className="course-accordion__head">
-                                        <button type="button" className="course-accordion__lesson" onClick={() => toggleAccordion(index)}>
-                                            {chuong.tenChuongHoc} 
-                                        </button>
-                                    </div>
+                                {chuongHocList.map((chuong, index) => (
+                                    <div className="course-accordion__item" key={chuong.maChuongHoc}>
+                                        <div className="course-accordion__head">
+                                            <button type="button" className="course-accordion__lesson" onClick={() => toggleAccordion(index)}>
+                                                {chuong.tenChuongHoc} 
+                                            </button>
+                                        </div>
 
-                                    <div className={`course-accordion__content ${openIndexes.includes(index) ? "open" : ""}`}>
-                                        <ul className="course-accordion__list">
-                                            {chuong.danhSachBaiHoc.map((baiHoc) => (
-                                                <li key={baiHoc.maBaiHoc} className="course-accordion__list--item">
-                                                    <Link to="" className="course-accordion__list--link">
-                                                        {baiHoc.tenBaiHoc}
-                                                    </Link>
-                                                </li>
-                                            ))}
-                                        </ul>
+                                        <div className={`course-accordion__content ${openIndexes.includes(index) ? "open" : ""}`}>
+                                            <ul className="course-accordion__list">
+                                                {chuong.danhSachBaiHoc.map((baiHoc) => (
+                                                    <li key={baiHoc.maBaiHoc} className="course-accordion__list--item">
+                                                        <Link to="" className="course-accordion__list--link">
+                                                            {baiHoc.tenBaiHoc}
+                                                        </Link>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -299,7 +299,20 @@ export default function CourseDetails() {
                             {Number(giaBan) === 0 ? "Miễn phí" : `${Number(giaBan).toLocaleString("vi-VN")} VNĐ`}
                         </h3>
 
-                        <Button className="thumb-btn" children="Đăng ký ngay" type="button" onClick={handleOpenPay}></Button>
+                        <Button
+                            className="thumb-btn"
+                            children="Đăng ký ngay"
+                            type="button"
+                            onClick={() => {
+                                if (parseFloat(giaBan) <= 0) {
+                                    console.log("Khoá học free");
+                                    handleRegisterCourse();
+                                } else {
+                                    console.log("Khoá học mất tiền");
+                                    handleOpenPay();
+                                }
+                            }}
+                            />
 
                         <ul className="thumb-list">
                             <li className="thumb-item">

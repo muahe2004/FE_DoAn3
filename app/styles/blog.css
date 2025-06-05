@@ -13,8 +13,11 @@
     outline: none;
     padding: 5px 10px;
     width: 100%;
+    border-radius: 8px;
 }
 
 .mdediter {
     height: 100% !important;
+    border-radius: 8px;
+    overflow: hidden;
 }

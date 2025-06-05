@@ -25,7 +25,7 @@ const Blog: React.FC = () => {
 
     return (
         <div data-color-mode="blog-wrapper">
-            <Header className="header-admin" title="Quản lý người dùng" />
+            <Header className="header-admin" title="Viết blog" />
 
 
             <div className="blog-container">
