@@ -1,8 +1,6 @@
 
 import { useEffect, useState } from "react";
 import {  Link, useParams, useNavigate } from "react-router-dom";
-// import CryptoJS from "crypto-js";
-
 import Button from "~/components/Button";
 
 import "../styles/login.css";
@@ -10,8 +8,6 @@ import "../styles/Responsive/login.css";
 
 export default function Login() {
     const navigate = useNavigate(); 
-
-
 
     const isEmailValid = (email: string): boolean => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,11 +19,11 @@ export default function Login() {
         const formErr = input.parentElement?.querySelector(".login-text") as HTMLElement | null;
       
         if (formErr) {
-          if (input.type === "email") {
-            formErr.style.opacity = isEmailValid(input.value.trim()) ? "0" : "1";
-          } else {
-            formErr.style.opacity = input.value.trim() ? "0" : "1";
-          }
+            if (input.name === "email") {
+                formErr.style.opacity = isEmailValid(input.value.trim()) ? "0" : "1";
+            } else {
+                formErr.style.opacity = input.value.trim() ? "0" : "1";
+            }
         }
     };
 
@@ -39,24 +35,31 @@ export default function Login() {
         const email = form.querySelector<HTMLInputElement>('input[name="email"]');
         const password = form.querySelector<HTMLInputElement>('input[name="password"]');
 
-        const showError = (input: HTMLInputElement | null, message: string) => {
+        const showError = (input: HTMLInputElement | null, message: string, focus: boolean = false): void => {
             if (input) {
-              const formText = input.parentElement?.querySelector<HTMLElement>(".login-text");
-              if (formText) {
-                formText.innerText = message;
-                formText.style.opacity = "1";
-              }
-              input.focus();
+                const formText = input.parentElement?.querySelector<HTMLElement>(".login-text");
+                if (formText) {
+                    formText.innerText = message;
+                    formText.style.opacity = "1";
+                }
+                if (focus) {
+                    input.focus();
+                }
             }
         };
 
         if (!email?.value.trim()) {
-            showError(email, "Email không hợp lệ!");
+            showError(email, "Email không được để trống!", true);
+            return;
+        }
+
+        if (!isEmailValid(email.value.trim())) {
+            showError(email, "Email không hợp lệ!", true);
             return;
         }
 
         if (!password?.value.trim()) {
-            showError(password, "Mật khẩu không được để trống!");
+            showError(password, "Mật khẩu không được để trống!", true);
             return;
         }
 
@@ -71,12 +74,14 @@ export default function Login() {
                 credentials: "include", 
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body),
-              })
-              if (res.ok) {
+            })
+            if (res.ok) {
                 await getUserInfo(body.email);
                 await getRole();
-              } else {
-                console.error("Lỗi khi đăng nhập:", await res.text());
+            } else {
+                showError(email, "Sai email hoặc mật khẩu!");
+                showError(password, "Sai email hoặc mật khẩu!");
+                return;
             }
         } catch (err) {
             console.log("Lỗi: ", err);
@@ -121,41 +126,38 @@ export default function Login() {
         }
     };
     
-  return (
-    <div className="login-wrapper">
-    
-        <div className="login-inner">
-            <h1 className="login-title">Đăng nhập</h1>
+    return (
+        <div className="login-wrapper">
+        
+            <div className="login-inner">
+                <h1 className="login-title">Đăng nhập</h1>
 
-            <form onSubmit={handleLogin} action="" className="login-form">
-                {/* Tài khoản */}
-                <div className="login-group">
-                    <label htmlFor="email" className="login-label">Email</label>
-                    <input name="email" type="email" className="login-input" onBlur={handleBlur}/>
-                    <span className="login-text">Email không hợp lệ</span>
-                </div>
-                {/* Mật khẩu */}
-                <div className="login-group">
-                    <label htmlFor="password" className="login-label">Mật khẩu</label>
-                    <input name="password" type="password" className="login-input" onBlur={handleBlur}/>
-                    <span className="login-text">Mật khẩu không được để trống</span>
-                </div>
+                <form onSubmit={handleLogin} action="" className="login-form">
+                    {/* Email */}
+                    <div className="login-group">
+                        <label htmlFor="email" className="login-label">Email</label>
+                        <input name="email" type="text" className="login-input" onBlur={handleBlur}/>
+                        <span className="login-text">Email không hợp lệ</span>
+                    </div>
+                    {/* Mật khẩu */}
+                    <div className="login-group">
+                        <label htmlFor="password" className="login-label">Mật khẩu</label>
+                        <input name="password" type="password" className="login-input" onBlur={handleBlur}/>
+                        <span className="login-text">Mật khẩu không được để trống</span>
+                    </div>
 
-                <Button className="login-btn" type="submit" to="">Đăng nhập</Button>
-                <Button
-                    className="login-btn login-google"
-                    onClick={() => window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`}
-                    >
-                    <img className="login-icon" src="./icons/Google.svg" alt="" />
-                    Đăng nhập bằng Google
-                </Button>
+                    <Button className="login-btn" type="submit" to="">Đăng nhập</Button>
+                    <Button
+                        className="login-btn login-google"
+                        onClick={() => window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`}
+                        >
+                        <img className="login-icon" src="./icons/Google.svg" alt="" />
+                        Đăng nhập bằng Google
+                    </Button>
 
-
-
-                <Link to="/register" className="login-btnSignUp">Đăng ký</Link>
-            </form>
+                    <Link to="/register" className="login-btnSignUp">Đăng ký</Link>
+                </form>
+            </div>
         </div>
-    </div>
-    
-  );
+    );
 }
