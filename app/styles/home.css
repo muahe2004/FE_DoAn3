@@ -3,8 +3,6 @@
 }
 
 .video-show {
-    /* margin-left: 100px; */
-    /* margin-top: 80px; */
     height: 100vh;
     width: 100%;
     overflow: hidden;
@@ -17,7 +15,6 @@
     height: 80px;
     position: fixed;
     top: 0;
-    /* background: #fff; */
     z-index: 1;
     display: flex;
     align-items: center;
@@ -29,13 +26,11 @@
     width: 30%;
     justify-content: space-between;
     margin-left: 20px;
-    /* background: #21a2ff; */
     height: 100%;
 }
 
 .show-header__item {
     color: #fff;
-    /* background: #000; */
     cursor: pointer;
 }
 
@@ -65,13 +60,18 @@
     outline: none;
 }
 
+.show-search__result {
+    margin-top: 20px;
+    color: #000;
+}
+
 .video-show__overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.4); /* Lớp tối */
+    background: rgba(0, 0, 0, 0.4);
     z-index: 0;
 }
 

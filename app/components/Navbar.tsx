@@ -14,6 +14,7 @@ export default function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
 
   useEffect(() => {
+    // Nếu k phải trang chủ thì k cần ẩn
     if (location.pathname !== '/') {
       setShowNavbar(true);
       return;

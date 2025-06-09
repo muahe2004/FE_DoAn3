@@ -27,6 +27,7 @@ const Header: React.FC<HeaderProps> = ({ title, className, sendDataToParent, sen
     const [showHeader, setShowHeader] = useState(false);
 
     useEffect(() => {
+        // Nếu k phải trang chủ thì k cần ẩn
         if (location.pathname !== '/') {
             setShowHeader(true);
             return;
@@ -232,10 +233,19 @@ const Header: React.FC<HeaderProps> = ({ title, className, sendDataToParent, sen
     const [inputValue, setInputValue] = useState("");
     const [searchResult, setSearchResult] = useState<RegisteredCourse []>([]);
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        // Loại bỏ ký tự đặc biệt (chỉ giữ chữ cái, số và khoảng trắng)
+        const sanitizedValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
+
+        setInputValue(sanitizedValue);
+    };
+
     useEffect(() => {
         if (!inputValue.trim()) return;
 
-        fetch(`${import.meta.env.VITE_API_URL}/api/courses/search/${inputValue}`)
+        fetch(`${import.meta.env.VITE_API_URL}/api/courses/search/${encodeURIComponent(inputValue)}`)
             .then((res) => {
                 if (!res.ok) {
                     console.log("Lỗi khi tìm kiếm");
@@ -310,7 +320,7 @@ const Header: React.FC<HeaderProps> = ({ title, className, sendDataToParent, sen
                         type="text"
                         placeholder="Tìm khóa học..."
                         value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
+                        onChange={handleInputChange}
                         onFocus={() => setShowResult(true)}
                     />
 
