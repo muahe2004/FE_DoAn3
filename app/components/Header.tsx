@@ -27,6 +27,11 @@ const Header: React.FC<HeaderProps> = ({ title, className, sendDataToParent, sen
     const [showHeader, setShowHeader] = useState(false);
 
     useEffect(() => {
+        if (location.pathname !== '/') {
+            setShowHeader(true);
+            return;
+        };
+
         const handleScroll = () => {
             const halfScreenHeight = window.innerHeight / 2;
             setShowHeader(window.scrollY >= halfScreenHeight);

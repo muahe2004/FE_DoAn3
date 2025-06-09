@@ -14,6 +14,11 @@ export default function Navbar() {
   const [showNavbar, setShowNavbar] = useState(false);
 
   useEffect(() => {
+    if (location.pathname !== '/') {
+      setShowNavbar(true);
+      return;
+    };
+
     const handleScroll = () => {
       const halfScreenHeight = window.innerHeight / 2;
       setShowNavbar(window.scrollY >= halfScreenHeight);
