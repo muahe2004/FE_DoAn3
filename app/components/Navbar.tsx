@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/navbar.css";
 import "../styles/Responsive/Components/navbar.css";
@@ -10,8 +10,20 @@ export default function Navbar() {
 
   const handleOpenChat = () => setIsChatOpen(true);
   const handleCloseChat = () => setIsChatOpen(false);
+
+  const [showNavbar, setShowNavbar] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const halfScreenHeight = window.innerHeight / 2;
+      setShowNavbar(window.scrollY >= halfScreenHeight);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll); // cleanup
+  }, []);
   return (
-    <div className="navbar">
+    <div className={`navbar ${showNavbar ? 'show' : ''}`}>
       <div className="navbar-wrapper">
         <ul className="navbar-list">
           <li className="navbar-item">
@@ -28,27 +40,21 @@ export default function Navbar() {
             </Link>
           </li>
 
-          {/* <li className="navbar-item">
+          <li className="navbar-item">
             <Link to="/blog" className="navbar-link">
               <img src="/icons/Article.svg" alt="Bài viết" className="navbar-icon" />
               <span>Bài viết</span>
             </Link>
-          </li> */}
+          </li>
 
-          {/* <li className="navbar-item">
-            <Link to="/questions" className="navbar-link">
+          <li className="navbar-item">
+            <Link to="/" className="navbar-link">
               <img src="/icons/Chat-bubbles-question.svg" alt="Hỏi đáp" className="navbar-icon" />
               <span>Hỏi đáp</span>
             </Link>
-          </li> */}
+          </li>
         </ul>
-
-        {/* <button className="navbar-news" onClick={handleOpenChat}>
-          <img className="navbar-icon" src="/icons/News.svg" alt="Tin tức" />
-        </button> */}
-
         
-        {/* <Button className="navbar-news" onClick={handleOpenChat} type="button">AI</Button> */}
         <button className="navbar-chat" onClick={handleOpenChat}>AI</button>
       </div>
 

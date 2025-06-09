@@ -24,6 +24,18 @@ interface RegisteredCourse {
 const Header: React.FC<HeaderProps> = ({ title, className, sendDataToParent, sendBalanceToParent }) => {
     const navigate = useNavigate();
 
+    const [showHeader, setShowHeader] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const halfScreenHeight = window.innerHeight / 2;
+            setShowHeader(window.scrollY >= halfScreenHeight);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll); // cleanup
+    }, []);
+
     const [role, setRole] = useState<string | null>(null);
 
     useEffect(() => {
@@ -274,7 +286,7 @@ const Header: React.FC<HeaderProps> = ({ title, className, sendDataToParent, sen
     }, []);
       
     return (
-        <header className={`header ${className || ""}`}>
+        <header className={`header ${showHeader ? 'show' : ''} ${className || ''}`}>
             <div className="header-wrapper">
                 <h1 className="header-logo">
                     <Link to="/">
