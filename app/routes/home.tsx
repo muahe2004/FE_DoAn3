@@ -164,7 +164,6 @@ export default function Home() {
     fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-no-fee-courses`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
         setListFreeCourse(data);
       })
       .catch((err) => {
@@ -178,22 +177,42 @@ export default function Home() {
       <Navbar></Navbar>
 
       {/* Slide show */}
-      <div className="slide-show">
-        <div 
-          className="slide-show__inner"
-          ref={slideRef}
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }} 
-        >
-          <div className="slide-show__item">
-            <img className="slide-show__image" src="./public/images/slidea.jpg" alt="HTML & CSS" />
-          </div>
-          <div className="slide-show__item">
-            <img className="slide-show__image" src="./public/images/learning.jpg" alt="JavaScript" />
-          </div>
-          <div className="slide-show__item">
-            <img className="slide-show__image" src="./public/images/blue.jpg" alt="Sass" />
+      <div className="video-show">
+
+        <div className="show-header">
+          <h1 className="header-logo">
+              <Link to="/">
+                <img className="header-image" src="/images/ML.jpg" alt="MLearning Logo" />
+              </Link>
+          </h1>
+
+          <ul className="show-header__list">
+            <li className="show-header__item">Về chúng tôi</li>
+            <li className="show-header__item">Lộ trình</li>
+            <li className="show-header__item">Khoá học</li>
+            <li className="show-header__item">Bài viết</li>
+            <li className="show-header__item">Hỏi đáp</li>
+          </ul>
+
+          <div className="show-header__search">
+            <img className="show-header__icon" src="/icons/Search_white.svg" alt="" />
+            <input 
+              className="header-input show-header__input" 
+              // ref={inputRef}
+              type="text"
+              placeholder="Tìm khóa học..."
+              // value={inputValue}
+              // onChange={(e) => setInputValue(e.target.value)}
+              // onFocus={() => setShowResult(true)}
+            />
           </div>
         </div>
+
+        <video autoPlay muted loop>
+          <source src="./videos/vid.mp4" type="video/mp4" />
+        </video>
+
+        <div className="video-show__overlay"></div>
       </div>
 
       {/* Khóa học Pro  */}
@@ -237,7 +256,6 @@ export default function Home() {
       {/* Cắt web =)) */}
       <section className="why-container">
         <div className="why-hero">
-          {/* <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo, maiores?</p> */}
           <div className="why-images">
             <img className="why-img img-first" src="./public/images/Code1.png" alt="" />
             <img className="why-img img-second" src="./public/images/Code2.png" alt="" />
