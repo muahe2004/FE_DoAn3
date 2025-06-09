@@ -65,6 +65,19 @@
     color: #000;
 }
 
+.show-content {
+    width: 55%;
+    position: absolute;
+    bottom: 10%;
+    left: 10%;
+    color: #fff;
+}
+
+.show-title {
+    font-size: 48px;
+    font-weight: 700;
+}
+
 .video-show__overlay {
     position: absolute;
     top: 0;

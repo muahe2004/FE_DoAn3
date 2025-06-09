@@ -135,6 +135,13 @@ export default function Home() {
   const [listFeeCourse, setListFeeCourse] = useState<KhoaHoc[]>([]);
   // Khóa học miễn phí
   const [listFreeCourses, setListFreeCourse] = useState<KhoaHoc[]>([]);
+  // Tìm kiếm
+  const [inputValue, setInputValue] = useState("");
+  const [searchResult, setSearchResult] = useState<KhoaHoc []>([]);
+  // Click ngoài thì phải đóng tìm kiếm
+  const inputRef = useRef<HTMLInputElement>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
+  const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-fee-courses`)
@@ -157,75 +164,68 @@ export default function Home() {
       })
   }, []);
 
-  // Tìm kiếm
-  const [inputValue, setInputValue] = useState("");
-  const [searchResult, setSearchResult] = useState<KhoaHoc []>([]);
-
+  // xử lý input
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-
-    // Loại bỏ ký tự đặc biệt (chỉ giữ chữ cái, số và khoảng trắng)
     const sanitizedValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
-
+    
     setInputValue(sanitizedValue);
   };
 
+  // call api tìm kiếm
   useEffect(() => {
-      if (!inputValue.trim()) return;
+    if (!inputValue.trim()) return;
 
-      fetch(`${import.meta.env.VITE_API_URL}/api/courses/search/${inputValue}`)
-          .then((res) => {
-              if (!res.ok) {
-                  console.log("Lỗi khi tìm kiếm");
-              }
-              return res.json();
-          })
-          .then((data) => {
-              setSearchResult(data);
-              console.log("Kết quả:", searchResult);
-          });
+    fetch(`${import.meta.env.VITE_API_URL}/api/courses/search/${inputValue}`)
+      .then((res) => {
+          if (!res.ok) {
+              console.log("Lỗi khi tìm kiếm");
+          }
+          return res.json();
+      })
+      .then((data) => {
+          setSearchResult(data);
+          console.log("Kết quả:", searchResult);
+      });
   }, [inputValue]);
 
+  // chọn khoá học
   const handleCourseClick = (maKhoaHoc: String) => {
-      const myCourses = localStorage.getItem("myCourses");
-  
-      if (myCourses) {
-        const listCourses = JSON.parse(myCourses);
-  
-        const courseExists = listCourses.some((course: { maKhoaHoc: string }) => course.maKhoaHoc === maKhoaHoc);
-  
-        if (courseExists) {
-          navigate(`/learning/${maKhoaHoc}`);
-        } else {
-          navigate(`/courses/course-details/${maKhoaHoc}`);
-        }
+    const myCourses = localStorage.getItem("myCourses");
+
+    if (myCourses) {
+      const listCourses = JSON.parse(myCourses);
+
+      const courseExists = listCourses.some((course: { maKhoaHoc: string }) => course.maKhoaHoc === maKhoaHoc);
+
+      if (courseExists) {
+        navigate(`/learning/${maKhoaHoc}`);
       } else {
-        console.log("No courses found in localStorage");
         navigate(`/courses/course-details/${maKhoaHoc}`);
       }
+    } else {
+      console.log("No courses found in localStorage");
+      navigate(`/courses/course-details/${maKhoaHoc}`);
+    }
   };
   
-  // Click ngoài thì phải đóng tìm kiếm
-  const inputRef = useRef<HTMLInputElement>(null);
-  const resultRef = useRef<HTMLDivElement>(null);
-  const [showResult, setShowResult] = useState(false);
-
+  // handle click outside
   useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          resultRef.current &&
-          !resultRef.current.contains(event.target as Node) &&
-          inputRef.current &&
-          !inputRef.current.contains(event.target as Node)
-        ) {
-          setShowResult(false);
-        }
-      };
-    
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        resultRef.current &&
+        !resultRef.current.contains(event.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
+      ) {
+        setShowResult(false);
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   return (
@@ -236,6 +236,7 @@ export default function Home() {
       {/* video show */}
       <div className="video-show">
 
+        {/* Head */}
         <div className="show-header">
           <h1 className="header-logo">
               <Link to="/">
@@ -244,11 +245,11 @@ export default function Home() {
           </h1>
 
           <ul className="show-header__list">
-            <li className="show-header__item">Về chúng tôi</li>
-            <li className="show-header__item">Lộ trình</li>
-            <li className="show-header__item">Khoá học</li>
-            <li className="show-header__item">Bài viết</li>
-            <li className="show-header__item">Hỏi đáp</li>
+            <li className="show-header__item"><Link to="/">Về chúng tôi</Link></li>
+            <li className="show-header__item"><Link to="/roadmap">Lộ trình</Link></li>
+            <li className="show-header__item"><Link to="/all-courses">Khoá học</Link></li>
+            <li className="show-header__item"><Link to="/">Bài viết</Link></li>
+            <li className="show-header__item"><Link to="/">Hỏi đáp</Link></li>
           </ul>
 
           <div className="show-header__search">
@@ -295,12 +296,20 @@ export default function Home() {
             </section>
           </div>
         </div>
-
+        
+        {/* Video */}
         <video autoPlay muted loop>
           <source src="./videos/vid.mp4" type="video/mp4" />
         </video>
 
         <div className="video-show__overlay"></div>
+
+        <div className="show-content">
+          <h2 className="show-title">Chào mừng đến với MLearning</h2>
+          <p className="show-desc">Chúng tôi đặt mục tiêu trở thành một công ty công nghệ giáo dục hàng đầu thế giới, 
+            giúp thế giới giải quyết các vấn đề phức tạp thông qua sự hợp tác bền vững giữa doanh nghiệp, công nghệ và xã hội.
+          </p>
+        </div>
       </div>
 
       {/* Khóa học Pro  */}
