@@ -147,7 +147,6 @@ export default function Home() {
     fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-fee-courses`)
       .then((res) => res.json())
       .then((data) => {
-        // console.log(data);
         setListFeeCourse(data);
       })
       .catch((err) => console.error(err));
