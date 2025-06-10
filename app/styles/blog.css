@@ -17,7 +17,16 @@
 }
 
 .mdediter {
-    height: 100% !important;
+    height: calc(90% - 10px) !important;
     border-radius: 8px;
     overflow: hidden;
+}
+
+.blog-actions {
+    width: 100%;
+    background: #fff;
+    height: 10%;
+    position: fixed;
+    bottom: 0;
+    padding: 20px 20px 10px 10px;
 }
