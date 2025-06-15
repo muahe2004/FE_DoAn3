@@ -8,16 +8,11 @@ import Course from "~/components/Course";
 
 import "../styles/home.css";
 import "../styles/Responsive/home.css";
+import Button from "~/components/Button";
+import axios from "axios";
 
-interface KhoaHoc {
-  maKhoaHoc: string;
-  tenKhoaHoc: string;
-  moTaKhoaHoc: string;
-  hinhAnh: string;
-  doKho: string;
-  giaBan: number;
-  tongSoBaiHoc: number;
-}
+import type { userInfo } from '../types/userInfo';
+import type { courses } from '../types/courses';
 
 const mockDataFee = [
   {
@@ -132,17 +127,30 @@ const mockDataFree = [
 export default function Home() {
   const navigate = useNavigate();
   // Khóa học có phí
-  const [listFeeCourse, setListFeeCourse] = useState<KhoaHoc[]>([]);
+  const [listFeeCourse, setListFeeCourse] = useState<courses[]>([]);
   // Khóa học miễn phí
-  const [listFreeCourses, setListFreeCourse] = useState<KhoaHoc[]>([]);
+  const [listFreeCourses, setListFreeCourse] = useState<courses[]>([]);
   // Tìm kiếm
   const [inputValue, setInputValue] = useState("");
-  const [searchResult, setSearchResult] = useState<KhoaHoc []>([]);
+  const [searchResult, setSearchResult] = useState<courses []>([]);
   // Click ngoài thì phải đóng tìm kiếm
   const inputRef = useRef<HTMLInputElement>(null);
   const resultRef = useRef<HTMLDivElement>(null);
   const [showResult, setShowResult] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
+  // lay so du
+  const [userInfo, setUserInfo] = useState<userInfo | any>(null);
+  const [soDu, setSoDu] = useState(0);
 
+  // Lấy thông tin người dùng 
+  const handleDataFromChild = (data: userInfo) => { 
+    console.log(data);
+    setUserInfo(data); };
+
+  // Lấy số dư của người dùng
+  const handleBalanceFromChild = (balance: number) => { setSoDu(balance); };
+
+  // khoá học miễn phí
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-fee-courses`)
       .then((res) => res.json())
@@ -152,6 +160,7 @@ export default function Home() {
       .catch((err) => console.error(err));
   }, []);
 
+  // khoá học có phjis
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/courses/get-home-no-fee-courses`)
       .then((res) => res.json())
@@ -163,7 +172,7 @@ export default function Home() {
       })
   }, []);
 
-  // xử lý input
+  // xử lý input tìm kiếm
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const sanitizedValue = value.replace(/[^a-zA-Z0-9\s]/g, "");
@@ -227,9 +236,61 @@ export default function Home() {
     };
   }, []);
 
+  // Đóng mở actions
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  const handleOpenActions = () => {
+    setIsMenuVisible(true);
+  }
+
+  const actionsRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutsideActions = (event: MouseEvent) => {
+        if (
+            actionsRef.current &&
+            !actionsRef.current.contains(event.target as Node)
+        ) {
+            setIsMenuVisible(false);
+        }
+    };
+
+    document.addEventListener("mousedown", handleClickOutsideActions);
+
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutsideActions);
+    };
+  }, []);
+  
+  // Đăng xuất
+  const handleLogout = async () => {
+    console.log("Đăng xuất");
+
+    try {
+        await axios.post(`${import.meta.env.VITE_API_URL}/logout`, {}, {
+            withCredentials: true
+        });
+
+        localStorage.removeItem("userInfo"); 
+        localStorage.removeItem("myCourses");
+        localStorage.removeItem("lastSelectedLecture");
+        localStorage.removeItem("chatHistory");
+
+        navigate("/");
+        setRole(null);
+        setIsMenuVisible(false);
+        setUserInfo(null);
+    } catch (error) {
+        console.error("Lỗi khi logout:", error);
+    }
+  }
+
   return (
     <div className="home-Wrapper">
-      <Header title="Học lập trình" />
+      <Header 
+        sendDataToParent={handleDataFromChild} 
+        sendBalanceToParent={handleBalanceFromChild}  
+        title="Học lập trình" />
       <Navbar></Navbar>
 
       {/* video show */}
@@ -294,6 +355,21 @@ export default function Home() {
                 </div>
             </section>
           </div>
+
+          {/* phần avt */}
+          {
+            userInfo ? (
+              <div className="show-header__container">
+                  <div className="" onClick={handleOpenActions}>
+                    <img src={userInfo.anhDaiDien} alt="" className="header-avatar" />
+                  </div>
+              </div>
+            ) : (
+              <div className="show-header__container">
+                  <Button className="header-btn show-btn__login" to="/login">Đăng nhập</Button>
+              </div>
+            )
+          }
         </div>
         
         {/* Video */}
@@ -436,6 +512,64 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Actions */}
+      {
+          isMenuVisible && (
+              <div className="header-action" ref={actionsRef}>
+                  <div className="header-action__info">
+                      <img src={userInfo.anhDaiDien} alt="" className="header-action__avatar" />
+                      <div className="header-action__box">
+                          <span className="header-action__name">{userInfo.tenNguoiDung}</span>
+                          <span className="header-action__mail">@{userInfo.email.split("@")[0]}</span>
+                          <span className="header-action__desc">SD: </span>
+                          <span className="header-action__balance">{soDu.toLocaleString("vi-VN")} ₫</span> 
+                      </div>
+                  </div>
+
+                  <div className="header-action__row">
+                      <span className="header-action__item">
+                          <Link className="header-action__link" to={role ? (role === "Admin" ? "/admin" : "/user") : "/login"}>
+                              {role === "Admin" ? "Trang quản trị" : "Trang cá nhân"}
+                          </Link>
+                      </span>
+                  </div>
+
+                  <div className="header-action__row header-action__row--courses">
+                      <span className="header-action__item">
+                          <Link className="header-action__link" to="/my-courses">Khóa học của tôi</Link>
+                      </span>
+                  </div>
+
+                  <div className="header-action__row">
+                      <span className="header-action__item">
+                          <Link className="header-action__link" to="/payment">Nạp tiền</Link>
+                      </span>
+                  </div>
+
+                  <div className="header-action__row">
+                      <span className="header-action__item header-action__item--pd">
+                          <Link className="header-action__link" to="/blog">Viết blog</Link>
+                      </span>
+                      <span className="header-action__item header-action__item--pd">
+                          <Link className="header-action__link" to="">Bài viết của tôi</Link>
+                      </span>
+                      <span className="header-action__item">
+                          <Link className="header-action__link" to="">Bài viết đã lưu</Link>
+                      </span>
+                  </div>
+
+                  <div className="header-action__row">
+                      <span className="header-action__item header-action__item--pd">
+                          <Link className="header-action__link" to="">Cài đặt</Link>
+                      </span>
+                      <span className="header-action__item">
+                          <button className="header-action__link" onClick={handleLogout}>Đăng xuất</button>
+                      </span>
+                  </div>
+              </div>
+          )
+      }
       
       <Footer></Footer>
     </div>

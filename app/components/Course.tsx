@@ -1,6 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/course.css";
 import "../styles/Responsive/Components/course.css";
+import type { courses } from '../types/courses';
+
 
 interface CourseProps {
   maKhoaHoc: string; 
@@ -9,7 +11,7 @@ interface CourseProps {
   children: React.ReactNode; 
   hinhAnh: string;
   doKho: string;
-  tongSoBaiHoc: number;
+  tongSoBaiHoc?: number;
   className?: string;
 }
 

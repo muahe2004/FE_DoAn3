@@ -8,4 +8,5 @@ export interface courses {
   maGiangvien?: string;
   tenGiangVien?: string;
   anhDaiDien?: string;
+  tongSoBaiHoc?: number;
 }
