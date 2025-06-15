@@ -287,7 +287,7 @@ export default function Learning() {
     const handleOpenMenu = () => setIsSidebarOpen(true); 
     const handleCloseMenu = () => setIsSidebarOpen(false); 
 
-    // Cập nhật đã học sau 30s =))
+    // Cập nhật đã học 
     useEffect(() => {
         const [minutes, seconds] = timeVideo.split(':').map(Number);
         const totalTimeInMs = (minutes * 60 + seconds) * 1000;
@@ -465,36 +465,79 @@ export default function Learning() {
                 <div className="learning-sidebar ">
                     <div className="learning-accordion">
                         <div className="learning-accordion__inner">
-                            {chuongHocList.map((chuong, index) => (
-                            <div className="learning-accordion__item" key={chuong.maChuongHoc}>
-                                <div className="learning-accordion__head">
-                                    <button type="button" className="learning-accordion__lesson" onClick={() => toggleAccordion(index)}>
-                                        {index + 1}. {chuong.tenChuongHoc} 
-                                    </button>
-                                </div>
+                            {chuongHocList.map((chuong, index) => {
+                                const isOpen = openIndexes.includes(index);
 
-                                <div className={`learning-accordion__content ${openIndexes.includes(index) ? "open" : ""}`}>
-                                    <ul className="learning-accordion__list">
+                                return (
+                                    <div className="learning-accordion__item" key={chuong.maChuongHoc}>
+                                    <div className="learning-accordion__head">
+                                        <button
+                                        type="button"
+                                        className="learning-accordion__lesson"
+                                        onClick={() => toggleAccordion(index)}
+                                        >
+                                        {index + 1}. {chuong.tenChuongHoc}
+                                        </button>
+
+                                        <svg
+                                            onClick={() => toggleAccordion(index)}
+                                            className={`learning-accordion__icon ${isOpen ? 'rotate' : ''}`}
+                                            width="24px"
+                                            height="24px"
+                                            fill="currentColor"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 320 512"
+                                        >
+                                        <path d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z" />
+                                        </svg>
+                                    </div>
+
+                                    <div className={`learning-accordion__content ${isOpen ? 'open' : ''}`}>
+                                        <ul className="learning-accordion__list">
                                         {chuong.danhSachBaiHoc.map((baiHoc, baiIndex) => (
-                                            <li key={baiHoc.maBaiHoc} className="learning-accordion__list--item">
+                                            <li
+                                                key={baiHoc.maBaiHoc}
+                                                className="learning-accordion__list--item"
+                                            >
+                                                <svg 
+                                                    onClick={async () => {
+                                                        await handleClickBaiHoc(baiHoc.maBaiHoc);
+                                                        await fetchQuestion();
+                                                    }}
+                                                    className="learning-accordion__list--icon"
+                                                    width="16px"
+                                                    height="16px"
+                                                    fill="currentColor"
+                                                    xmlns="http://www.w3.org/2000/svg" 
+                                                    viewBox="0 0 512 512">
+                                                <path d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9l0 176c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z"/>
+                                            </svg>
                                                 <button
                                                     onClick={async () => {
-                                                        await handleClickBaiHoc(baiHoc.maBaiHoc),
+                                                        await handleClickBaiHoc(baiHoc.maBaiHoc);
                                                         await fetchQuestion();
                                                     }}
                                                     className="learning-accordion__list--btn"
                                                 >
-                                                    {index + 1}.{baiIndex + 1} {baiHoc.tenBaiHoc} 
-                                                    <span className={`learning-accordion__check ${baiHoc.daHoanThanh?.data?.[0] === 1 ? 'check-done' : 'check-not__done'}`}>
-                                                        <img src="/icons/Check-white.svg" alt="" />
+                                                    {index + 1}.{baiIndex + 1} {baiHoc.tenBaiHoc}
+                                                    <span
+                                                    className={`learning-accordion__check ${
+                                                        baiHoc.daHoanThanh?.data?.[0] === 1
+                                                        ? 'check-done'
+                                                        : 'check-not__done'
+                                                    }`}
+                                                    >
+                                                    <img src="/icons/Check-white.svg" alt="" />
                                                     </span>
                                                 </button>
                                             </li>
                                         ))}
-                                    </ul>
-                                </div>
-                            </div>
-                            ))}
+                                        </ul>
+                                    </div>
+                                    </div>
+                                );
+                                })}
+
                         </div>
                     </div>
                 </div>
@@ -563,6 +606,15 @@ export default function Learning() {
                 </div>
 
                 <div className="learning-action__lesson">
+                    <svg 
+                        className="learning-action__lesson--icon"
+                        width="16px"
+                        height="16px"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg" 
+                        viewBox="0 0 512 512">
+                        <path d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120l0 136c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2 280 120c0-13.3-10.7-24-24-24s-24 10.7-24 24z"/>
+                    </svg>
                     <span className="">{timeVideo}</span>
                 </div>
             </div>

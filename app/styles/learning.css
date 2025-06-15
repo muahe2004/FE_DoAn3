@@ -61,7 +61,7 @@
     text-align: left;
     font-weight: 600;
     cursor: pointer;
-    color: #fff;
+    color: #ccc;
     font-weight: 700;
     font-size: 18px;
 }
@@ -73,27 +73,42 @@
     padding: 5px;
 }
 
+.learning-accordion__icon {
+    color: #fff;
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    transition: transform 0.25s ease;
+}
+
+.learning-accordion__icon.rotate {
+    transform: rotate(-90deg);
+}
+
 .learning-accordion__list--item {
     margin-top: 2px;
     width: 100%;
     cursor: pointer;
     background: #1a1d1e;
     display: flex;
-    padding-right: 10px;
+    align-items: center;
+    padding: 0 10px 0 30px;
 }
 
 .learning-accordion__list--btn {
     display: block;
     width: calc(100% - 20px);
     height: 100%;
-    padding: 10px 10px 10px 30px ;
-    color: #fff;
+    padding: 10px 10px 10px 10px ;
+    color: #ccc;
     text-align: left;
     cursor: pointer;
-
-    /* background: palevioletred; */
     display: flex;
     align-items: center;
+}
+
+.learning-accordion__list--icon {
+    color: #ccc;
 }
 
 .learning-accordion__check {
@@ -184,6 +199,15 @@
     color: #fff;
     width: 37.5%;
     text-align: right;
+    width: 100px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.learning-action__lesson--icon {
+    margin-right: 10px;
 }
 
 /* Câu hỏi trắc nghiệm */
@@ -192,6 +216,7 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
+
 }
 
 .learning-listQuesion {
