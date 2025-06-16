@@ -57,23 +57,20 @@ const Blog: React.FC = () => {
     // ⚙️ Cấu hình thêm class vào các thẻ
     marked.use({
         renderer: {
-            // Thêm class cho <p>
             paragraph(token) {
-            return `<p class="my-paragraph">${token}</p>`;
+                return `<p class="my-paragraph">${token}</p>`;
             },
-            // Thêm class cho <img>
             image(token) {
-            return `<img src="${token.href}" alt="${token.text || ''}" class="blog-image" />`;
+                return `<img src="${token.href}" alt="${token.text || ''}" class="blog-image" />`;
             },
-            // Thêm class cho <h1> - <h6>
             heading(token) {
-            return `<h${token.depth} class="my-heading h${token.depth}">${token.text}</h${token.depth}>`;
+                return `<h${token.depth} class="my-heading h${token.depth}">${token.text}</h${token.depth}>`;
             }
         }
     });
 
 
-    const handleAddBlog = () => {
+    const handleAddBlog = async () => {
 
         if (!title || title === "") {
             console.log("Chưa có tiêu đề cho bài viết.");
@@ -81,7 +78,6 @@ const Blog: React.FC = () => {
         }
 
         const htmlContent = marked.parse(content); // <-- CHUYỂN Markdown => HTML
-        // console.log("HTML từ nội dung:", htmlContent);
 
         if (!content || content === "") {
             console.log("Chưa có nội dung cho bài viết.");
@@ -99,16 +95,39 @@ const Blog: React.FC = () => {
         // ✅ Kiểm tra ảnh trong content
         const containsImage = /<img\s+[^>]*src=["'][^"']+["'][^>]*>/i.test(content) || /!\[.*?\]\((.*?)\)/.test(content);
 
-        if (!containsImage) {
-            console.log("❌ Nội dung KHÔNG chứa ảnh nào.");
-            return;
-        }
-        
+        // if (!containsImage) {
+        //     console.log("❌ Nội dung KHÔNG chứa ảnh nào.");
+        //     return;
+        // }
 
-        console.log("Title: ", title);
-        console.log("Content: ", htmlContent);
-        console.log("User id: ", maNguoiDung);
+        const body = {
+            tenBaiViet: title,
+            noiDung: htmlContent,
+            maNguoiDung: maNguoiDung
+        }
+
+        try {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/api/articles`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body),
+            })
+            if (res.ok) {
+                handleOpenAddDone();
+                setTimeout(() => handleCloseAddDone(), 2300);
+                console.log("Thêm bài viết thành công!");
+            } else {
+                console.error("Lỗi thêm bài viết:", await res.text());
+            }
+        } catch (error) {
+            console.error("Lỗi: ", error);
+        }
     }
+
+    // Ẩn hiện PopUp
+    const [isClosedAddDone, setIsClosedAddDone] = useState(true);
+    const handleOpenAddDone = () => { setIsClosedAddDone(false)};
+    const handleCloseAddDone = () => { setIsClosedAddDone(true)};
 
     // Cần thực hiến nếu người dùng huỷ thêm thì xoá ảnh ở cloudinary
     // cần thêm chức năng lưu bản nháp
@@ -178,6 +197,19 @@ const Blog: React.FC = () => {
                 timeCount={3}
             >
                 <Button type="submit">Viết lại</Button>
+            </PopUp>
+
+            <PopUp 
+                icon={"Successful.svg"} 
+                // secondOption={"Hủy bỏ"} 
+                title={"Thêm bài viết"} 
+                desc={"Thêm bài viết thành công!"} 
+                onOpen={handleCloseAddDone}
+                isClosed={isClosedAddDone}
+                className="popup-done"
+                // timeCount={5}
+                >
+                {/* <Button type="button" onClick={handleCloseUpdateDone}>OK</Button> */}
             </PopUp>
         </div>
     );
