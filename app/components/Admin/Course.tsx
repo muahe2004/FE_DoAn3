@@ -37,18 +37,8 @@ const Course: React.FC<CourseProps> = ({ maKhoaHoc, tenKhoaHoc, doKho, hinhAnh, 
 
       {/* Giá */}
       <div className="admin-course_price">
-        <span>{giaBan}</span>
+        <span>{new Intl.NumberFormat('vi-VN').format(Number(giaBan))}</span>
       </div>
-
-      {/* <div className="admin-course_update">
-        <Link className="update-link" to={`/admin-course-details/${maKhoaHoc}`}>
-          <img className="course-icon" src="../../public/icons/Update.svg" alt="Chỉnh sửa" />
-        </Link>
-      </div>
-
-      <div className="admin-course_delete">
-        <img className="course-icon" src="../../public/icons/Delete.svg" alt="Xóa" />
-      </div> */}
     </Link>
   );
 };

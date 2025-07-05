@@ -76,6 +76,8 @@ export default function Admin() {
       .then(res => res.json())
       .then((data: ApiCoursesResponse) => {
         setCourses(data.data || []);
+
+        console.log(data.data);
         
         if (firstCall && data.pagination?.totalPages) {
           setTotalPages(data.pagination.totalPages);

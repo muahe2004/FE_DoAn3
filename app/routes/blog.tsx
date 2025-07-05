@@ -32,7 +32,7 @@ const Blog: React.FC = () => {
 
                 if (response.ok) {
                     // render lại ra giao diện
-                    const imageHTML = `<img className="blog-image" src="${data.imageUrl}" alt="${file.name}" />`;
+                    const imageHTML = `<img class="blog-image" src="${data.imageUrl}" alt="${file.name}" />`;
                     api.replaceSelection(imageHTML);
                 } else {
                 console.log("Upload thất bại: ", data.message);
@@ -58,7 +58,7 @@ const Blog: React.FC = () => {
     marked.use({
         renderer: {
             paragraph(token) {
-                return `<p class="my-paragraph">${token}</p>`;
+                return `<p class="my-paragraph">${token.text}</p>`;
             },
             image(token) {
                 return `<img src="${token.href}" alt="${token.text || ''}" class="blog-image" />`;
@@ -96,15 +96,34 @@ const Blog: React.FC = () => {
         const containsImage = /<img\s+[^>]*src=["'][^"']+["'][^>]*>/i.test(content) || /!\[.*?\]\((.*?)\)/.test(content);
 
         // if (!containsImage) {
-        //     console.log("❌ Nội dung KHÔNG chứa ảnh nào.");
+        //     console.log(" Nội dung KHÔNG chứa ảnh nào.");
         //     return;
         // }
+
+        let firstImageUrl = null;
+        const markdownImgMatch = content.match(/!\[.*?\]\((.*?)\)/);
+        if (markdownImgMatch) {
+            firstImageUrl = markdownImgMatch[1];
+        }
+        if (!firstImageUrl) {
+            const htmlImgMatch = content.match(/<img\s+[^>]*src=["']([^"']+)["']/i);
+            if (htmlImgMatch) {
+            firstImageUrl = htmlImgMatch[1];
+            }
+        }
+        if (!firstImageUrl) {
+            console.log("Không trích xuất được URL ảnh.");
+            return;
+        }
 
         const body = {
             tenBaiViet: title,
             noiDung: htmlContent,
+            hinhAnh: firstImageUrl,
             maNguoiDung: maNguoiDung
         }
+
+        console.log(htmlContent);
 
         try {
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/articles`, {

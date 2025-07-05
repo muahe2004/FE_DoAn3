@@ -33,6 +33,6 @@ export default [
 
     route("invoices", "routes/invoices.tsx"),
     route("blog", "routes/blog.tsx"),
-
+    route("read-blog/:maBaiViet", "routes/read-blog.tsx"),
 ] satisfies RouteConfig;
 // adm-management-question.tsx

@@ -71,7 +71,7 @@ export default function Learning() {
                     })
                 );
     
-                // console.log(lessonInfo);
+                console.log(lessonInfo);
                 setChuongHocList(lessonInfo);
             } catch (error) {
                 console.error("Lỗi:", error);

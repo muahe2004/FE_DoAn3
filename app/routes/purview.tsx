@@ -10,8 +10,6 @@ export default function Purview() {
       <Header title="Điều khoản"></Header>
       <Navbar></Navbar>
       <Footer></Footer>
-      
     </div>
-    
   );
 }

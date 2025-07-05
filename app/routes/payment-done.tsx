@@ -1,33 +1,20 @@
 import Button from "~/components/Button";
-
 import "../styles/payment-done.css";
-import "../styles/Responsive/payment-done.css";
-
-
 
 export default function PaymentDone() {
   return (
-    <div className="payment-done__wrapper">
-      {/* <Header title="Nạp tiền"></Header>       */}
-      <div className="payment-done__inner">
-        <div className="payment-done__box">
-          <img className="payment-done__icon" src="./icons/Check-white.svg" alt="" />
+    <div className="payment-success-wrapper">
+      <div className="payment-success-card">
+        <div className="checkmark-circle">
+          <img src="./icons/Check-white.svg" alt="Success" />
         </div>
+        <h2 className="payment-success-title">Thanh toán thành công!</h2>
 
-        <h2 className="payment-done__thanks">Cảm ơn bạn đã thanh toán</h2>
-
-        <p className="payment-done__desc payment-done__desc--bold">Thực hiện thanh toán thành công!</p>
-
-        <p className="payment-done__desc">Đăng ký khóa học tại MLearning ngay bây giờ!</p>
-
-        <div className="payment-done__action">
-          <Button className="payment-done__btn" to="/">Khóa học</Button>
-          <Button className="payment-done__btn" to="/">Trang chủ</Button>
+        <div className="payment-success-actions">
+          <Button className="payment-success-btn" to="/all-courses">Xem khóa học</Button>
+          <Button className="payment-success-btn button-secondary" to="/">Về trang chủ</Button>
         </div>
       </div>
-
-      {/* <Footer className = 'payment-done__footer'></Footer> */}
     </div>
   );
 }
-

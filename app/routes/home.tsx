@@ -5,6 +5,7 @@ import Header from "~/components/Header";
 import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 import Course from "~/components/Course";
+import BlogCard from "~/components/Blog";
 
 import "../styles/home.css";
 import "../styles/Responsive/home.css";
@@ -13,13 +14,15 @@ import axios from "axios";
 
 import type { userInfo } from '../types/userInfo';
 import type { courses } from '../types/courses';
+import type { articles } from '../types/articles';
+
 
 const mockDataFee = [
   {
       "maKhoaHoc": "KH001",
       "tenKhoaHoc": "Javascript Pro",
       "moTaKhoaHoc": "Khóa học JavaScript Cơ Bản giúp bạn làm quen và nắm vững nền tảng ngôn ngữ lập trình JavaScript – công cụ không thể thiếu trong phát triển web hiện đại. Thông qua các bài học trực quan, bạn sẽ từng bước hiểu được cách JavaScript hoạt động, cách viết mã hiệu quả và áp dụng vào các dự án thực tế.",
-      "hinhAnh": "http://localhost:1000/uploads/javascript.png",
+      "hinhAnh": "../../public/images/javascript_course.png",
       "doKho": "Dễ",
       "giaBan": "500000.00",
       "maGiangVien": "ND001",
@@ -32,7 +35,7 @@ const mockDataFee = [
       "maKhoaHoc": "KH002",
       "tenKhoaHoc": "HTML - CSS Pro",
       "moTaKhoaHoc": "Xây dụng websites tĩnh với HTML và CSS cơ bản",
-      "hinhAnh": "http://localhost:1000/uploads/HTMLCSS.png",
+      "hinhAnh": "../../public/images/HTML_CSS.png",
       "doKho": "Dễ",
       "giaBan": "200000.00",
       "maGiangVien": "ND001",
@@ -45,7 +48,7 @@ const mockDataFee = [
       "maKhoaHoc": "KH004",
       "tenKhoaHoc": "Node.js",
       "moTaKhoaHoc": "Học về Node.js cơ bản",
-      "hinhAnh": "http://localhost:1000/uploads/Nodejs.png",
+      "hinhAnh": "../../public/images/Nodejs.png",
       "doKho": "Trung bình",
       "giaBan": "300000.00",
       "maGiangVien": "ND001",
@@ -58,7 +61,7 @@ const mockDataFee = [
       "maKhoaHoc": "KH005",
       "tenKhoaHoc": "React.js",
       "moTaKhoaHoc": "Học về React.js cơ bản",
-      "hinhAnh": "http://localhost:1000/uploads/Reactjs.png",
+      "hinhAnh": "../../public/images/Reactjs.png",
       "doKho": "Khó",
       "giaBan": "300000.00",
       "maGiangVien": "ND001",
@@ -74,7 +77,7 @@ const mockDataFree = [
       "maKhoaHoc": "KH006",
       "tenKhoaHoc": "C++ cơ bản",
       "moTaKhoaHoc": "Học lập trình C++ cơ bản",
-      "hinhAnh": "http://localhost:1000/uploads/Cpp.png",
+      "hinhAnh": "../../public/images/Cpp.png",
       "doKho": "Dễ",
       "giaBan": "0.00",
       "maGiangVien": "ND001",
@@ -87,7 +90,7 @@ const mockDataFree = [
       "maKhoaHoc": "KH007",
       "tenKhoaHoc": "Kiến thức nhập môn IT",
       "moTaKhoaHoc": "Học những kiến thức cơ bản về nhập môn IT",
-      "hinhAnh": "http://localhost:1000/uploads/Nhapmon.png",
+      "hinhAnh": "../../public/images/Nhapmon_course.png",
       "doKho": "Dễ",
       "giaBan": "0.00",
       "maGiangVien": "ND001",
@@ -100,7 +103,7 @@ const mockDataFree = [
       "maKhoaHoc": "KH008",
       "tenKhoaHoc": "Responsive web design",
       "moTaKhoaHoc": "Responsive web design với grid system 12 column",
-      "hinhAnh": "http://localhost:1000/uploads/Responsive.png",
+      "hinhAnh": "../../public/images/Responsive.png",
       "doKho": "Trung bình",
       "giaBan": "0.00",
       "maGiangVien": "ND001",
@@ -113,7 +116,7 @@ const mockDataFree = [
       "maKhoaHoc": "KH009",
       "tenKhoaHoc": "WSL Ubuntu",
       "moTaKhoaHoc": "Cơ bản về WSL Ubuntu",
-      "hinhAnh": "http://localhost:1000/uploads/Ubuntu.png",
+      "hinhAnh": "../../public/images/Ubuntu_course.png",
       "doKho": "Trung bình",
       "giaBan": "0.00",
       "maGiangVien": "ND001",
@@ -123,6 +126,41 @@ const mockDataFree = [
       "tongSoBaiHoc": 0
   }
 ]
+
+const mockArticles = [
+  {
+    maBaiViet: "BV001",
+    tenBaiViet: "5 bước học lập trình hiệu quả cho người mới",
+    moTa: "Hướng dẫn các bước cơ bản để bắt đầu học lập trình đúng cách.",
+    noiDung: "Nội dung chi tiết về cách học lập trình hiệu quả, bao gồm việc chọn ngôn ngữ, môi trường, và thói quen học tập.",
+    hinhAnh: "http://localhost:1000/uploads/blog_hoclaptrinh.png",
+    tenNguoiDung: "Admin ML"
+  },
+  {
+    maBaiViet: "BV002",
+    tenBaiViet: "Tại sao nên học C++ trong năm 2025?",
+    moTa: "Lý do khiến C++ vẫn rất quan trọng trong thế giới lập trình hiện đại.",
+    noiDung: "Phân tích ưu điểm và ứng dụng của C++, đặc biệt trong lập trình hệ thống, game và IoT.",
+    hinhAnh: "http://localhost:1000/uploads/blog_cpp2025.png",
+    tenNguoiDung: "Admin ML"
+  },
+  {
+    maBaiViet: "BV003",
+    tenBaiViet: "Git và GitHub cơ bản cho người mới bắt đầu",
+    moTa: "Giới thiệu Git và GitHub từ A đến Z, hướng dẫn sử dụng cơ bản.",
+    noiDung: "Bài viết trình bày cách cài đặt Git, tạo repo, commit, push/pull và thao tác với GitHub.",
+    hinhAnh: "http://localhost:1000/uploads/blog_gitgithub.png",
+    tenNguoiDung: "Admin ML"
+  },
+  {
+    maBaiViet: "BV004",
+    tenBaiViet: "So sánh giữa học online và học offline",
+    moTa: "Phân tích ưu nhược điểm của hình thức học online và offline trong thời đại số.",
+    noiDung: "Bài viết sẽ giúp bạn cân nhắc nên chọn học online hay offline dựa trên nhu cầu cá nhân.",
+    hinhAnh: "http://localhost:1000/uploads/blog_online_offline.png",
+    tenNguoiDung: "Admin ML"
+  }
+];
 
 export default function Home() {
   const navigate = useNavigate();
@@ -141,11 +179,13 @@ export default function Home() {
   // lay so du
   const [userInfo, setUserInfo] = useState<userInfo | any>(null);
   const [soDu, setSoDu] = useState(0);
+  // danh sách bài viết
+  const [articles, setArticles] = useState<articles[]>([])
+  // Đóng mở actions
+  const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   // Lấy thông tin người dùng 
-  const handleDataFromChild = (data: userInfo) => { 
-    console.log(data);
-    setUserInfo(data); };
+  const handleDataFromChild = (data: userInfo) => { setUserInfo(data); };
 
   // Lấy số dư của người dùng
   const handleBalanceFromChild = (balance: number) => { setSoDu(balance); };
@@ -236,12 +276,7 @@ export default function Home() {
     };
   }, []);
 
-  // Đóng mở actions
-  const [isMenuVisible, setIsMenuVisible] = useState(false);
-
-  const handleOpenActions = () => {
-    setIsMenuVisible(true);
-  }
+  const handleOpenActions = () => {setIsMenuVisible(true);}
 
   const actionsRef = useRef<HTMLDivElement | null>(null);
 
@@ -284,6 +319,23 @@ export default function Home() {
         console.error("Lỗi khi logout:", error);
     }
   }
+
+  // Lấy ra 8 bài viết 
+  useEffect(() => {
+    const page = 1;
+    const pageSize = 8;
+    const url = `${import.meta.env.VITE_API_URL}/api/articles?page=${page}&pageSize=${pageSize}`;
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.data);
+        setArticles(data.data);
+      })
+      .catch((err) => {
+        console.log("Lỗi: ", err);
+      });
+  }, [])
 
   return (
     <div className="home-Wrapper">
@@ -373,7 +425,7 @@ export default function Home() {
         </div>
         
         {/* Video */}
-        <video autoPlay muted loop>
+        <video className="show-video" autoPlay muted loop>
           <source src="./videos/vid.mp4" type="video/mp4" />
         </video>
 
@@ -510,6 +562,22 @@ export default function Home() {
             <span className="moreInfo-number">25+</span>
             <span className="moreInfo-note">Quốc gia đang sử dụng</span>
           </div>
+        </div>
+      </section>
+
+      {/* Bài viết  */}
+      <section className="courses-container">
+        <h2 className="container-title">Bài viết nổi bật</h2>
+        <div className="list-courses list-articles">
+          {(articles.length > 0 ? articles : mockArticles).map((article) => (
+            <BlogCard
+              maBaiViet={article.maBaiViet}
+              tenBaiViet={article.tenBaiViet}
+              hinhAnh={article.hinhAnh && article.hinhAnh.trim() !== "" ? article.hinhAnh : "./images/code_pre.png"}
+              tenNguoiDung={article.tenNguoiDung}
+              noiDung={article.noiDung}
+            ></BlogCard>
+          ))}
         </div>
       </section>
 

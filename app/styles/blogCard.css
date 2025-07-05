@@ -1,0 +1,54 @@
+.blog-card {
+    width: 49.4%;
+    height: 150px;
+    background: #fff;
+    border: 1px solid #000;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: .25s;
+    cursor: pointer;
+    margin-bottom: 20px;
+    display: flex;
+    padding: 10px;
+}
+
+.blog-card:hover {
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.blog-thumb {
+    width: 30%;
+    height: 100%;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.blog-container {
+    width: 100%;
+}
+
+.blog-title {
+    font-size: 18px;
+    font-weight: 600;
+    width: 100%;
+    padding: 0 10px 10px 10px;
+    margin-top: 10px;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;          /* Chỉ hiển thị tối đa 2 dòng */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;         /* Cắt từ nếu cần */
+    line-height: 1.4em;             /* Điều chỉnh khoảng cách dòng */
+    max-height: calc(1.4em * 2);    /* Tối đa chiều cao của 2 dòng */
+}
+
+.blog-demo {
+    width: 100%;
+    padding-left: 10px;
+    padding-bottom: 10px;
+    text-align: justify;
+}

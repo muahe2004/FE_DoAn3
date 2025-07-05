@@ -28,6 +28,18 @@ export default function CourseDetails() {
     const [hinhAnh, setHinhAnh] = useState("");
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [soDu, setSoDu] = useState(0);
+    const [firstLecture, setFirstLecture] = useState("https://www.youtube.com/embed/o_VDcEy029M");
+
+    // Lấy bài học đầu tiên
+    useEffect(() => {
+        fetch(`${import.meta.env.VITE_API_URL}/api/lectures/get-first-lecture/${maKhoaHoc}`)
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data);
+            setFirstLecture(data?.video);
+          })
+          .catch((err) => console.error(err));
+    }, [maKhoaHoc])
 
 
     // API load thông tin khóa học 
@@ -84,6 +96,8 @@ export default function CourseDetails() {
                 ch.danhSachBaiHoc.map((bh: any) => bh.maBaiHoc)
             );
             setListLecture(lectureList);
+
+            console.log(lessonInfo);
         } catch (error) {
             console.error("Lỗi:", error);
         }
@@ -201,6 +215,7 @@ export default function CourseDetails() {
     };
 
     const [createBill] = useCreateBillsMutation();
+
     // Thêm hóa đơn thanh toán sau khi thanh toán
     const insertBill = async () => { 
         const userInfoStr = localStorage.getItem("userInfo");
@@ -288,7 +303,7 @@ export default function CourseDetails() {
                     <div className="course-video__thumb">
                         <iframe
                             className="course-video__iframe"
-                            src="https://www.youtube.com/embed/o_VDcEy029M"
+                            src={firstLecture}
                             title="YouTube Video"
                             allow="autoplay; encrypted-media"
                             allowFullScreen

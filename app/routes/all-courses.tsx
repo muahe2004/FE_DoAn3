@@ -23,20 +23,21 @@ export default function AllCourses() {
 
     const [courses, setCourses] = useState<Courses []>([]);
     useEffect(() => {
-      fetch(`${import.meta.env.VITE_API_URL}/api/courses`, {
+      fetch(`${import.meta.env.VITE_API_URL}/api/courses?page=1&pageSize=100`, {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       })
         .then((res) => res.json())
         .then((data) => {
-          setCourses(data.data);
+          setCourses(data.data); // hoặc data nếu BE trả về trực tiếp mảng
         })
         .catch((err) => {
-          console.log("Lỗi: ", err);
+          console.log('Lỗi:', err);
         });
     }, []);
+
 
 
   return (
